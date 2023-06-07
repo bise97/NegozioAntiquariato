@@ -14,7 +14,7 @@ public class Cliente {
         this.username = username;
         this.password = password;
         this.numTelefono = numTelefono;
-        this.cartaDiCredito = new CartaDiCredito(numeroCarta, nomeIntestatario, cognomeIntestatario, dataScadenza);
+        this.cartaDiCredito = new CartaDiCredito(numeroCarta, nomeIntestatario, cognomeIntestatario, dataScadenza, username);
     }
 
     @Override
@@ -52,5 +52,9 @@ public class Cliente {
 
     public void setNumTelefono(String numTelefono) {
         this.numTelefono = numTelefono;
+    }
+
+    public void setCartaDiCredito(CartaDiCredito cartaDiCredito) {
+        this.cartaDiCredito = cartaDiCredito;
     }
 }

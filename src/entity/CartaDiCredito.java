@@ -9,12 +9,14 @@ public class CartaDiCredito {
     private String nomeIntestatario;
     private String cognomeIntestatario;
     private Date dataScadenza;
+    private String username;
 
-    public CartaDiCredito(String numeroCarta, String nomeIntestatario, String cognomeIntestatario, String dataScadenza){
+    public CartaDiCredito(String numeroCarta, String nomeIntestatario, String cognomeIntestatario, String dataScadenza, String username){
         this.numeroCarta = numeroCarta;
         this.nomeIntestatario = nomeIntestatario;
         this.cognomeIntestatario = cognomeIntestatario;
         this.dataScadenza = new Date(dataScadenza);
+        this.username = username;
     }
 
     @Override

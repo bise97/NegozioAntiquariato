@@ -4,15 +4,15 @@ public class Proposta {
 
     private long id;
     private float prezzo;
-    private Prodotto prodotto;
-    private Cliente cliente;
-    private StatoProposta.Stato stato;
-    public Proposta(long id, float prezzo, Prodotto prodotto, Cliente cliente){
+    private long codice;
+    private String username;
+    private StatoProposta stato;
+    public Proposta(long id, float prezzo, String username, long codice){
         this.id = id;
         this.prezzo = prezzo;
-        this.stato = StatoProposta.Stato.OFFERTA;
-        this.prodotto = prodotto;
-        this.cliente = cliente;
+        this.stato = StatoProposta.OFFERTA;
+        this.username = username;
+        this.codice = codice;
     }
 
     @Override
@@ -30,9 +30,6 @@ public class Proposta {
         return prezzo;
     }
 
-    public StatoProposta.Stato getStato() {
-        return stato;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -42,7 +39,27 @@ public class Proposta {
         this.prezzo = prezzo;
     }
 
-    public void setStato(StatoProposta.Stato stato) {
+    public long getCodice() {
+        return codice;
+    }
+
+    public void setCodice(long codice) {
+        this.codice = codice;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public StatoProposta getStato() {
+        return stato;
+    }
+
+    public void setStato(StatoProposta stato) {
         this.stato = stato;
     }
 }
