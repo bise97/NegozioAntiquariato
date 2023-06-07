@@ -2,6 +2,7 @@ package database;
 
 import entity.Articolo;
 import java.sql.*;
+import java.util.HashMap;
 
 public class ArticoloDAO {
     private static final String PREZZO_COLUMN = "prezzo";
@@ -23,19 +24,14 @@ public class ArticoloDAO {
         try{
             Connection conn = DBManager.getConnection();
             String query = "INSERT INTO Articolo VALUES(?,?,?)";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-
-            preparedStatement.setLong(0,articolo.getCodiceProdotto());
-            preparedStatement.setFloat(1,articolo.getPrezzo());
-            preparedStatement.setInt(2,articolo.getQuantitaMagazzino());
-
-            try{
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setLong(1, articolo.getCodiceProdotto());
+                preparedStatement.setFloat(2, articolo.getPrezzo());
+                preparedStatement.setInt(3, articolo.getQuantitaMagazzino());
                 preparedStatement.executeUpdate();
-            }
-            catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 DBManager.closeConnection();
             }
         }
@@ -49,16 +45,18 @@ public class ArticoloDAO {
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Articolo WHERE ProdottoCodice = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setLong(0,codiceArticolo);
-            try{
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setLong(1, codiceArticolo);
                 ResultSet resultSet = preparedStatement.executeQuery(query);
-                articolo = deserializeRecordArticolo(resultSet);
-            }
-            catch (SQLException e){
+                if (resultSet.next()) {
+                    articolo = deserializeRecordArticolo(resultSet);
+                } else {
+                    //TODO alzare eccezione se l'articolo non è presente nel db
+                }
+
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 DBManager.closeConnection();
             }
 
@@ -75,17 +73,15 @@ public class ArticoloDAO {
             String query = "UPDATE Articolo SET " +
                     PREZZO_COLUMN + " = ?, " +
                     QUANTITA_COLUMN + " = ?, WHERE " + CODICE_COLUMN + " = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setFloat(0,articolo.getPrezzo());
-            preparedStatement.setInt(1,articolo.getQuantitaMagazzino());
-            preparedStatement.setLong(2,articolo.getCodiceProdotto());
-            try{
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setFloat(1, articolo.getPrezzo());
+                preparedStatement.setInt(2, articolo.getQuantitaMagazzino());
+                preparedStatement.setLong(3, articolo.getCodiceProdotto());
                 preparedStatement.executeUpdate();
-            }
-            catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 DBManager.closeConnection();
             }
 
@@ -99,15 +95,13 @@ public class ArticoloDAO {
         try{
             Connection conn = DBManager.getConnection();
             String query = "DELETE FROM Articolo WHERE " + CODICE_COLUMN + " = ?";
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setLong(0,codiceArticolo);
-            try{
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                preparedStatement.setLong(1, codiceArticolo);
                 preparedStatement.executeUpdate();
-            }
-            catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            }
-            finally {
+            } finally {
                 DBManager.closeConnection();
             }
 
@@ -117,5 +111,28 @@ public class ArticoloDAO {
         }
     }
 
+    public static HashMap<long,Articolo> readAllArticoli(){
+        HashMap<long,Articolo> articoli = null;
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM Articolo";
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                articoli = new HashMap<long, Articolo>();
+                while (resultSet.next()) {
+                    Articolo a = deserializeRecordArticolo(resultSet);
+                    articoli.put(a.getCodiceProdotto(), a);
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                DBManager.closeConnection();
+            }
 
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return articoli;
+    }
 }

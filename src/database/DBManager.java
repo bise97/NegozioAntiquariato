@@ -11,18 +11,10 @@ public class DBManager {
     private static Connection connection = null;
 
     public static Connection getConnection()  throws SQLException {
-        if(connection == null){
-            connection = DriverManager.getConnection(DB_PATH,DB_USERNAME,DB_PASSWORD);
-            createTables();
-        }
         if(connection == null || connection.isClosed()){
             connection = DriverManager.getConnection(DB_PATH,DB_USERNAME,DB_PASSWORD);
         }
         return connection;
-    }
-
-    private static void createTables(){
-
     }
 
     public static void closeConnection() throws SQLException{

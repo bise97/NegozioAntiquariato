@@ -16,7 +16,7 @@ public class Prodotto {
         this.immagini = new ArrayList<>();
         for(File f : pathsImmagini){
             try{
-                immagini.add(new Immagine(f,this));
+                immagini.add(new Immagine(f));
             }
             catch(IOException e){
                 System.out.println(e.getMessage());
@@ -55,6 +55,9 @@ public class Prodotto {
 
     public void setCodice(long codice) {
         this.codice = codice;
+        for(Immagine img : this.immagini) {
+            img.setCodiceProdotto(codice);
+        }
     }
 
     public void setNome(String nome) {
