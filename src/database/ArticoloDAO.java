@@ -111,14 +111,14 @@ public class ArticoloDAO {
         }
     }
 
-    public static HashMap<long,Articolo> readAllArticoli(){
-        HashMap<long,Articolo> articoli = null;
+    public static HashMap<Long,Articolo> readAllArticoli(){
+        HashMap<Long,Articolo> articoli = null;
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Articolo";
             try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
                 ResultSet resultSet = preparedStatement.executeQuery();
-                articoli = new HashMap<long, Articolo>();
+                articoli = new HashMap<Long, Articolo>();
                 while (resultSet.next()) {
                     Articolo a = deserializeRecordArticolo(resultSet);
                     articoli.put(a.getCodiceProdotto(), a);
