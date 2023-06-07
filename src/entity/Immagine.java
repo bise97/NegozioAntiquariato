@@ -8,9 +8,16 @@ import java.io.IOException;
 public class Immagine {
     private long id;
     private BufferedImage image;
+    private long codiceProdotto;
 
     public Immagine(File file) throws IOException{
-            image = ImageIO.read(file);
+            this.image = ImageIO.read(file);
+    }
+
+    public Immagine(long id, BufferedImage image, long codiceProdotto) {
+        this.id = id;
+        this.image = image;
+        this.codiceProdotto = codiceProdotto;
     }
 
     public long getId() {
@@ -27,5 +34,13 @@ public class Immagine {
 
     public void setImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public long getCodiceProdotto() {
+        return codiceProdotto;
+    }
+
+    public void setCodiceProdotto(long codiceProdotto) {
+        this.codiceProdotto = codiceProdotto;
     }
 }

@@ -55,6 +55,9 @@ public class Prodotto {
 
     public void setCodice(long codice) {
         this.codice = codice;
+        for(Immagine img : this.immagini) {
+            img.setCodiceProdotto(codice);
+        }
     }
 
     public void setNome(String nome) {
