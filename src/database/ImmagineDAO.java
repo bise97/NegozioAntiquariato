@@ -3,6 +3,7 @@ package database;
 import entity.Immagine;
 import javax.imageio.ImageIO;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class ImmagineDAO {
     private static final String ID_COLUMN = "id";
@@ -133,5 +134,31 @@ public class ImmagineDAO {
         }
     }
 
+    public static ArrayList<Immagine> readImmaginiProdotto(long codice){
+        ArrayList<Immagine> immagini = new ArrayList<Immagine>();
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM Immagine WHERE ProdottoCodice=?";
 
+            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
+                preparedStatement.setLong(1,codice);
+                ResultSet resultSet = preparedStatement.executeQuery(query);
+                while(resultSet.next()){
+                    immagini.add(deserializeRecordImmagine(resultSet));
+                }
+                    //TODO  alzare eccezione se l'immagine non è presente nel db
+            }
+            catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+            finally {
+                DBManager.closeConnection();
+            }
+
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return immagini;
+    }
 }
