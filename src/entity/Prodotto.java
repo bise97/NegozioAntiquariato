@@ -16,7 +16,7 @@ public class Prodotto {
         this.immagini = new ArrayList<>();
         for(File f : pathsImmagini){
             try{
-                immagini.add(new Immagine(f));
+                immagini.add(new Immagine(f,this));
             }
             catch(IOException e){
                 System.out.println(e.getMessage());
