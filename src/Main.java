@@ -22,11 +22,11 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","12/01/2025");
-        Cliente cliente2 = new Cliente("gae", "hello", "80000000","48828329920230","Gaetano","martedi","06/12/2026");
+        Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
+        Cliente cliente2 = new Cliente("gae", "hello", "80000000","48828329920230","Gaetano","martedi","2026-03-31");
         ClienteDAO.createCliente(cliente1);
         ClienteDAO.createCliente(cliente2);
-        //System.out.println(ClienteDAO.readCliente("bise"));
+        System.out.println(ClienteDAO.readCliente("bise"));
         //TODO login
 
     }

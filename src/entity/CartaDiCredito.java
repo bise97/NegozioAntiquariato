@@ -1,11 +1,6 @@
 package entity;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.sql.Date;
 
 public class CartaDiCredito {
     private String numeroCarta;
@@ -18,11 +13,15 @@ public class CartaDiCredito {
         this.numeroCarta = numeroCarta;
         this.nomeIntestatario = nomeIntestatario;
         this.cognomeIntestatario = cognomeIntestatario;
-        try {
-            this.dataScadenza = new SimpleDateFormat("dd/mm/yyyy").parse(dataScadenza);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        this.dataScadenza = Date.valueOf(dataScadenza); //format: yyyy-mm-dd
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
         this.username = username;
     }
 

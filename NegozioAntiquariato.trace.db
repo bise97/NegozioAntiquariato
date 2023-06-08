@@ -1088,3 +1088,55 @@ SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numer
 2023-06-08 20:09:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente [*]RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username =?;"; SQL statement:
 SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username =?; [42000-214]
+2023-06-08 20:36:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente [*]RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username =?;"; SQL statement:
+SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username =?; [42000-214]
+2023-06-08 20:40:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente [*]RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = ?"; SQL statement:
+SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = ? [42000-214]
+2023-06-08 20:40:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente [*]RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = ?"; SQL statement:
+SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = ? [42000-214]
+2023-06-08 20:42:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente [*]RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = 'bise'"; SQL statement:
+SELECT Cliente.username, Cliente.password, Cliente.telefono,CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenzaFROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = 'bise' [42000-214]
+2023-06-08 20:43:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ClienteDAO.readCliente(ClienteDAO.java:33)
+	at Main.main(Main.java:29)
+2023-06-08 20:47:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ClienteDAO.readCliente(ClienteDAO.java:33)
+	at Main.main(Main.java:29)
+2023-06-08 20:47:42 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ClienteDAO.readCliente(ClienteDAO.java:33)
+	at Main.main(Main.java:29)
+2023-06-08 20:48:48 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ClienteDAO.readCliente(ClienteDAO.java:33)
+	at Main.main(Main.java:29)

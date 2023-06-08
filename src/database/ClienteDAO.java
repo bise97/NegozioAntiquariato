@@ -1,10 +1,6 @@
 package database;
 
-import entity.CartaDiCredito;
 import entity.Cliente;
-import entity.Immagine;
-
-import javax.imageio.ImageIO;
 import java.sql.*;
 
 public class ClienteDAO {
@@ -22,17 +18,16 @@ public class ClienteDAO {
 
             String query = "SELECT Cliente.username, Cliente.password, Cliente.telefono," +
                     "CartaDiCredito.numeroCarta, CartaDiCredito.NomeIntestatario, CartaDiCredito.cognomeIntestatario, CartaDiCredito.dataScadenza" +
-                    "FROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username =?;";
+                    " FROM Cliente RIGHT JOIN CartaDiCredito ON Cliente.numeroCarta=CartaDiCredito.numeroCarta WHERE Cliente.username = ?";
 
             try {
                 PreparedStatement stmt = conn.prepareStatement(query);
 
                 stmt.setString(1, username);
 
-                ResultSet result = stmt.executeQuery(query);
+                ResultSet result = stmt.executeQuery();
 
                 if(result.next()) {
-                    //cliente = new Cliente(username, result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
                     cliente = deserializeCurrentRecord(result);
                 }
             }catch(SQLException e) {
