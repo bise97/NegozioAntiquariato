@@ -1,11 +1,11 @@
 package database;
 
+import entity.CartaDiCredito;
 import entity.Cliente;
+import entity.Immagine;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import java.sql.*;
 
 public class ClienteDAO {
 
@@ -29,7 +29,7 @@ public class ClienteDAO {
 
                 stmt.setString(1, username);
 
-                ResultSet result = stmt.executeQuery();
+                ResultSet result = stmt.executeQuery(query);
 
                 if(result.next()) {
                     //cliente = new Cliente(username, result.getString(2), result.getString(3), result.getString(4), result.getString(5), result.getString(6), result.getString(7));
@@ -47,5 +47,30 @@ public class ClienteDAO {
 
         return cliente;
 
+    }
+
+    public static void createCliente(Cliente cliente){
+        CartaDiCreditoDAO.createCartaDiCreditoDAO(cliente.getCartaDiCredito());
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "INSERT INTO CLIENTE(USERNAME, PASSWORD, TELEFONO, NUMEROCARTA) VALUES (?,?,?,?)";
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+                preparedStatement.setString(1, cliente.getUsername());
+                preparedStatement.setString(2, cliente.getPassword());
+                preparedStatement.setString(3,cliente.getNumTelefono());
+                preparedStatement.setString(4,cliente.getCartaDiCredito().getNumeroCarta());
+                //TODO createCartaDiCredito()
+                preparedStatement.executeUpdate();
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            } finally {
+                DBManager.closeConnection();
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 }

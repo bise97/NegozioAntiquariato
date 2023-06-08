@@ -9,6 +9,7 @@ public class Cliente {
     private String password;
     private String numTelefono;
     private CartaDiCredito cartaDiCredito;
+    private ArrayList<Long> listaProposteCliente;
 
     public Cliente(String username, String password, String numTelefono, String numeroCarta, String nomeIntestatario, String cognomeIntestatario, String dataScadenza) {
         this.username = username;
@@ -56,5 +57,13 @@ public class Cliente {
 
     public void setCartaDiCredito(CartaDiCredito cartaDiCredito) {
         this.cartaDiCredito = cartaDiCredito;
+    }
+
+    public ArrayList<Long> getListaProposteCliente() {
+        return listaProposteCliente;
+    }
+
+    public void setListaProposteCliente(ArrayList<Long> listaProposteCliente) {
+        this.listaProposteCliente = listaProposteCliente;
     }
 }

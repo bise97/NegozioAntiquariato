@@ -7,8 +7,7 @@ public class Proposta {
     private long codice;
     private String username;
     private StatoProposta stato;
-    public Proposta(long id, float prezzo, String username, long codice){
-        this.id = id;
+    public Proposta(float prezzo, String username, long codice){
         this.prezzo = prezzo;
         this.stato = StatoProposta.OFFERTA;
         this.username = username;
