@@ -2,6 +2,7 @@ package control;
 
 import boundary.BClienteRegistrato;
 import database.ArticoloDAO;
+import database.ClienteDAO;
 import database.ProdottoDAO;
 import database.PropostaDAO;
 import entity.*;
@@ -47,6 +48,9 @@ public class GestioneNegozio {
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
         Prodotto prodotto = null;
+        Cliente cliente = null;
+        ArrayList<long> listaProposteCliente = new ArrayList<long>();
+
         switch (tipo){
             case SCULTURA:
                  prodotto = inserisciScultura(bR);
@@ -58,45 +62,41 @@ public class GestioneNegozio {
 
         Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
         PropostaDAO.createProposta(proposta);
-        //lista proposte cliente
+        //TODO aggiungere controllo cache
+        cliente = ClienteDAO.readCliente(username);
+        listaProposteCliente = cliente.getListaProposteCliente();
+        listaProposteCliente.add(proposta.getId());
     }
 
     public Scultura inserisciScultura(BClienteRegistrato bR){
-        String nome;
-        String descrizione;
-        ArrayList<File> pathImmagini;
         float peso;
         float altezza;
 
+        Prodotto prodotto = inserisciProdotto(bR);
         ArrayList<Object> lista = bR.inserisciScultura();
-        nome = (String) lista.get(0);
-        descrizione = (String) lista.get(1);
-        pathImmagini = (ArrayList<File>) lista.get(2);
-        peso = (float) lista.get(3);
-        altezza = (float) lista.get(4);
 
-        Scultura scultura = new Scultura(nome, descrizione,pathImmagini, peso, altezza);
+        peso = (float) lista.get(0);
+        altezza = (float) lista.get(1);
+
+        Scultura scultura = new Scultura(prodotto, peso, altezza);
         ProdottoDAO.createProdotto(scultura);
         return scultura;
     }
 
     public Dipinto inserisciDipinto(BClienteRegistrato bR){
-        String nome;
-        String descrizione;
-        ArrayList<File> pathImmagini;
+
         TecnicaDArte tecnica;
         float larghezzaTela;
         float altezzaTela;
 
+        Prodotto prodotto = inserisciProdotto(bR);
         ArrayList<Object> lista = bR.inserisciDipinto();
-        nome = (String) lista.get(0);
-        descrizione = (String) lista.get(1);
-        pathImmagini = (ArrayList<File>) lista.get(2);
-        tecnica = (TecnicaDArte) lista.get(3);
-        larghezzaTela = (float) lista.get(4);
-        altezzaTela = (float) lista.get(5);
 
-        Dipinto dipinto = new Dipinto(nome, descrizione,pathImmagini,altezzaTela,larghezzaTela,tecnica);
+        tecnica = (TecnicaDArte) lista.get(0);
+        larghezzaTela = (float) lista.get(1);
+        altezzaTela = (float) lista.get(2);
+
+        Dipinto dipinto = new Dipinto(prodotto,altezzaTela,larghezzaTela,tecnica);
         ProdottoDAO.createProdotto(dipinto);
         return dipinto;
     }
@@ -106,7 +106,8 @@ public class GestioneNegozio {
         String descrizione;
         ArrayList<File> pathImmagini;
 
-        ArrayList<Object> lista = bR.inserisciDipinto();
+        ArrayList<Object> lista = bR.inserisciProdotto();
+
         nome = (String) lista.get(0);
         descrizione = (String) lista.get(1);
         pathImmagini = (ArrayList<File>) lista.get(2);

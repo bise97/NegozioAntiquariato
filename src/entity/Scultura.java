@@ -14,6 +14,11 @@ public class Scultura extends Prodotto {
         this.alezza = alezza;
     }
 
+    public  Scultura(Prodotto prodotto, float peso, float alezza){
+        super(prodotto.getImmagini(),prodotto.getNome(),prodotto.getDescrizione());
+        this.peso = peso;
+        this.alezza = alezza;
+    }
     @Override
     public String toString() {
         return "Scultura{" +"codice=" + this.getCodice() +

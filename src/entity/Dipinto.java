@@ -15,6 +15,12 @@ public class Dipinto extends Prodotto{
         this.tecnica = tecnica;
     }
 
+    public Dipinto(Prodotto prodotto, float altezzaTela, float larghezzaTela, TecnicaDArte tecnica){
+        super(prodotto.getImmagini(),prodotto.getNome(), prodotto.getDescrizione());
+        this.altezzaTela = altezzaTela;
+        this.larghezzaTela = larghezzaTela;
+        this.tecnica = tecnica;
+    }
     public float getAltezzaTela() {
         return altezzaTela;
     }

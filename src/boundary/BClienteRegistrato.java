@@ -1,5 +1,13 @@
 package boundary;
 
+import control.GestioneNegozio;
+import entity.Immagine;
+import entity.TecnicaDArte;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -19,15 +27,102 @@ public class BClienteRegistrato {
         this.username = username;
     }
 
-    public ArrayList<Object> inserisciScultura(){
 
-        return null;
+    public void inserisciProposta(){
+        String tipo;
+        String prezzoProposto;
+        GestioneNegozio gN = GestioneNegozio.getInstance();
+
+        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println("\nInserisci il tipo del prodotto da inserire: ");
+            tipo = bufferedRead.readLine();
+            System.out.println("\nInserisci il prezzo proposto del prodotto da inserire: ");
+            prezzoProposto = bufferedRead.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        gN.inserisciProposta(this.username,tipo, Float.parseFloat(prezzoProposto),this);
+
+    }
+    public ArrayList<Object> inserisciScultura(){
+        String peso;
+        String altezza;
+        ArrayList<Object> lista = new ArrayList<Object>();
+        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println("\nInserisci il peso: ");
+            peso = bufferedRead.readLine();
+            System.out.println("\nInserisci l'altezza: ");
+            altezza = bufferedRead.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        lista.add(Float.parseFloat(peso));
+        lista.add(Float.parseFloat(altezza));
+
+        return lista;
     }
 
     public ArrayList<Object> inserisciDipinto(){
-        return null;
+        String tecnica;
+        String larghezzaTela;
+        String altezzaTela;
+        ArrayList<Object> lista = new ArrayList<Object>();
+        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println("\nInserisci la tecnica: ");
+            tecnica = bufferedRead.readLine();
+            System.out.println("\nInserisci la larghezza: ");
+            larghezzaTela = bufferedRead.readLine();
+            System.out.println(("\nInserisci l'altezza: "));
+            altezzaTela = bufferedRead.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        lista.add(TecnicaDArte.valueOf(tecnica));
+        lista.add(Float.parseFloat(larghezzaTela));
+        lista.add(Float.parseFloat(altezzaTela));
+
+        return lista;
     }
     public ArrayList<Object> inserisciProdotto(){
-        return  null;
+        String nome;
+        String descrizione;
+        ArrayList<File> pathImmagini = new ArrayList<>();
+        int num;
+        File file = null;
+
+        ArrayList<Object> lista = new ArrayList<Object>();
+
+        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            System.out.println("\nInserisci il nome: ");
+            nome = bufferedRead.readLine();
+            System.out.println("\nInserisci la descrizione: ");
+            descrizione = bufferedRead.readLine();
+            System.out.println("\nNumero di immagini: ");
+            num = Integer.parseInt(bufferedRead.readLine());
+            while(num>4){
+                System.out.println(("\nInserisci un numero di immagini non superiore a 4: "));
+                num = Integer.parseInt(bufferedRead.readLine());
+            }
+            for (int i=0; i<num;i++){
+                System.out.println("\nInserisci il path dell' Immagine " + (i+1) + " : ");
+                file = new File(bufferedRead.readLine());
+                pathImmagini.add(file);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        lista.add(nome);
+        lista.add(descrizione);
+        lista.add(pathImmagini);
+
+        return lista;
     }
 }
