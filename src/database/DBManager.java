@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBManager {
-    private final static String DB_PATH = "jdbc:h2:NegozioAntiquariato";
+    private final static String DB_PATH = "jdbc:h2:./NegozioAntiquariato";
     private final static String DB_USERNAME = "";
     private final static String DB_PASSWORD = "";
     private static Connection connection = null;
