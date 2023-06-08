@@ -90,7 +90,7 @@ public class DBSetup {
     }
     public static void createTables() throws SQLException {
         Connection connection = DBManager.getConnection();
-//        dropTables(connection);
+        dropTables(connection);
         createTableCartaDiCredito(connection);
         createTableProdotto(connection);
         createTableCliente(connection);
