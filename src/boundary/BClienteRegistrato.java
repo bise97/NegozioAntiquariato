@@ -1,12 +1,10 @@
 package boundary;
 
-import entity.Cliente;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class BClienteRegistrato {
+
     private String username;
 
     public BClienteRegistrato(String username) {
@@ -19,5 +17,17 @@ public class BClienteRegistrato {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public ArrayList<Object> inserisciScultura(){
+
+        return null;
+    }
+
+    public ArrayList<Object> inserisciDipinto(){
+        return null;
+    }
+    public ArrayList<Object> inserisciProdotto(){
+        return  null;
     }
 }
