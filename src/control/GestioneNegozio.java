@@ -49,13 +49,15 @@ public class GestioneNegozio {
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
         Prodotto prodotto = null;
         Cliente cliente = null;
-        ArrayList<long> listaProposteCliente = new ArrayList<long>();
+        ArrayList<Long> listaProposteCliente = new ArrayList<>();
 
         switch (tipo){
             case SCULTURA:
                  prodotto = inserisciScultura(bR);
+                 break;
             case DIPINTO:
                 prodotto = inserisciDipinto(bR);
+                break;
             default:
                 prodotto = inserisciProdotto(bR);
         }
@@ -63,6 +65,7 @@ public class GestioneNegozio {
         Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
         PropostaDAO.createProposta(proposta);
         //TODO aggiungere controllo cache
+
         cliente = ClienteDAO.readCliente(username);
         listaProposteCliente = cliente.getListaProposteCliente();
         listaProposteCliente.add(proposta.getId());
@@ -122,6 +125,7 @@ public class GestioneNegozio {
         boolean f = false;
 
         if (username.equals("bise") && password.equals("pass1")) {
+            //TODO aggiustare la condizione di verifica dell'username e password
             f = true;
         }
         return f;
