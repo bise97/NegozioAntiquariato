@@ -34,4 +34,14 @@ public class GestioneNegozio {
 
 
     }
+
+    public boolean login(String username, String password) {
+
+        boolean f = false;
+
+        if (username.equals("bise") && password.equals("pass1")) {
+            f = true;
+        }
+        return f;
+    }
 }
