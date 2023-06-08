@@ -99,7 +99,7 @@ public class ProdottoDAO {
             }
 
         } catch (SQLException e) {
-            //throw new DAOException("Impossible to create a new shipment!", e);
+            //TODO throw new DAOException("Impossible to create a new shipment!", e);
             System.out.println("Impossibile aggiornare il prodotto!");
         }
 
@@ -134,7 +134,7 @@ public class ProdottoDAO {
         try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
 
             ps.setFloat(1, scultura.getPeso());
-            ps.setFloat(2, scultura.getAlezza());
+            ps.setFloat(2, scultura.getAltezza());
             ps.setLong(3, scultura.getCodice());
             ps.executeUpdate();
 

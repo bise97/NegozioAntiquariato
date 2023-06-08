@@ -6,12 +6,12 @@ import java.util.ArrayList;
 public class Scultura extends Prodotto {
 
     private float peso;
-    private float alezza;
+    private float altezza;
 
     public Scultura(String nome, String descrizione, ArrayList<File> pathsImmagini, float peso, float alezza) {
         super(nome, descrizione, pathsImmagini);
         this.peso = peso;
-        this.alezza = alezza;
+        this.altezza = alezza;
     }
 
     public  Scultura(Prodotto prodotto, float peso, float alezza){
@@ -25,7 +25,7 @@ public class Scultura extends Prodotto {
                 ", nome='" + this.getNome() + '\'' +
                 ", descrizione='" + this.getDescrizione() + '\'' +", "+
                 "peso=" + peso + " KG" +
-                ", alezza=" + alezza + " cm " +
+                ", alezza=" + altezza + " cm " +
                 '}';
     }
 
@@ -33,15 +33,15 @@ public class Scultura extends Prodotto {
         return peso;
     }
 
-    public float getAlezza() {
-        return alezza;
+    public float getAltezza() {
+        return altezza;
     }
 
     public void setPeso(float peso) {
         this.peso = peso;
     }
 
-    public void setAlezza(float alezza) {
-        this.alezza = alezza;
+    public void setAltezza(float alezza) {
+        this.altezza = alezza;
     }
 }

@@ -36,6 +36,16 @@ public class Prodotto {
     public void setImmagini(ArrayList<Immagine> immagini) {
         this.immagini = immagini;
     }
+    public void setImmaginiFromFiles(ArrayList<File> files){
+        this.immagini = new ArrayList<>();
+        for(File f : files) {
+            try {
+                immagini.add(new Immagine(f));
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
     @Override
     public String toString() {
