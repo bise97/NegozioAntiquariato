@@ -1,0 +1,6 @@
+2023-06-07 22:41:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROPOSTA" not found; SQL statement:
+DROP TABLE Proposta, Articolo, Immagine, Cliente, Prodotto, CartaDiCredito [42102-214]
+2023-06-07 22:43:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE Articolo(ProdottoCodice LONG PRIMARY KEY,prezzo FLOAT NOT NULL,quantitaMagazzino INT NOT NULL,FOREIGN KEY [*]ProdottoCodice REFERENCES Prodotto(codice));"; expected "("; SQL statement:
+CREATE TABLE Articolo(ProdottoCodice LONG PRIMARY KEY,prezzo FLOAT NOT NULL,quantitaMagazzino INT NOT NULL,FOREIGN KEY ProdottoCodice REFERENCES Prodotto(codice)); [42001-214]
