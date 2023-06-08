@@ -8,15 +8,6 @@ import java.io.InputStreamReader;
 
 public class BCliente {
 
-    private static BCliente bC = null;
-
-
-    public static BCliente getInstance() {
-        if (bC == null) {
-            bC = new BCliente();
-        }
-        return bC;
-    }
 
     public void login() {
         String user;

@@ -36,7 +36,7 @@ public class BClienteRegistrato {
         BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
         try {
             System.out.println("\nInserisci il tipo del prodotto da inserire: ");
-            tipo = bufferedRead.readLine();
+            tipo = bufferedRead.readLine().toUpperCase();
             System.out.println("\nInserisci il prezzo proposto del prodotto da inserire: ");
             prezzoProposto = bufferedRead.readLine();
         } catch (IOException e) {
@@ -124,5 +124,44 @@ public class BClienteRegistrato {
         lista.add(pathImmagini);
 
         return lista;
+    }
+
+    public void run(){
+        boolean f = true;
+        String option;
+
+        while(f){
+
+            System.out.println("UTENTE: " + username +
+                    "\n\nScegli una funzionalita' da eseguire: " +
+                    "\n1. Visualizza Articoli in Negozio " +
+                    "\n2. Visualizza Carrello " +
+                    "\n3. Inserisci una nuova Proposta di vendita " +
+                    "\n4. Esci ");
+
+            BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                option = bufferedRead.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            switch (option){
+                case "1":
+                    System.out.println("Funzionalita non ancora disponibile!");
+                    break;
+                case "2":
+                    System.out.println("Funzionalita non ancora disponibile!");
+                    break;
+                case "3":
+                    inserisciProposta();
+                    break;
+                case "4":
+                    f = false;
+                    break;
+                default:
+                    System.out.println("Opzione non disponibile!");
+            }
+        }
     }
 }

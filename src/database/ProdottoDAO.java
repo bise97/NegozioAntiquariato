@@ -27,7 +27,7 @@ public class ProdottoDAO {
 
             ps.executeUpdate();
             try (ResultSet resultSet = ps.getGeneratedKeys()) {
-                if (resultSet.next() == true) {
+                if (resultSet.next()) {
                     Long codice = readLong(resultSet, "SCOPE_IDENTITY()");
                     if (codice != null) {
                         prodotto.setCodice(codice);
@@ -41,7 +41,7 @@ public class ProdottoDAO {
             }
         } catch (SQLException e) {
             //throw new DAOException("Impossible to create a new shipment!", e);
-            System.out.println("Impossibile aggiornare il prodotto!");
+            System.out.println("Impossibile creare il prodotto!");
         }
 
 
