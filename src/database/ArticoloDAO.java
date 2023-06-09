@@ -1,7 +1,10 @@
 package database;
 
 import entity.Articolo;
+import exception.OperationException;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ArticoloDAO {
@@ -15,7 +18,7 @@ public class ArticoloDAO {
                     rs.getInt("quantitaMagazzino"),
                     rs.getLong("ProdottoCodice"));
         }
-        catch (SQLException e){
+        catch (SQLException | OperationException e){
             System.out.println(e.getMessage());
         }
         return articolo;
@@ -31,8 +34,6 @@ public class ArticoloDAO {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
         }
         catch(SQLException e){
@@ -47,7 +48,7 @@ public class ArticoloDAO {
             String query = "SELECT * FROM Articolo WHERE ProdottoCodice = ?";
             try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
                 preparedStatement.setLong(1, codiceArticolo);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     articolo = deserializeRecordArticolo(resultSet);
                 } else {
@@ -56,8 +57,6 @@ public class ArticoloDAO {
 
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
 
         }
@@ -72,7 +71,7 @@ public class ArticoloDAO {
             Connection conn = DBManager.getConnection();
             String query = "UPDATE Articolo SET " +
                     PREZZO_COLUMN + " = ?, " +
-                    QUANTITA_COLUMN + " = ?, WHERE " + CODICE_COLUMN + " = ?";
+                    QUANTITA_COLUMN + " = ? WHERE " + CODICE_COLUMN + " = ?";
 
             try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
                 preparedStatement.setFloat(1, articolo.getPrezzo());
@@ -81,8 +80,6 @@ public class ArticoloDAO {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
 
         }
@@ -101,34 +98,28 @@ public class ArticoloDAO {
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
-
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
 
-    public static HashMap<Long,Articolo> readAllArticoli(){
-        HashMap<Long,Articolo> articoli = null;
+    public static ArrayList<Articolo> readAll(){
+        ArrayList<Articolo> articoli = null;
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Articolo";
             try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
                 ResultSet resultSet = preparedStatement.executeQuery();
-                articoli = new HashMap<Long, Articolo>();
+                articoli = new ArrayList<>();
                 while (resultSet.next()) {
                     Articolo a = deserializeRecordArticolo(resultSet);
-                    articoli.put(a.getCodiceProdotto(), a);
+                    articoli.add(a);
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
-
         }
         catch(SQLException e){
             System.out.println(e.getMessage());

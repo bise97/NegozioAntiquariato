@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Prodotto {
-    private long codice;
+    private long codice = -1L;
     private String nome;
     private String descrizione;
     private ArrayList<Immagine> immagini;

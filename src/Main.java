@@ -1,4 +1,5 @@
-import test.ProdottoDAOTester;
+
+import test.ImmagineDAOTester;
 import java.sql.SQLException;
 
 public class Main {
@@ -9,8 +10,11 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        ProdottoDAOTester prodottoDAOTester = new ProdottoDAOTester();
-        prodottoDAOTester.runTest();
+//        ProdottoDAOTester prodottoDAOTester = new ProdottoDAOTester();
+//        prodottoDAOTester.runTest();
+
+//        new ArticoloDAOTester().runTest();
+        new ImmagineDAOTester().runTest();
 
         System.out.println();
 
