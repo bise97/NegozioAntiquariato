@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Dipinto extends Prodotto{
@@ -43,5 +44,17 @@ public class Dipinto extends Prodotto{
 
     public void setTecnica(TecnicaDArte tecnica) {
         this.tecnica = tecnica;
+    }
+
+    @Override
+    public String toString() {
+        return "Dipinto{" +
+                "codice=" + this.getCodice() +
+                ", nome=" + this.getNome() +
+                ", descrizione=" + this.getDescrizione() +
+                ", larghezzaTela=" + this.getLarghezzaTela() +
+                ", altezzaTela=" + this.getAltezzaTela() +
+                ", tecnicaDArte=" + this.getTecnica() +
+                "}";
     }
 }

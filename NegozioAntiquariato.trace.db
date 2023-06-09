@@ -3159,3 +3159,39 @@ org.h2.jdbc.JdbcSQLFeatureNotSupportedException: Feature not supported: "Stream 
 	at org.h2.jdbc.JdbcPreparedStatement.setBlob(JdbcPreparedStatement.java:877)
 	at database.ImmagineDAO.createImmagine(ImmagineDAO.java:37)
 	at Main.main(Main.java:41)
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]
+2023-06-09 15:16:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "UPDATE Immagine SET blob = ?, ProdottoCodice = ?, [*]WHERE id = ?"; expected "identifier"; SQL statement:
+UPDATE Immagine SET blob = ?, ProdottoCodice = ?, WHERE id = ? [42001-214]

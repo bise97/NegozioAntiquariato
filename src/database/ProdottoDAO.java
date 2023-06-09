@@ -4,7 +4,6 @@ import entity.Dipinto;
 import entity.Immagine;
 import entity.Prodotto;
 import entity.Scultura;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -41,9 +40,9 @@ public class ProdottoDAO {
             System.out.println("Impossibile creare il prodotto!");
         }
 
-//        for(Immagine img : prodotto.getImmagini()){
-//            ImmagineDAO.createImmagine(img);
-//        }
+        for(Immagine img : prodotto.getImmagini()){
+            ImmagineDAO.createImmagine(img);
+        }
 
         if(prodotto instanceof Dipinto){
             updateDipinto((Dipinto) prodotto);
@@ -71,7 +70,6 @@ public class ProdottoDAO {
             catch (SQLException e){
                 System.out.println(e.getMessage());
             }
-
         }
         catch(SQLException e){
             System.out.println(e.getMessage());

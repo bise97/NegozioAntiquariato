@@ -49,14 +49,12 @@ public class ImmagineDAO {
                 blob.free();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                System.out.println("topo");
             } finally {
                 DBManager.closeConnection();
             }
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
-            System.out.println("gatto");
         }
     }
 
@@ -95,7 +93,7 @@ public class ImmagineDAO {
             Connection conn = DBManager.getConnection();
             String query = "UPDATE Immagine SET " +
                     BLOB_COLUMN + " = ?, " +
-                    PRODOTTO_COLUMN + " = ?, WHERE " + ID_COLUMN + " = ?";
+                    PRODOTTO_COLUMN + " = ? WHERE " + ID_COLUMN + " = ?";
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 Blob imageBlob = conn.createBlob();
                 OutputStream blobOutStream = imageBlob.setBinaryStream(1);

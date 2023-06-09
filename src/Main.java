@@ -1,8 +1,5 @@
-import database.*;
-import entity.*;
-import java.io.File;
+import test.ProdottoDAOTester;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,26 +9,14 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        ArrayList<File> imgfiles = new ArrayList<>();
-        imgfiles.add(new File("resources/lampada1.jpg"));
-        imgfiles.add(new File("resources/lampada2.jpg"));
-        imgfiles.add(new File("resources/lampada3.jpg"));
-        imgfiles.add(new File("resources/lampada4.jpg"));
-        Prodotto p = new Prodotto("lampada","lampada nera con luce calda",imgfiles);
-        ProdottoDAO.createProdotto(p);
-        System.out.println(p);
-        System.out.println("ProdottiDB");
-        ArrayList<Prodotto> prodotti = ProdottoDAO.readAll();
-        for(Prodotto prod : prodotti){
-            System.out.println(prod);
-        }
-//        try{
-//            Immagine img = new Immagine(imgfiles.get(0));
-//            img.setCodiceProdotto(10L);
-//            ImmagineDAO.createImmagine(img);
-//        }catch(IOException e){
-//            System.out.println(e.getMessage());
-//        }
+        ProdottoDAOTester prodottoDAOTester = new ProdottoDAOTester();
+        prodottoDAOTester.runTest();
+
+        System.out.println();
+
+
+
+
 
 
 
