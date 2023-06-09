@@ -10,6 +10,7 @@ import database.ClienteDAO;
 import database.PropostaDAO;
 import entity.*;
 import exception.OperationException;
+
 import java.util.ArrayList;
 import java.io.File;
 
@@ -58,16 +59,11 @@ public class GestioneNegozio {
         Cliente cliente = null;
         ArrayList<Long> listaProposteCliente = new ArrayList<>();
 
-        switch (tipo){
-            case SCULTURA:
-                 prodotto = inserisciScultura(bR);
-                 break;
-            case DIPINTO:
-                prodotto = inserisciDipinto(bR);
-                break;
-            default:
-                prodotto = inserisciProdotto(bR);
-        }
+        prodotto = switch (tipo) {
+            case SCULTURA -> inserisciScultura(bR);
+            case DIPINTO -> inserisciDipinto(bR);
+            default -> inserisciProdotto(bR);
+        };
 
         Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
         PropostaDAO.createProposta(proposta);
@@ -136,5 +132,14 @@ public class GestioneNegozio {
             f = true;
         }
         return f;
+    }
+
+    public void visualizzaArticoli(BGestore bGestore){
+        ArrayList<Articolo> articoli = ArticoloDAO.readAll();
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        for(Articolo articolo : articoli){
+            prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
+        }
+        bGestore.visualizzaArticoli(articoli,prodotti);
     }
 }
