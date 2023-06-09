@@ -1,6 +1,7 @@
 package boundary;
 
 import control.GestioneNegozio;
+import entity.Dipinto;
 import entity.Immagine;
 import entity.TecnicaDArte;
 
@@ -10,10 +11,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class BClienteRegistrato {
 
     private String username;
+    private final String[] tipiProdotto = {"PRODOTTO","DIPINTO", "SCULTURA"};
 
     public BClienteRegistrato(String username) {
         this.username = username;
@@ -33,31 +36,18 @@ public class BClienteRegistrato {
         String prezzoProposto;
         GestioneNegozio gN = GestioneNegozio.getInstance();
 
-        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            System.out.println("\nInserisci il tipo del prodotto da inserire: ");
-            tipo = bufferedRead.readLine().toUpperCase();
-            System.out.println("\nInserisci il prezzo proposto del prodotto da inserire: ");
-            prezzoProposto = bufferedRead.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        gN.inserisciProposta(this.username,tipo, Float.parseFloat(prezzoProposto),this);
+        tipo = inserisciTipo();
+        prezzoProposto = askUser("\nInserisci il prezzo proposto di " + tipo + " :");
 
+        gN.inserisciProposta(this.username,tipo, Float.parseFloat(prezzoProposto),this);
     }
     public ArrayList<Object> inserisciScultura(){
         String peso;
         String altezza;
         ArrayList<Object> lista = new ArrayList<Object>();
-        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            System.out.println("\nInserisci il peso: ");
-            peso = bufferedRead.readLine();
-            System.out.println("\nInserisci l'altezza: ");
-            altezza = bufferedRead.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        peso = askUser("\nInserisci il peso della scultura: ");
+        altezza = askUser("\nInserisci l'altezza: ");
 
         lista.add(Float.parseFloat(peso));
         lista.add(Float.parseFloat(altezza));
@@ -66,23 +56,16 @@ public class BClienteRegistrato {
     }
 
     public ArrayList<Object> inserisciDipinto(){
-        String tecnica;
+        TecnicaDArte tecnica;
         String larghezzaTela;
         String altezzaTela;
         ArrayList<Object> lista = new ArrayList<Object>();
-        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            System.out.println("\nInserisci la tecnica: ");
-            tecnica = bufferedRead.readLine().toUpperCase();
-            System.out.println("\nInserisci la larghezza: ");
-            larghezzaTela = bufferedRead.readLine();
-            System.out.println(("\nInserisci l'altezza: "));
-            altezzaTela = bufferedRead.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        lista.add(TecnicaDArte.valueOf(tecnica));
+        tecnica = inserisciTecnicaDArte();
+        larghezzaTela = askUser("\nInserisci la larghezza del dipinto: ");
+        altezzaTela = askUser("\nInserisci l'altezza del dipinto: ");
+
+        lista.add(tecnica);
         lista.add(Float.parseFloat(larghezzaTela));
         lista.add(Float.parseFloat(altezzaTela));
 
@@ -97,26 +80,15 @@ public class BClienteRegistrato {
 
         ArrayList<Object> lista = new ArrayList<Object>();
 
-        BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            System.out.println("\nInserisci il nome: ");
-            nome = bufferedRead.readLine();
-            System.out.println("\nInserisci la descrizione: ");
-            descrizione = bufferedRead.readLine();
-            System.out.println("\nNumero di immagini: ");
-            num = Integer.parseInt(bufferedRead.readLine());
-            while(num>4){
-                System.out.println(("\nInserisci un numero di immagini non superiore a 4: "));
-                num = Integer.parseInt(bufferedRead.readLine());
-            }
-            for (int i=0; i<num;i++){
-                System.out.println("\nInserisci il path dell' Immagine " + (i+1) + " : ");
-                file = new File(bufferedRead.readLine());
-                pathImmagini.add(file);
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        nome = askUser("\nInserisci il nome: ");
+        descrizione = askUser("\nInserisci la descrizione: ");
+        num = Integer.parseInt(askUser("\nNumero di immagini: "));
+        while(num>4){
+            num = Integer.parseInt(askUser("\nInserisci un numero di immagini non superiore a 4: "));
+        }
+        for (int i=0; i<num;i++){
+            file = new File(askUser("\nInserisci il path dell' Immagine " + (i+1) + " : "));
+            pathImmagini.add(file);
         }
 
         lista.add(nome);
@@ -132,19 +104,12 @@ public class BClienteRegistrato {
 
         while(f){
 
-            System.out.println("UTENTE: " + username +
+            option = askUser("UTENTE: " + username +
                     "\n\nScegli una funzionalita' da eseguire: " +
                     "\n1. Visualizza Articoli in Negozio " +
                     "\n2. Visualizza Carrello " +
                     "\n3. Inserisci una nuova Proposta di vendita " +
                     "\n4. Esci ");
-
-            BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                option = bufferedRead.readLine();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
             switch (option) {
                 case "1" -> System.out.println("Funzionalita non ancora disponibile!");
@@ -154,5 +119,48 @@ public class BClienteRegistrato {
                 default -> System.out.println("Opzione non disponibile!");
             }
         }
+    }
+
+    private TecnicaDArte inserisciTecnicaDArte(){
+        TecnicaDArte[] values = TecnicaDArte.values();
+        int scelta = -1;
+        String input;
+        String print;
+        do{
+            print = "Selezionare il numero della tecnica desiderata:";
+            for(int i = 0; i < values.length; i++){
+                print += "\n"+(i+1)+". "+values[i].toString();
+            }
+            input = askUser(print);
+            if(!input.equals("")){
+                scelta = Integer.parseInt(input) - 1;
+                if(scelta < 0 || scelta >= values.length) System.out.println("Valore inserito non corretto");
+            }
+        }while(scelta < 0 || scelta >= values.length);
+        return values[scelta];
+    }
+
+
+    public String inserisciTipo(){
+        int scelta = -1;
+        String input;
+        String print;
+        do{
+            print = "Selezionare il numero del tipo di prodotto:";
+            for(int i = 0; i < tipiProdotto.length; i++){
+                print += "\n"+(i+1)+". "+tipiProdotto[i].toString();
+            }
+            input = askUser(print);
+            if(!input.equals("")){
+                scelta = Integer.parseInt(input) - 1;
+                if(scelta < 0 || scelta >= tipiProdotto.length) System.out.println("Valore inserito non corretto");
+            }
+        }while(scelta < 0 || scelta >= tipiProdotto.length);
+        return tipiProdotto[scelta];
+    }
+    private String askUser(String print){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(print);
+        return scanner.nextLine();
     }
 }

@@ -1,8 +1,7 @@
 import boundary.BClienteRegistrato;
 import database.ClienteDAO;
+import database.ProdottoDAO;
 import entity.Cliente;
-import test.CartaDiCreditoDAOTester;
-import test.ClienteDAOTester;
 import test.ProdottoDAOTester;
 import test.PropostaDAOTester;
 

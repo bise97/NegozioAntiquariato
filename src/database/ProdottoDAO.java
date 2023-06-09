@@ -131,8 +131,9 @@ public class ProdottoDAO {
             ps.setString(1, dipinto.getTecnica().toString());
             ps.setFloat(2, dipinto.getLarghezzaTela());
             ps.setFloat(3, dipinto.getAltezzaTela());
-            ps.setLong(4,dipinto.getCodice());
-            ps.setString(5,"DIPINTO");
+            ps.setString(4,"DIPINTO");
+            ps.setLong(5,dipinto.getCodice());
+
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -149,8 +150,8 @@ public class ProdottoDAO {
 
             ps.setFloat(1, scultura.getPeso());
             ps.setFloat(2, scultura.getAltezza());
-            ps.setLong(3, scultura.getCodice());
-            ps.setString(4, "SCULTURA");
+            ps.setString(3, "SCULTURA");
+            ps.setLong(4, scultura.getCodice());
             ps.executeUpdate();
 
         } catch (SQLException e) {

@@ -57,5 +57,6 @@ public class PropostaDAOTester {
         System.out.println(PropostaDAO.readProposta(propostaScultura.getId()));
         System.out.println(PropostaDAO.readProposta(propostaDipinto.getId()));
 
+
     }
 }
