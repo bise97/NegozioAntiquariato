@@ -1,12 +1,7 @@
 import boundary.BCliente;
-import boundary.BClienteRegistrato;
 import boundary.BGestore;
 import database.ClienteDAO;
-import database.ProdottoDAO;
 import entity.Cliente;
-import test.ProdottoDAOTester;
-import test.PropostaDAOTester;
-
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -27,10 +22,12 @@ public class Main {
         while(f){
 
             option = askUser(
-                    "\nEntra nel sistema come: " +
-                    "\n1. Gestore Negozio" +
-                    "\n2. Cliente Registrato" +
-                    "\n3. Esci ");
+                    """
+
+                            Entra nel sistema come:\s
+                            1. Gestore Negozio
+                            2. Cliente Registrato
+                            3. Esci\s""");
 
             switch (option) {
                 case "1" -> {

@@ -34,9 +34,9 @@ public class DBSetup {
                 "prezzo FLOAT NOT NULL," +
                 "stato VARCHAR(255) NOT NULL," +
                 "username VARCHAR(255) NOT NULL," +
-                "codice LONG NOT NULL," +
+                "codiceProdotto LONG NOT NULL," +
                 "FOREIGN KEY (username) REFERENCES Cliente(username)," +
-                "FOREIGN KEY (codice) REFERENCES Prodotto(codice)" +
+                "FOREIGN KEY (codiceProdotto) REFERENCES Prodotto(codice)" +
                 ");";
         Statement statement = connection.createStatement();
         statement.execute(query);
@@ -72,7 +72,7 @@ public class DBSetup {
     }
     private static void createTableArticolo(Connection connection)throws SQLException{
         String query = "CREATE TABLE Articolo(" +
-                "ProdottoCodice LONG NOT NULL PRIMARY KEY," +
+                "ProdottoCodice LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "prezzo FLOAT NOT NULL," +
                 "quantitaMagazzino INT NOT NULL," +
                 "FOREIGN KEY (ProdottoCodice) REFERENCES Prodotto(codice)" +

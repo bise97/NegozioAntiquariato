@@ -1,17 +1,13 @@
 package database;
-
-import entity.Prodotto;
 import entity.Proposta;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class PropostaDAO {
 
 
     public static void createProposta(Proposta proposta) {
-        String query = "INSERT INTO Proposta(prezzo, stato, username, codice) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO Proposta(prezzo, stato, username, codiceProdotto) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -83,7 +79,7 @@ public class PropostaDAO {
     }
 
     private static Proposta deserializeCurrentRecord(ResultSet rs) throws SQLException {
-        Proposta proposta = new Proposta(rs.getFloat("prezzo"),rs.getString("username"),rs.getLong("codice"));
+        Proposta proposta = new Proposta(rs.getFloat("prezzo"),rs.getString("username"),rs.getLong("codiceProdotto"));
         proposta.setId(rs.getLong("id"));
         return proposta;
     }
