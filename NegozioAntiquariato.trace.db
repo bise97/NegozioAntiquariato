@@ -1168,6 +1168,72 @@ INSERT INTO Prodotto (nome, descrizione, tipo) VALUES (fsdf,sfs,sdf) [42122-214]
 2023-06-09 01:57:01 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PROPOSTA"; expected "PREPARE"; SQL statement:
 PROPOSTA [42001-214]
+2023-06-09 12:25:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ProdottoDAO.readAll(ProdottoDAO.java:94)
+	at Main.main(Main.java:34)
+2023-06-09 12:26:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ImmagineDAO.readImmaginiProdotto(ImmagineDAO.java:145)
+	at database.ProdottoDAO.deserializeCurrentRecord(ProdottoDAO.java:174)
+	at database.ProdottoDAO.readAll(ProdottoDAO.java:96)
+	at Main.main(Main.java:34)
+2023-06-09 12:26:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-06-09 12:29:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ImmagineDAO.readImmaginiProdotto(ImmagineDAO.java:145)
+	at database.ProdottoDAO.deserializeCurrentRecord(ProdottoDAO.java:174)
+	at database.ProdottoDAO.readAll(ProdottoDAO.java:96)
+	at Main.main(Main.java:34)
+2023-06-09 12:29:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-06-09 12:30:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ImmagineDAO.readImmaginiProdotto(ImmagineDAO.java:145)
+	at database.ProdottoDAO.deserializeCurrentRecord(ProdottoDAO.java:174)
+	at database.ProdottoDAO.readAll(ProdottoDAO.java:96)
+	at Main.main(Main.java:34)
+2023-06-09 12:30:37 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
+2023-06-09 12:48:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: This method is not allowed for a prepared statement; use a regular statement instead. [90130-214]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.jdbc.JdbcPreparedStatement.executeQuery(JdbcPreparedStatement.java:303)
+	at database.ImmagineDAO.readImmaginiProdotto(ImmagineDAO.java:145)
+	at database.ProdottoDAO.deserializeCurrentRecord(ProdottoDAO.java:172)
+	at database.ProdottoDAO.readAll(ProdottoDAO.java:96)
+	at Main.main(Main.java:34)
+2023-06-09 12:48:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: The object is already closed [90007-214]
 2023-06-09 12:37:57 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLFeatureNotSupportedException: Feature not supported: "Stream setter is not yet closed." [50100-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:556)

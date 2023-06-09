@@ -27,9 +27,14 @@ public class Main {
         imgfiles.add(new File("resources/lampada2.jpg"));
         imgfiles.add(new File("resources/lampada3.jpg"));
         imgfiles.add(new File("resources/lampada4.jpg"));
-        Scultura s = new Scultura("lampada","lampada nera con luce calda",imgfiles,10,30);
-        ProdottoDAO.createProdotto(s);
-        System.out.println(s);
+        Prodotto p = new Prodotto("lampada","lampada nera con luce calda",imgfiles);
+        ProdottoDAO.createProdotto(p);
+        System.out.println(p);
+        System.out.println("ProdottiDB");
+        ArrayList<Prodotto> prodotti = ProdottoDAO.readAll();
+        for(Prodotto prod : prodotti){
+            System.out.println(prod);
+        }
 //        Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
 //        ClienteDAO.createCliente(cliente1);
         //System.out.println(cliente1);

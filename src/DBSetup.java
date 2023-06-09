@@ -72,7 +72,7 @@ public class DBSetup {
     }
     private static void createTableArticolo(Connection connection)throws SQLException{
         String query = "CREATE TABLE Articolo(" +
-                "ProdottoCodice LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+                "ProdottoCodice LONG NOT NULL PRIMARY KEY," +
                 "prezzo FLOAT NOT NULL," +
                 "quantitaMagazzino INT NOT NULL," +
                 "FOREIGN KEY (ProdottoCodice) REFERENCES Prodotto(codice)" +

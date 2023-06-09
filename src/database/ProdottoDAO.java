@@ -82,6 +82,29 @@ public class ProdottoDAO {
         return prodotto;
     }
 
+    public static ArrayList<Prodotto> readAll(){
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        try {
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM Prodotto";
+
+            try (Statement statement = conn.createStatement()) {
+                ResultSet resultSet = statement.executeQuery(query);
+                while(resultSet.next()) {
+                    prodotti.add(deserializeCurrentRecord(resultSet));
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } finally {
+                DBManager.closeConnection();
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return prodotti;
+    }
+
     public static void updateProdotto(Prodotto prodotto){
 
         String query = "UPDATE Prodotto SET nome=?, descrizione=? WHERE codice=?;";
