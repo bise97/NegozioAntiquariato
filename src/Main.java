@@ -45,14 +45,6 @@ public class Main {
             }
         }
 
-
-
-        ImmagineIO.display(ProdottoDAO.readProdotto(3).getImmagini().get(0));
-        BGestore bGestore = new BGestore();
-        bGestore.run();
-
-        //TODO login
-
     }
 
     private static String askUser(String print){
