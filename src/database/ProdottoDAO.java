@@ -1,9 +1,7 @@
 package database;
 
-import entity.Dipinto;
-import entity.Immagine;
-import entity.Prodotto;
-import entity.Scultura;
+import entity.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -162,6 +160,16 @@ public class ProdottoDAO {
     private static Prodotto deserializeCurrentRecord(ResultSet rs) throws SQLException{
         ArrayList<Immagine> immagini = ImmagineDAO.readImmaginiProdotto(rs.getLong("codice"));
         Prodotto prodotto = new Prodotto(rs.getLong("codice"), immagini, rs.getString("nome"), rs.getString("descrizione"));
+        String tipo = rs.getString("tipo");
+        if(tipo != null) {
+            switch (tipo) {
+                case "SCULTURA" -> prodotto = new Scultura(prodotto, rs.getFloat("pesoScultura"), rs.getFloat("altezzaScultura"));
+                case "DIPINTO" -> prodotto = new Dipinto(prodotto, rs.getFloat("altezzaTela"), rs.getFloat("larghezzaTela"), TecnicaDArte.valueOf(rs.getString("tecnicaDArte")));
+                default -> {
+                }
+            }
+        }
+
         return prodotto;
     }
 }
