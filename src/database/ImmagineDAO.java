@@ -31,7 +31,7 @@ public class ImmagineDAO {
         try{
             Connection conn = DBManager.getConnection();
             String query = "INSERT INTO Immagine("+BLOB_COLUMN+","+PRODOTTO_COLUMN+") VALUES (?,?)";
-            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 Blob blob = conn.createBlob();
                 ImageIO.write(img.getImage(), "jpg", blob.setBinaryStream(1));
                 preparedStatement.setBlob(1, blob);

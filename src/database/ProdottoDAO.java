@@ -13,7 +13,7 @@ public class ProdottoDAO {
     public static void createProdotto(Prodotto prodotto){
         String query = "INSERT INTO Prodotto (nome, descrizione, tipo) VALUES (?,?,?)";
 
-        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, prodotto.getNome());
             ps.setString(2, prodotto.getDescrizione());
@@ -30,9 +30,8 @@ public class ProdottoDAO {
             try (ResultSet resultSet = ps.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     long codice = resultSet.getLong("codice");
-                    System.out.println("\n--------IL CODICE E': "+codice);
                     if (!resultSet.wasNull()) {
-                        prodotto.setCodice(codice + 1);
+                        prodotto.setCodice(codice);
                         for(Immagine img : prodotto.getImmagini()){
                             ImmagineDAO.createImmagine(img);
                         }
@@ -58,7 +57,7 @@ public class ProdottoDAO {
         Prodotto prodotto = null;
         try{
             Connection conn = DBManager.getConnection();
-            String query = "SELECT * FROM Immagine WHERE codice=?;";
+            String query = "SELECT * FROM Prodotto WHERE codice=?";
 
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,codice);

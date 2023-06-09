@@ -4,6 +4,8 @@ import entity.Proposta;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Stack;
 
 public class PropostaDAO {
 
@@ -11,7 +13,7 @@ public class PropostaDAO {
     public static void createProposta(Proposta proposta) {
         String query = "INSERT INTO Proposta(prezzo, stato, username, codice) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
+        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setFloat(1, proposta.getPrezzo());
             ps.setString(2, proposta.getStato().toString());
