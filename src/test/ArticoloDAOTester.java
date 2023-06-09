@@ -36,7 +36,7 @@ public class ArticoloDAOTester {
         return testCases;
     }
 
-    private void testCreate(ArrayList<Articolo> testCases){
+    public void testCreate(ArrayList<Articolo> testCases){
         System.out.println("----Test create----");
         for(Articolo articolo : testCases){
             ArticoloDAO.createArticolo(articolo);

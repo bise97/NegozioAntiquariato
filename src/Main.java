@@ -1,5 +1,6 @@
 
-import test.ImmagineDAOTester;
+import boundary.BGestore;
+import test.ArticoloDAOTester;
 import java.sql.SQLException;
 
 public class Main {
@@ -14,9 +15,12 @@ public class Main {
 //        prodottoDAOTester.runTest();
 
 //        new ArticoloDAOTester().runTest();
-        new ImmagineDAOTester().runTest();
+//        new ImmagineDAOTester().runTest();
+        ArticoloDAOTester articoloDAOTester = new ArticoloDAOTester();
+        articoloDAOTester.testCreate(ArticoloDAOTester.createTestCase());
 
-        System.out.println();
+        BGestore bGestore = new BGestore();
+        bGestore.run();
 
 
 
