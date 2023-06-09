@@ -10,10 +10,11 @@ public class Prodotto {
     private String descrizione;
     private ArrayList<Immagine> immagini;
 
-    public Prodotto(ArrayList<Immagine> immagini, String nome, String descrizione){
+    public Prodotto(long codice, ArrayList<Immagine> immagini, String nome, String descrizione){
         this.nome = nome;
         this.descrizione = descrizione;
         this.immagini = immagini;
+        this.codice = codice;
     }
     public Prodotto(String nome, String descrizione, ArrayList<File> pathsImmagini) {
         this.nome = nome;

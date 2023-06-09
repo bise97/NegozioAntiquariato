@@ -142,7 +142,7 @@ public class ImmagineDAO {
 
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,codice);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
                     immagini.add(deserializeRecordImmagine(resultSet));
                 }
@@ -150,9 +150,6 @@ public class ImmagineDAO {
             }
             catch (SQLException e){
                 System.out.println(e.getMessage());
-            }
-            finally {
-                DBManager.closeConnection();
             }
 
         }
