@@ -1,8 +1,5 @@
-import database.ArticoloDAO;
-import entity.Articolo;
-import exception.OperationException;
-import test.ArticoloDAOTester;
-import test.ProdottoDAOTester;
+
+import test.ImmagineDAOTester;
 import java.sql.SQLException;
 
 public class Main {
@@ -16,7 +13,8 @@ public class Main {
 //        ProdottoDAOTester prodottoDAOTester = new ProdottoDAOTester();
 //        prodottoDAOTester.runTest();
 
-        new ArticoloDAOTester().runTest();
+//        new ArticoloDAOTester().runTest();
+        new ImmagineDAOTester().runTest();
 
         System.out.println();
 
