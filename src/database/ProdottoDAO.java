@@ -32,18 +32,18 @@ public class ProdottoDAO {
                     long codice = resultSet.getLong("codice");
                     if (!resultSet.wasNull()) {
                         prodotto.setCodice(codice);
-                        for(Immagine img : prodotto.getImmagini()){
-                            ImmagineDAO.createImmagine(img);
-                        }
                         //DBManager.putInPersistanceContext(shipment, shipmentId);
                     }
                 }
-
             }
         } catch (SQLException e) {
             //throw new DAOException("Impossible to create a new shipment!", e);
             System.out.println("Impossibile creare il prodotto!");
         }
+
+//        for(Immagine img : prodotto.getImmagini()){
+//            ImmagineDAO.createImmagine(img);
+//        }
 
         if(prodotto instanceof Dipinto){
             updateDipinto((Dipinto) prodotto);
@@ -57,7 +57,7 @@ public class ProdottoDAO {
         Prodotto prodotto = null;
         try{
             Connection conn = DBManager.getConnection();
-            String query = "SELECT * FROM Prodotto WHERE codice=?";
+            String query = "SELECT * FROM Prodotto WHERE codice = ?";
 
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,codice);
@@ -65,14 +65,11 @@ public class ProdottoDAO {
                 if(resultSet.next()){
                     prodotto = deserializeCurrentRecord(resultSet);
                 }else {
-                    //TODO  alzare eccezione se l'immagine non è presente nel db
+                    //TODO  alzare eccezione se il prodotto non è presente nel db
                 }
             }
             catch (SQLException e){
                 System.out.println(e.getMessage());
-            }
-            finally {
-                DBManager.closeConnection();
             }
 
         }
@@ -95,8 +92,6 @@ public class ProdottoDAO {
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
         }
         catch(SQLException e){
