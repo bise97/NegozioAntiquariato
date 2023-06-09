@@ -10,7 +10,6 @@ import database.ClienteDAO;
 import database.PropostaDAO;
 import entity.*;
 import exception.OperationException;
-
 import java.util.ArrayList;
 import java.io.File;
 
