@@ -49,8 +49,6 @@ public class ImmagineDAO {
                 blob.free();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
         }
         catch(SQLException e){
@@ -66,7 +64,7 @@ public class ImmagineDAO {
 
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,idImmagine);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
                     img = deserializeRecordImmagine(resultSet);
                 }
@@ -77,10 +75,6 @@ public class ImmagineDAO {
             catch (SQLException e){
                 System.out.println(e.getMessage());
             }
-            finally {
-                DBManager.closeConnection();
-            }
-
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
@@ -109,10 +103,6 @@ public class ImmagineDAO {
             catch (Exception e){
                 System.out.println(e.getMessage());
             }
-            finally {
-                DBManager.closeConnection();
-            }
-
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
@@ -130,8 +120,22 @@ public class ImmagineDAO {
             catch (SQLException e){
                 System.out.println(e.getMessage());
             }
-            finally {
-                DBManager.closeConnection();
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void deleteImmaginiOfProdotto(long codiceProdotto){
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "DELETE FROM Immagine WHERE " + PRODOTTO_COLUMN + " = ?";
+            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
+                preparedStatement.setLong(1,codiceProdotto);
+                preparedStatement.executeUpdate();
+            }
+            catch (SQLException e){
+                System.out.println(e.getMessage());
             }
 
         }
@@ -158,6 +162,28 @@ public class ImmagineDAO {
                 System.out.println(e.getMessage());
             }
 
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return immagini;
+    }
+
+    public static ArrayList<Immagine> readAll(){
+        ArrayList<Immagine> immagini = null;
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM Immagine";
+            try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                immagini = new ArrayList<>();
+                while (resultSet.next()) {
+                    Immagine img = deserializeRecordImmagine(resultSet);
+                    immagini.add(img);
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
         }
         catch(SQLException e){
             System.out.println(e.getMessage());

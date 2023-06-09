@@ -107,13 +107,14 @@ public class ProdottoDAO {
             ps.setLong(3, prodotto.getCodice());
             ps.executeUpdate();
 
-            for(Immagine img : prodotto.getImmagini()){
-                ImmagineDAO.updateImmagine(img);
-            }
-
         } catch (SQLException e) {
             //TODO throw new DAOException("Impossible to create a new shipment!", e);
             System.out.println("Impossibile aggiornare il prodotto!");
+        }
+
+        ImmagineDAO.deleteImmaginiOfProdotto(prodotto.getCodice());
+        for(Immagine img : prodotto.getImmagini()){
+            ImmagineDAO.createImmagine(img);
         }
 
         if(prodotto instanceof Dipinto){

@@ -4,17 +4,43 @@ import control.GestioneNegozio;
 import entity.*;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BGestore {
-        public void modificaArticolo(){
+
+        public void visualizzaArticoli(ArrayList<Articolo> articoli, ArrayList<Prodotto> prodotti){
+                System.out.println("Articoli del negozio:");
+                for(int i = 0 ; i < articoli.size(); i++){
+                        Articolo a = articoli.get(i);
+                        Prodotto p = prodotti.get(i);
+
+                        String print = "Cod: " + a.getCodiceProdotto() +
+                                ", prezzo: " + a.getPrezzo() +
+                                ", quantità: " + a.getQuantitaMagazzino() +
+                                ", nome: " + p.getNome() +
+                                ", descrizione: " + p.getDescrizione();
+
+                        if(p instanceof Dipinto){
+                                print += ", tecnica: " + ((Dipinto) p).getTecnica() +
+                                        ", altezza tela: " + ((Dipinto) p).getAltezzaTela() +
+                                        ", larghezza tela: " + ((Dipinto) p).getLarghezzaTela();
+                        }
+                        if(p instanceof Scultura){
+                                print += ", peso: " + ((Scultura) p).getPeso() +
+                                        ", altezza: " + ((Scultura) p).getAltezza();
+                        }
+                        System.out.println(print);
+                }
+        }
+        private void modificaArticolo(){
                 String input;
                 long codiceArticolo = -1;
                 boolean flagRepeatInput;
+                GestioneNegozio gestioneNegozio = GestioneNegozio.getInstance();
                 do{
                         try{
+                                gestioneNegozio.visualizzaArticoli(this);
                                 input = askUser("Inserire il codice dell'articolo da modificare:");
                                 codiceArticolo = Long.parseLong(input);
                                 if(codiceArticolo < 0){
@@ -28,7 +54,7 @@ public class BGestore {
                                 flagRepeatInput = true;
                         }
                 }while (flagRepeatInput);
-                GestioneNegozio.getInstance().modificaArticolo(codiceArticolo,this);
+                gestioneNegozio.modificaArticolo(codiceArticolo,this);
         }
         private String askUser(String print){
                 Scanner scanner = new Scanner(System.in);
@@ -37,7 +63,8 @@ public class BGestore {
         }
 
         public void run(){
-                while(true){
+                boolean isOn = true;
+                while(isOn){
                         String input = askUser("""
                                 Benvenuto Gestore!
                                 Selezionare l'operazione desiderata:
@@ -46,7 +73,8 @@ public class BGestore {
                                 3. Rimuovi Articolo
                                 4. Generazione Report Acquisti
                                 5. Generazione Report Vendite
-                                6. Visualizzare Proposte Clienti""");
+                                6. Visualizzare Proposte Clienti
+                                7. Esci""");
                         try{
                                 int scelta = Integer.parseInt(input);
                                 switch (scelta) {
@@ -56,6 +84,7 @@ public class BGestore {
                                         case 4 -> generaReportAcquisti();
                                         case 5 -> generaReportVendite();
                                         case 6 -> visualizzaProposte();
+                                        case 7 -> isOn = false;
                                         default -> System.out.println("Valore errato. Riprovare.");
                                 }
                         }catch(NumberFormatException e){
@@ -65,22 +94,22 @@ public class BGestore {
                 }
         }
 
-        public void aggiungiArticolo(){
+        private void aggiungiArticolo(){
                 System.out.println("Coming soon");
         }
-        public void rimuoviArticolo(){
+        private void rimuoviArticolo(){
                 System.out.println("Coming soon");
         }
-        public void generaReportAcquisti(){
+        private void generaReportAcquisti(){
                 System.out.println("Coming soon");
         }
-        public void generaReportVendite(){
+        private void generaReportVendite(){
                 System.out.println("Coming soon");
         }
-        public void visualizzaProposte(){
+        private void visualizzaProposte(){
                 System.out.println("Coming soon");
         }
-        public void gestionePropostaDelCliente(){
+        private void gestionePropostaDelCliente(){
                 System.out.println("Coming soon");
         }
 
@@ -128,7 +157,7 @@ public class BGestore {
                 if(prodotto instanceof Scultura) aggiornaCampiScultura((Scultura) prodotto);
         }
 
-        private void aggiornaImmaginiProdotto(Prodotto prodotto){
+        public void aggiornaImmaginiProdotto(Prodotto prodotto){ //TODO rimettere privata dopo il testing
                 boolean flagRepeatInput;
                 String input;
                 do{

@@ -2,6 +2,11 @@ import boundary.BCliente;
 import boundary.BGestore;
 import database.ClienteDAO;
 import entity.Cliente;
+
+import boundary.BGestore;
+import boundary.utilsIO.ImmagineIO;
+import database.ProdottoDAO;
+import test.ArticoloDAOTester;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -16,6 +21,8 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
+        ArticoloDAOTester articoloDAOTester = new ArticoloDAOTester();
+        articoloDAOTester.testCreate(ArticoloDAOTester.createTestCase());
         Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
         ClienteDAO.createCliente(cliente1);
 
@@ -44,6 +51,10 @@ public class Main {
         }
 
 
+
+        ImmagineIO.display(ProdottoDAO.readProdotto(3).getImmagini().get(0));
+        BGestore bGestore = new BGestore();
+        bGestore.run();
 
         //TODO login
 

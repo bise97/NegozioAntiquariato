@@ -20,6 +20,14 @@ public class Immagine {
         this.codiceProdotto = codiceProdotto;
     }
 
+    @Override
+    public String toString() {
+        return "Immagine{" +
+                "id=" + this.getId() +
+                ", codiceProdotto=" + this.getCodiceProdotto() +
+                "}";
+    }
+
     public long getId() {
         return id;
     }

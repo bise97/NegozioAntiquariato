@@ -10,6 +10,7 @@ import database.ClienteDAO;
 import database.PropostaDAO;
 import entity.*;
 import exception.OperationException;
+
 import java.util.ArrayList;
 import java.io.File;
 
@@ -44,18 +45,6 @@ public class GestioneNegozio {
             System.out.println(e.getMessage());
             return;
         }
-
-//        ArrayList<Field> fields= new ArrayList<>(List.of(articolo.getClass().getDeclaredFields()));
-//        Predicate<Field> predicate = new Predicate<Field>() {
-//            @Override
-//            public boolean test(Field field) {
-//                if ( field.getName().equals("codiceProdotto") ) return true;
-//                return false;
-//            }
-//        };
-//        fields.removeIf(predicate);
-//        ArrayList<Object> oldValue = articolo.get(fields);
-//        bGestore.aggiornaCampi(fields,oldValue);
 
         bGestore.aggiornaCampiArticolo(articolo);
         Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
@@ -147,5 +136,14 @@ public class GestioneNegozio {
         }
 
         return f;
+    }
+
+    public void visualizzaArticoli(BGestore bGestore){
+        ArrayList<Articolo> articoli = ArticoloDAO.readAll();
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        for(Articolo articolo : articoli){
+            prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
+        }
+        bGestore.visualizzaArticoli(articoli,prodotti);
     }
 }

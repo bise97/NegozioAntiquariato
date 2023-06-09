@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Prodotto {
-    private long codice;
+    private long codice = -1L;
     private String nome;
     private String descrizione;
     private ArrayList<Immagine> immagini;
@@ -41,7 +41,9 @@ public class Prodotto {
         this.immagini = new ArrayList<>();
         for(File f : files) {
             try {
-                immagini.add(new Immagine(f));
+                Immagine img = new Immagine(f);
+                img.setCodiceProdotto(this.codice);
+                immagini.add(img);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
