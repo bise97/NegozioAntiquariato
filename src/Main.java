@@ -1,3 +1,7 @@
+import database.ArticoloDAO;
+import entity.Articolo;
+import exception.OperationException;
+import test.ArticoloDAOTester;
 import test.ProdottoDAOTester;
 import java.sql.SQLException;
 
@@ -9,8 +13,10 @@ public class Main {
             System.out.println(e.getMessage());
         }
 
-        ProdottoDAOTester prodottoDAOTester = new ProdottoDAOTester();
-        prodottoDAOTester.runTest();
+//        ProdottoDAOTester prodottoDAOTester = new ProdottoDAOTester();
+//        prodottoDAOTester.runTest();
+
+        new ArticoloDAOTester().runTest();
 
         System.out.println();
 

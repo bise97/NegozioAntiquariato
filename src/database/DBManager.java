@@ -18,7 +18,7 @@ public class DBManager {
     }
 
     public static void closeConnection() throws SQLException{
-        if(connection!=null){
+        if(connection!=null && !connection.isClosed()){
             connection.close();
         }
     }

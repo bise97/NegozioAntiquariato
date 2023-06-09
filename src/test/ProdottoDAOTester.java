@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 //TODO eliminare questa classe prima della consegna
 public class ProdottoDAOTester {
+
     public void runTest(){
         ArrayList<File> imgfiles = new ArrayList<>();
         imgfiles.add(new File("resources/lampada1.jpg"));

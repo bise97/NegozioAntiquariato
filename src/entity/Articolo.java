@@ -1,18 +1,20 @@
 package entity;
 
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.util.ArrayList;
+import exception.OperationException;
 
 public class Articolo {
     private float prezzo;
     private int quantitaMagazzino;
     private final long codiceProdotto;
 
-    public Articolo(float prezzo, int quantitaMagazzino, long codiceProdotto) {
+    public Articolo(float prezzo, int quantitaMagazzino, long codiceProdotto) throws OperationException{
         this.prezzo = prezzo;
         this.quantitaMagazzino = quantitaMagazzino;
-        this.codiceProdotto = codiceProdotto;
+        if(codiceProdotto < 0){
+            throw new OperationException("Non puoi creare un articolo prima di avere caricato il prodotto sul database.");
+        }else{
+            this.codiceProdotto = codiceProdotto;
+        }
     }
 
     public float getPrezzo() {
@@ -35,7 +37,16 @@ public class Articolo {
         return codiceProdotto;
     }
 
-//    public void setProdotto(Prodotto prodotto) {
+    @Override
+    public String toString() {
+        return "Articolo{" +
+                "prezzo=" + this.getPrezzo() +
+                ", quantitaMagazzino=" + this.getQuantitaMagazzino() +
+                ", codiceProdotto=" + this.getCodiceProdotto() +
+                "}";
+    }
+
+    //    public void setProdotto(Prodotto prodotto) {
 //        this.prodotto = prodotto;
 //    }
 
