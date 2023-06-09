@@ -104,8 +104,8 @@ public class BClienteRegistrato {
 
         while(f){
 
-            option = askUser("UTENTE: " + username +
-                    "\n\nScegli una funzionalita' da eseguire: " +
+            option = askUser(
+                    "\nBenvenuto " + username + " scegli una funzionalita' da eseguire: " +
                     "\n1. Visualizza Articoli in Negozio " +
                     "\n2. Visualizza Carrello " +
                     "\n3. Inserisci una nuova Proposta di vendita " +

@@ -139,10 +139,13 @@ public class GestioneNegozio {
 
         boolean f = false;
 
-        if (username.equals("bise") && password.equals("pass1")) {
-            //TODO aggiustare la condizione di verifica dell'username e password
-            f = true;
+        Cliente cliente = ClienteDAO.readCliente(username);
+        if(cliente != null) {
+            if (cliente.getPassword().equals(password)) {
+                f = true;
+            }
         }
+
         return f;
     }
 }
