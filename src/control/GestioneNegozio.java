@@ -7,19 +7,11 @@ import database.ProdottoDAO;
 import entity.Articolo;
 import entity.Prodotto;
 import database.ClienteDAO;
-import database.ProdottoDAO;
 import database.PropostaDAO;
 import entity.*;
 import exception.OperationException;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class GestioneNegozio {
 
@@ -74,20 +66,15 @@ public class GestioneNegozio {
     }
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
-        Prodotto prodotto = null;
-        Cliente cliente = null;
-        ArrayList<Long> listaProposteCliente = new ArrayList<>();
+        Prodotto prodotto;
+        Cliente cliente;
+        ArrayList<Long> listaProposteCliente;
 
-        switch (tipo){
-            case SCULTURA:
-                 prodotto = inserisciScultura(bR);
-                 break;
-            case DIPINTO:
-                prodotto = inserisciDipinto(bR);
-                break;
-            default:
-                prodotto = inserisciProdotto(bR);
-        }
+        prodotto = switch (tipo) {
+            case SCULTURA -> inserisciScultura(bR);
+            case DIPINTO -> inserisciDipinto(bR);
+            default -> inserisciProdotto(bR);
+        };
 
         Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
         PropostaDAO.createProposta(proposta);
@@ -96,6 +83,7 @@ public class GestioneNegozio {
         cliente = ClienteDAO.readCliente(username);
         listaProposteCliente = cliente.getListaProposteCliente();
         listaProposteCliente.add(proposta.getId());
+        System.out.println("Proposta aggiunta: " + proposta);
     }
 
     public Scultura inserisciScultura(BClienteRegistrato bR){
@@ -109,7 +97,7 @@ public class GestioneNegozio {
         altezza = (float) lista.get(1);
 
         Scultura scultura = new Scultura(prodotto, peso, altezza);
-        ProdottoDAO.createProdotto(scultura);
+        ProdottoDAO.updateProdotto(scultura);
         return scultura;
     }
 
@@ -127,7 +115,7 @@ public class GestioneNegozio {
         altezzaTela = (float) lista.get(2);
 
         Dipinto dipinto = new Dipinto(prodotto,altezzaTela,larghezzaTela,tecnica);
-        ProdottoDAO.createProdotto(dipinto);
+        ProdottoDAO.updateProdotto(dipinto);
         return dipinto;
     }
 

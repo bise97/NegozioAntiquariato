@@ -9,7 +9,7 @@ public class Cliente {
     private String password;
     private String numTelefono;
     private CartaDiCredito cartaDiCredito;
-    private ArrayList<Long> listaProposteCliente;
+    private ArrayList<Long> listaProposteCliente = new ArrayList<>();
 
     public Cliente(String username, String password, String numTelefono, String numeroCarta, String nomeIntestatario, String cognomeIntestatario, String dataScadenza) {
         this.username = username;
@@ -18,13 +18,15 @@ public class Cliente {
         this.cartaDiCredito = new CartaDiCredito(numeroCarta, nomeIntestatario, cognomeIntestatario, dataScadenza, username);
     }
 
+
     @Override
     public String toString() {
-        String print = "Username: "+username+
-                "\nPassword: "+password+
-                "\nTelefono: "+numTelefono+
-                "\nCarta{\n"+cartaDiCredito.toString()+"}";
-        return print;
+        return "Cliente{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", numTelefono='" + numTelefono + '\'' +
+                ", cartaDiCredito=" + cartaDiCredito +
+                '}';
     }
 
     public CartaDiCredito getCartaDiCredito() {

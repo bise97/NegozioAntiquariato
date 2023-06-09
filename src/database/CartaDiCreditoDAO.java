@@ -3,10 +3,11 @@ package database;
 import entity.CartaDiCredito;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CartaDiCreditoDAO {
-    public static void createCartaDiCreditoDAO(CartaDiCredito carta){
+    static void createCartaDiCredito(CartaDiCredito carta){
 
         try{
             Connection conn = DBManager.getConnection();
@@ -30,5 +31,36 @@ public class CartaDiCreditoDAO {
         catch(SQLException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public static CartaDiCredito readCartaDiCredito(String numeroCarta){
+        CartaDiCredito carta = null;
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM CartaDiCredito WHERE numeroCarta = ?";
+
+            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
+                preparedStatement.setString(1,numeroCarta);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if(resultSet.next()){
+                    carta = deserializeCurrentRecord(resultSet);
+                }else {
+                    //TODO  alzare eccezione se il prodotto non è presente nel db
+                }
+            }
+            catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return carta;
+    }
+
+    private static CartaDiCredito deserializeCurrentRecord(ResultSet rs) throws SQLException {
+        String numeroCarta = rs.getString("numeroCarta");
+        String username = ClienteDAO.readUsernameCarta(numeroCarta);
+        return new CartaDiCredito(numeroCarta,rs.getString("nomeIntestatario"), rs.getString("cognomeIntestatario"),rs.getString("dataScadenza"),username);
     }
 }

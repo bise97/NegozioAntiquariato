@@ -73,7 +73,7 @@ public class BClienteRegistrato {
         BufferedReader bufferedRead = new BufferedReader(new InputStreamReader(System.in));
         try {
             System.out.println("\nInserisci la tecnica: ");
-            tecnica = bufferedRead.readLine();
+            tecnica = bufferedRead.readLine().toUpperCase();
             System.out.println("\nInserisci la larghezza: ");
             larghezzaTela = bufferedRead.readLine();
             System.out.println(("\nInserisci l'altezza: "));
@@ -146,21 +146,12 @@ public class BClienteRegistrato {
                 throw new RuntimeException(e);
             }
 
-            switch (option){
-                case "1":
-                    System.out.println("Funzionalita non ancora disponibile!");
-                    break;
-                case "2":
-                    System.out.println("Funzionalita non ancora disponibile!");
-                    break;
-                case "3":
-                    inserisciProposta();
-                    break;
-                case "4":
-                    f = false;
-                    break;
-                default:
-                    System.out.println("Opzione non disponibile!");
+            switch (option) {
+                case "1" -> System.out.println("Funzionalita non ancora disponibile!");
+                case "2" -> System.out.println("Funzionalita non ancora disponibile!");
+                case "3" -> inserisciProposta();
+                case "4" -> f = false;
+                default -> System.out.println("Opzione non disponibile!");
             }
         }
     }

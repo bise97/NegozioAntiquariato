@@ -124,7 +124,7 @@ public class ProdottoDAO {
     }
 
     private static void updateDipinto(Dipinto dipinto){
-        String query = "UPDATE Prodotto SET tecnicaDArte=?, larghezzaTela=?, altezzaTela=? WHERE codice=?;";
+        String query = "UPDATE Prodotto SET tecnicaDArte=?, larghezzaTela=?, altezzaTela=?, tipo=? WHERE codice=?;";
 
         try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
 
@@ -132,6 +132,7 @@ public class ProdottoDAO {
             ps.setFloat(2, dipinto.getLarghezzaTela());
             ps.setFloat(3, dipinto.getAltezzaTela());
             ps.setLong(4,dipinto.getCodice());
+            ps.setString(5,"DIPINTO");
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -142,13 +143,14 @@ public class ProdottoDAO {
     }
 
     private static void updateScultura(Scultura scultura){
-        String query = "UPDATE Prodotto SET pesoScultura=?, altezzaScultura=? WHERE codice=?";
+        String query = "UPDATE Prodotto SET pesoScultura=?, altezzaScultura=?, tipo=? WHERE codice=?";
 
         try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
 
             ps.setFloat(1, scultura.getPeso());
             ps.setFloat(2, scultura.getAltezza());
             ps.setLong(3, scultura.getCodice());
+            ps.setString(4, "SCULTURA");
             ps.executeUpdate();
 
         } catch (SQLException e) {

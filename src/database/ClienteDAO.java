@@ -1,5 +1,4 @@
 package database;
-
 import entity.Cliente;
 import java.sql.*;
 
@@ -9,6 +8,7 @@ public class ClienteDAO {
     private static Cliente deserializeCurrentRecord(ResultSet rs) throws SQLException {
         Cliente cliente = new Cliente(rs.getString("username"),rs.getString("password"),rs.getString("telefono"),
                 rs.getString("numeroCarta"), rs.getString("nomeIntestatario"),rs.getString("cognomeIntestatario"), rs.getString("dataScadenza"));
+        //read lista proposte
         return cliente;
     }
     public static Cliente readCliente(String username){
@@ -45,7 +45,7 @@ public class ClienteDAO {
     }
 
     public static void createCliente(Cliente cliente){
-        CartaDiCreditoDAO.createCartaDiCreditoDAO(cliente.getCartaDiCredito());
+        CartaDiCreditoDAO.createCartaDiCredito(cliente.getCartaDiCredito());
         try{
             Connection conn = DBManager.getConnection();
             String query = "INSERT INTO CLIENTE(USERNAME, PASSWORD, TELEFONO, NUMEROCARTA) VALUES (?,?,?,?)";
@@ -67,5 +67,30 @@ public class ClienteDAO {
         catch(SQLException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public static String readUsernameCarta(String numeroCarta){
+        String username = null;
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM Cliente WHERE numeroCarta = ?";
+
+            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
+                preparedStatement.setString(1,numeroCarta);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if(resultSet.next()){
+                    username = resultSet.getString("username");
+                }else {
+                    //TODO  alzare eccezione se il prodotto non è presente nel db
+                }
+            }
+            catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return username;
     }
 }

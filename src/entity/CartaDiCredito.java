@@ -27,11 +27,13 @@ public class CartaDiCredito {
 
     @Override
     public String toString() {
-        String print = "Numero: "+numeroCarta+
-                "\nNome Intestatario: "+nomeIntestatario+
-                "\nCognome Intestatario: "+cognomeIntestatario+
-                "\nData Scadenza: "+dataScadenza;
-        return print;
+        return "CartaDiCredito{" +
+                "numeroCarta='" + numeroCarta + '\'' +
+                ", nomeIntestatario='" + nomeIntestatario + '\'' +
+                ", cognomeIntestatario='" + cognomeIntestatario + '\'' +
+                ", dataScadenza=" + dataScadenza +
+                ", username='" + username + '\'' +
+                '}';
     }
 
     public String getNumeroCarta() {
