@@ -61,7 +61,7 @@ public class ProdottoDAO {
 
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,codice);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
                     prodotto = deserializeCurrentRecord(resultSet);
                 }else {
@@ -145,7 +145,7 @@ public class ProdottoDAO {
 
     private static Prodotto deserializeCurrentRecord(ResultSet rs) throws SQLException{
         ArrayList<Immagine> immagini = ImmagineDAO.readImmaginiProdotto(rs.getLong("codice"));
-        Prodotto prodotto = new Prodotto(immagini, rs.getString("nome"), rs.getString("descrizione"));
+        Prodotto prodotto = new Prodotto(rs.getLong("codice"), immagini, rs.getString("nome"), rs.getString("descrizione"));
         return prodotto;
     }
 }

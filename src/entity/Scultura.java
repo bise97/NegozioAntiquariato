@@ -15,7 +15,7 @@ public class Scultura extends Prodotto {
     }
 
     public  Scultura(Prodotto prodotto, float peso, float alezza){
-        super(prodotto.getImmagini(),prodotto.getNome(),prodotto.getDescrizione());
+        super(prodotto.getCodice(), prodotto.getImmagini(),prodotto.getNome(),prodotto.getDescrizione());
         this.peso = peso;
         this.altezza = alezza;
     }

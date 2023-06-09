@@ -29,7 +29,9 @@ public class Main {
         imgfiles.add(new File("resources/lampada4.jpg"));
         Scultura s = new Scultura("lampada","lampada nera con luce calda",imgfiles,10,30);
         ProdottoDAO.createProdotto(s);
-        System.out.println(s);
+        System.out.println("\n CODICE: " + s.getCodice());
+        System.out.println(ProdottoDAO.readProdotto(s.getCodice()));
+
 //        Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
 //        ClienteDAO.createCliente(cliente1);
         //System.out.println(cliente1);
