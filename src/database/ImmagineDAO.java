@@ -2,6 +2,7 @@ package database;
 
 import entity.Immagine;
 import javax.imageio.ImageIO;
+import java.io.OutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -33,7 +34,9 @@ public class ImmagineDAO {
             String query = "INSERT INTO Immagine("+BLOB_COLUMN+","+PRODOTTO_COLUMN+") VALUES (?,?)";
             try (PreparedStatement preparedStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 Blob blob = conn.createBlob();
-                ImageIO.write(img.getImage(), "jpg", blob.setBinaryStream(1));
+                OutputStream blobOutStream = blob.setBinaryStream(1);
+                ImageIO.write(img.getImage(), "jpg", blobOutStream);
+                blobOutStream.close();
                 preparedStatement.setBlob(1, blob);
                 preparedStatement.setLong(2, img.getCodiceProdotto());
 
@@ -46,12 +49,14 @@ public class ImmagineDAO {
                 blob.free();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                System.out.println("topo");
             } finally {
                 DBManager.closeConnection();
             }
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
+            System.out.println("gatto");
         }
     }
 
@@ -66,7 +71,8 @@ public class ImmagineDAO {
                 ResultSet resultSet = preparedStatement.executeQuery(query);
                 if(resultSet.next()){
                     img = deserializeRecordImmagine(resultSet);
-                }else {
+                }
+                else {
                     //TODO  alzare eccezione se l'immagine non è presente nel db
                 }
             }
@@ -92,7 +98,9 @@ public class ImmagineDAO {
                     PRODOTTO_COLUMN + " = ?, WHERE " + ID_COLUMN + " = ?";
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 Blob imageBlob = conn.createBlob();
-                ImageIO.write(img.getImage(),"jpg",imageBlob.setBinaryStream(1));
+                OutputStream blobOutStream = imageBlob.setBinaryStream(1);
+                ImageIO.write(img.getImage(), "jpg", blobOutStream);
+                blobOutStream.close();
                 preparedStatement.setBlob(1,imageBlob);
                 preparedStatement.setLong(2,img.getCodiceProdotto());
                 preparedStatement.setLong(3,img.getId());
@@ -135,7 +143,7 @@ public class ImmagineDAO {
     }
 
     public static ArrayList<Immagine> readImmaginiProdotto(long codice){
-        ArrayList<Immagine> immagini = new ArrayList<Immagine>();
+        ArrayList<Immagine> immagini = new ArrayList<>();
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Immagine WHERE ProdottoCodice=?";

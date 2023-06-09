@@ -1,21 +1,11 @@
-import boundary.BCliente;
-import boundary.BClienteRegistrato;
 import database.*;
 import entity.*;
-
-import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
-        boolean f = true;
-        String option;
         try{
             DBSetup.createTables();
         }catch(SQLException e){
@@ -35,6 +25,16 @@ public class Main {
         for(Prodotto prod : prodotti){
             System.out.println(prod);
         }
+//        try{
+//            Immagine img = new Immagine(imgfiles.get(0));
+//            img.setCodiceProdotto(10L);
+//            ImmagineDAO.createImmagine(img);
+//        }catch(IOException e){
+//            System.out.println(e.getMessage());
+//        }
+
+
+
 //        Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
 //        ClienteDAO.createCliente(cliente1);
         //System.out.println(cliente1);
