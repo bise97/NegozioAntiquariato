@@ -11,12 +11,13 @@ import java.util.ArrayList;
 public class ProdottoDAO {
 
     public static void createProdotto(Prodotto prodotto){
-        String query = "INSERT INTO Prodotto  (nome, descrizione, tipo) VALUES (?,?,?);";
+        String query = "INSERT INTO Prodotto (nome, descrizione, tipo) VALUES (?,?,?)";
 
         try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
 
             ps.setString(1, prodotto.getNome());
             ps.setString(2, prodotto.getDescrizione());
+
             if(prodotto instanceof Dipinto){
                 ps.setString(3, "DIPINTO");
             }else if(prodotto instanceof Scultura) {
@@ -28,9 +29,10 @@ public class ProdottoDAO {
             ps.executeUpdate();
             try (ResultSet resultSet = ps.getGeneratedKeys()) {
                 if (resultSet.next()) {
-                    Long codice = readLong(resultSet, "SCOPE_IDENTITY()");
-                    if (codice != null) {
-                        prodotto.setCodice(codice);
+                    long codice = resultSet.getLong("codice");
+                    System.out.println("\n--------IL CODICE E': "+codice);
+                    if (!resultSet.wasNull()) {
+                        prodotto.setCodice(codice + 1);
                         for(Immagine img : prodotto.getImmagini()){
                             ImmagineDAO.createImmagine(img);
                         }
@@ -43,8 +45,6 @@ public class ProdottoDAO {
             //throw new DAOException("Impossible to create a new shipment!", e);
             System.out.println("Impossibile creare il prodotto!");
         }
-
-
 
         if(prodotto instanceof Dipinto){
             updateDipinto((Dipinto) prodotto);
@@ -129,7 +129,7 @@ public class ProdottoDAO {
     }
 
     private static void updateScultura(Scultura scultura){
-        String query = "UPDATE Prodotto SET pesoScultura=?, altezzaScultura=? WHERE codice=?;";
+        String query = "UPDATE Prodotto SET pesoScultura=?, altezzaScultura=? WHERE codice=?";
 
         try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
 
@@ -148,12 +148,5 @@ public class ProdottoDAO {
         ArrayList<Immagine> immagini = ImmagineDAO.readImmaginiProdotto(rs.getLong("codice"));
         Prodotto prodotto = new Prodotto(immagini, rs.getString("nome"), rs.getString("descrizione"));
         return prodotto;
-    }
-    private static Long readLong(ResultSet resultSet, String columnLabel) throws SQLException {
-        long value = resultSet.getLong(columnLabel);
-        if (resultSet.wasNull()) {
-            return null;
-        }
-        return value;
     }
 }

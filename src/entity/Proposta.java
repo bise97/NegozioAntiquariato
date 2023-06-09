@@ -15,12 +15,16 @@ public class Proposta {
     }
 
     @Override
-    public String toString(){
-        String print = "ID: "+id +
-                "\nPrezzo: "+prezzo+
-                "\nStato: "+stato;
-        return print;
+    public String toString() {
+        return "Proposta{" +
+                "id=" + id +
+                ", prezzo=" + prezzo +
+                ", codice=" + codice +
+                ", username='" + username + '\'' +
+                ", stato=" + stato +
+                '}';
     }
+
     public long getId() {
         return id;
     }

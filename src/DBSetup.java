@@ -30,7 +30,7 @@ public class DBSetup {
     }
     private static void createTableProposta(Connection connection)throws SQLException{
         String query = "CREATE TABLE Proposta(" +
-                "id LONG PRIMARY KEY," +
+                "id LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "prezzo FLOAT NOT NULL," +
                 "stato VARCHAR(255) NOT NULL," +
                 "username VARCHAR(255) NOT NULL," +
@@ -45,7 +45,7 @@ public class DBSetup {
 
     private static void createTableProdotto(Connection connection)throws SQLException{
         String query = "CREATE TABLE Prodotto(" +
-                "codice LONG PRIMARY KEY," +
+                "codice LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "nome VARCHAR(255) NOT NULL," +
                 "descrizione VARCHAR(255)," +
                 "tipo VARCHAR(255)," +
@@ -61,7 +61,7 @@ public class DBSetup {
     }
     private static void createTableImmagine(Connection connection)throws SQLException{
         String query = "CREATE TABLE Immagine(" +
-                "id LONG PRIMARY KEY," +
+                "id LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "blob BLOB NOT NULL," +
                 "ProdottoCodice LONG NOT NULL," +
                 "FOREIGN KEY (ProdottoCodice) REFERENCES Prodotto(codice)" +
@@ -72,7 +72,7 @@ public class DBSetup {
     }
     private static void createTableArticolo(Connection connection)throws SQLException{
         String query = "CREATE TABLE Articolo(" +
-                "ProdottoCodice LONG PRIMARY KEY," +
+                "ProdottoCodice LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "prezzo FLOAT NOT NULL," +
                 "quantitaMagazzino INT NOT NULL," +
                 "FOREIGN KEY (ProdottoCodice) REFERENCES Prodotto(codice)" +
