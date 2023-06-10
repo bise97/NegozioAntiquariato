@@ -2,10 +2,10 @@ package boundary;
 
 import control.GestioneNegozio;
 import entity.*;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Scanner;
+
+import static boundary.utilsIO.TerminalIO.askUser;
 
 public class BGestore {
 
@@ -55,11 +55,6 @@ public class BGestore {
                         }
                 }while (flagRepeatInput);
                 gestioneNegozio.modificaArticolo(codiceArticolo,this);
-        }
-        private String askUser(String print){
-                Scanner scanner = new Scanner(System.in);
-                System.out.println(print);
-                return scanner.nextLine();
         }
 
         public void run(){
@@ -113,18 +108,6 @@ public class BGestore {
                 System.out.println("Coming soon");
         }
 
-//        public ArrayList<Object> aggiornaCampi(ArrayList<Field> fields, ArrayList<Object> oldValue){
-//                ArrayList<Object> newValue = new ArrayList<>();
-//                for(int i = 0; i < fields.size(); i++){
-//                        Field field = fields.get(i);
-//                        String print = "Vuoi modificare "+field.getName()+"?" +
-//                                "\nValore attuale: "+oldValue.get(i).toString()+
-//                                "\nNuovo valore (Premere Invio se non si vuole modificare il campo):";
-//                        String input = askUser(print);
-//                        newValue.add(field.getType().cast(input));
-//                }
-//                return newValue;
-//        }
         public void aggiornaCampiArticolo(Articolo articolo){
                 String print = "Vuoi modificare il prezzo dell'articolo?" +
                         "\nValore attuale: "+articolo.getPrezzo()+
@@ -157,7 +140,7 @@ public class BGestore {
                 if(prodotto instanceof Scultura) aggiornaCampiScultura((Scultura) prodotto);
         }
 
-        public void aggiornaImmaginiProdotto(Prodotto prodotto){ //TODO rimettere privata dopo il testing
+        private void aggiornaImmaginiProdotto(Prodotto prodotto){
                 boolean flagRepeatInput;
                 String input;
                 do{

@@ -157,7 +157,7 @@ public class GestioneNegozio {
         bGestore.visualizzaArticoli(articoli,prodotti);
     }
     public void visualizzaProposteCliente(String username){
-        ArrayList<Long> listaProposteCliente = ClienteDAO.readProposteCliente(username);
+        ArrayList<Long> listaProposteCliente = PropostaDAO.readIdProposteOfCliente(username);
 
         for (Long id : listaProposteCliente) {
             Proposta p = PropostaDAO.readProposta(id);

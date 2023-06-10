@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static boundary.utilsIO.TerminalIO.askUser;
+
 public class BClienteRegistrato {
 
     private String username;
@@ -162,11 +164,6 @@ public class BClienteRegistrato {
             }
         }while(scelta < 0 || scelta >= tipiProdotto.length);
         return tipiProdotto[scelta];
-    }
-    private String askUser(String print){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(print);
-        return scanner.nextLine();
     }
 
     public void visualizzaProposteCliente(){

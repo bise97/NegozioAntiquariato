@@ -3,9 +3,9 @@ import boundary.BGestore;
 import database.ClienteDAO;
 import database.DBSetup;
 import entity.Cliente;
-
 import java.sql.SQLException;
-import java.util.Scanner;
+
+import static boundary.utilsIO.TerminalIO.askUser;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,9 +13,10 @@ public class Main {
         String option;
 
         try{
-            DBSetup.createTables();
+            DBSetup.initialize();
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            return;
         }
 
         Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
@@ -47,11 +48,5 @@ public class Main {
             }
         }
 
-    }
-
-    private static String askUser(String print){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(print);
-        return scanner.nextLine();
     }
 }

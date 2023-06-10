@@ -7,9 +7,10 @@ import java.sql.SQLException;
 public class MainTest {
     public static void main(String[] args){
         try{
-            DBSetup.createTables();
+            DBSetup.initialize();
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            return;
         }
 
 
