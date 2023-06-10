@@ -136,6 +136,26 @@ public class ImmagineDAO {
     //TODO da testare deleteImmaginiOfProdotto
     public static void deleteImmaginiOfProdotto(long codiceProdotto){
 
+        deleteImmaginiOfProdottoFromPersistanceContext(codiceProdotto);
+
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "DELETE FROM Immagine WHERE " + PRODOTTO_COLUMN + " = ?";
+            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
+                preparedStatement.setLong(1,codiceProdotto);
+                preparedStatement.executeUpdate();
+            }
+            catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void deleteImmaginiOfProdottoFromPersistanceContext(long codiceProdotto){
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT "+ID_COLUMN+" FROM Immagine WHERE " + PRODOTTO_COLUMN + " = ?";
@@ -143,9 +163,7 @@ public class ImmagineDAO {
                 preparedStatement.setLong(1,codiceProdotto);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
-
-                    ImmagineDAO.deleteImmagine(resultSet.getLong(ID_COLUMN));
-//                    PersistanceContext.getInstance().removeFromPersistanceContext(Immagine.class,);
+                    PersistanceContext.getInstance().removeFromPersistanceContext(Immagine.class,resultSet.getLong(ID_COLUMN));
                 }
             }
             catch (SQLException e){
