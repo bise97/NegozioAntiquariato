@@ -1,9 +1,9 @@
 import boundary.BCliente;
 import boundary.BGestore;
 import database.ClienteDAO;
+import database.DBSetup;
 import entity.Cliente;
-import boundary.utilsIO.ImmagineIO;
-import database.ProdottoDAO;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -28,7 +28,7 @@ public class Main {
 
                             Entra nel sistema come:\s
                             1. Gestore Negozio
-                            2. Cliente Registrato
+                            2. Cliente
                             3. Esci\s""");
 
             switch (option) {

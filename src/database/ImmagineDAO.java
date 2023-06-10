@@ -44,7 +44,10 @@ public class ImmagineDAO {
                 ResultSet rs = preparedStatement.getGeneratedKeys();
                 if (rs.next()) {
                     long id = rs.getLong(ID_COLUMN);
-                    if(!rs.wasNull())   img.setId(id);
+                    if(!rs.wasNull()){
+                        img.setId(id);
+                        PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
+                    }
                 }
                 blob.free();
             } catch (Exception e) {
@@ -57,7 +60,9 @@ public class ImmagineDAO {
     }
 
     public static Immagine readImmagine(long idImmagine){
-        Immagine img = null;
+        Immagine img = PersistanceContext.getInstance().getFromPersistanceContext(Immagine.class,idImmagine);
+        if(img != null) return img;
+
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Immagine WHERE "+ID_COLUMN+" = ?";
@@ -67,6 +72,7 @@ public class ImmagineDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
                     img = deserializeRecordImmagine(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
                 }
                 else {
                     //TODO  alzare eccezione se l'immagine non è presente nel db
@@ -116,6 +122,7 @@ public class ImmagineDAO {
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,idImmagine);
                 preparedStatement.executeUpdate();
+                PersistanceContext.getInstance().removeFromPersistanceContext(Immagine.class,idImmagine);
             }
             catch (SQLException e){
                 System.out.println(e.getMessage());
@@ -126,13 +133,20 @@ public class ImmagineDAO {
         }
     }
 
+    //TODO da testare deleteImmaginiOfProdotto
     public static void deleteImmaginiOfProdotto(long codiceProdotto){
+
         try{
             Connection conn = DBManager.getConnection();
-            String query = "DELETE FROM Immagine WHERE " + PRODOTTO_COLUMN + " = ?";
+            String query = "SELECT "+ID_COLUMN+" FROM Immagine WHERE " + PRODOTTO_COLUMN + " = ?";
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,codiceProdotto);
-                preparedStatement.executeUpdate();
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while(resultSet.next()){
+
+                    ImmagineDAO.deleteImmagine(resultSet.getLong(ID_COLUMN));
+//                    PersistanceContext.getInstance().removeFromPersistanceContext(Immagine.class,);
+                }
             }
             catch (SQLException e){
                 System.out.println(e.getMessage());
@@ -154,7 +168,9 @@ public class ImmagineDAO {
                 preparedStatement.setLong(1,codice);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while(resultSet.next()){
-                    immagini.add(deserializeRecordImmagine(resultSet));
+                    Immagine img = deserializeRecordImmagine(resultSet);
+                    immagini.add(img);
+                    PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
                 }
                     //TODO  alzare eccezione se l'immagine non è presente nel db
             }
@@ -180,6 +196,7 @@ public class ImmagineDAO {
                 while (resultSet.next()) {
                     Immagine img = deserializeRecordImmagine(resultSet);
                     immagini.add(img);
+                    PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -190,4 +207,5 @@ public class ImmagineDAO {
         }
         return immagini;
     }
+    //TODO se modifico un oggetto attraverso la reference restituita da readArticolo si modifica anche l'istanza corripettiva in PErsistanceContext?
 }
