@@ -1,6 +1,8 @@
 package database;
 
 import entity.Articolo;
+import exception.DAOConnectionException;
+import exception.DAOException;
 import exception.OperationException;
 
 import java.sql.*;
@@ -23,7 +25,7 @@ public class ArticoloDAO {
         }
         return articolo;
     }
-    public static void createArticolo(Articolo articolo){
+    public static void createArticolo(Articolo articolo) throws DAOException, DAOConnectionException {
         try{
             Connection conn = DBManager.getConnection();
             String query = "INSERT INTO Articolo VALUES(?,?,?)";
@@ -33,15 +35,15 @@ public class ArticoloDAO {
                 preparedStatement.setInt(3, articolo.getQuantitaMagazzino());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore scrittura Articolo");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
     }
 
-    public static Articolo readArticolo(long codiceArticolo){
+    public static Articolo readArticolo(long codiceArticolo) throws DAOException, DAOConnectionException{
         Articolo articolo = null;
         try{
             Connection conn = DBManager.getConnection();
@@ -51,22 +53,19 @@ public class ArticoloDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     articolo = deserializeRecordArticolo(resultSet);
-                } else {
-                    //TODO alzare eccezione se l'articolo non è presente nel db
                 }
-
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura Articolo");
             }
 
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
         return articolo;
     }
 
-    public static void updateArticolo(Articolo articolo){
+    public static void updateArticolo(Articolo articolo) throws DAOConnectionException, DAOException{
         try{
             Connection conn = DBManager.getConnection();
             String query = "UPDATE Articolo SET " +
@@ -79,16 +78,16 @@ public class ArticoloDAO {
                 preparedStatement.setLong(3, articolo.getCodiceProdotto());
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore update articolo");
             }
 
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione database");
         }
     }
 
-    public static void deleteArticolo(long codiceArticolo){
+    public static void deleteArticolo(long codiceArticolo) throws DAOException,DAOConnectionException{
         try{
             Connection conn = DBManager.getConnection();
             String query = "DELETE FROM Articolo WHERE " + CODICE_COLUMN + " = ?";
@@ -97,15 +96,15 @@ public class ArticoloDAO {
                 preparedStatement.setLong(1, codiceArticolo);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore cancellazione articolo");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione database");
         }
     }
 
-    public static ArrayList<Articolo> readAll(){
+    public static ArrayList<Articolo> readAll() throws DAOException,DAOConnectionException{
         ArrayList<Articolo> articoli = null;
         try{
             Connection conn = DBManager.getConnection();
@@ -118,11 +117,11 @@ public class ArticoloDAO {
                     articoli.add(a);
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura di tutti gli articoli");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione database");
         }
         return articoli;
     }

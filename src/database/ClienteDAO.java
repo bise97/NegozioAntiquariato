@@ -1,6 +1,9 @@
 package database;
 import entity.CartaDiCredito;
 import entity.Cliente;
+import exception.DAOConnectionException;
+import exception.DAOException;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -51,7 +54,12 @@ public class ClienteDAO {
     }
 
     public static void createCliente(Cliente cliente){
-        CartaDiCreditoDAO.createCartaDiCredito(cliente.getCartaDiCredito());
+        try {
+            CartaDiCreditoDAO.createCartaDiCredito(cliente.getCartaDiCredito());
+        } catch (DAOException | DAOConnectionException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
         try{
             Connection conn = DBManager.getConnection();
             String query = "INSERT INTO CLIENTE(USERNAME, PASSWORD, TELEFONO, NUMEROCARTA) VALUES (?,?,?,?)";

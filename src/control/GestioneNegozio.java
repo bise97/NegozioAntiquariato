@@ -9,6 +9,8 @@ import entity.Prodotto;
 import database.ClienteDAO;
 import database.PropostaDAO;
 import entity.*;
+import exception.DAOConnectionException;
+import exception.DAOException;
 import exception.OperationException;
 import java.util.ArrayList;
 import java.io.File;
@@ -27,11 +29,13 @@ public class GestioneNegozio {
         }
         return gestioneNegozio;
     }
-    private Articolo ricercaArticolo(long codiceArticolo) throws OperationException{
-        Articolo a = ArticoloDAO.readArticolo(codiceArticolo);
+    private Articolo ricercaArticolo(long codiceArticolo) throws OperationException, DAOException, DAOConnectionException {
+        Articolo a = null;
+        a = ArticoloDAO.readArticolo(codiceArticolo);
         if(a == null){
             throw new OperationException("Articolo non trovato.");
         }
+
         return a;
     }
 
@@ -40,7 +44,7 @@ public class GestioneNegozio {
         try{
             articolo = ricercaArticolo(codiceArticolo);
         }
-        catch(OperationException e){
+        catch(Exception e){
             System.out.println(e.getMessage());
             return;
         }
@@ -49,8 +53,12 @@ public class GestioneNegozio {
         Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
         bGestore.aggiornaCampiProdotto(prodotto);
 
-        ProdottoDAO.updateProdotto(prodotto);
-        ArticoloDAO.updateArticolo(articolo);
+        try {
+            ProdottoDAO.updateProdotto(prodotto);
+            ArticoloDAO.updateArticolo(articolo);
+        } catch (DAOConnectionException | DAOException e) {
+            System.out.println(e.getMessage());;
+        }
     }
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
@@ -149,12 +157,16 @@ public class GestioneNegozio {
     }
 
     public void visualizzaArticoli(BGestore bGestore){
-        ArrayList<Articolo> articoli = ArticoloDAO.readAll();
-        ArrayList<Prodotto> prodotti = new ArrayList<>();
-        for(Articolo articolo : articoli){
-            prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
+        try {
+            ArrayList<Articolo> articoli = ArticoloDAO.readAll();
+            ArrayList<Prodotto> prodotti = new ArrayList<>();
+            for (Articolo articolo : articoli) {
+                prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
+            }
+            bGestore.visualizzaArticoli(articoli, prodotti);
+        }catch (DAOException | DAOConnectionException e){
+            System.out.println(e.getMessage());
         }
-        bGestore.visualizzaArticoli(articoli,prodotti);
     }
     public void visualizzaProposteCliente(String username){
         ArrayList<Long> listaProposteCliente = ClienteDAO.readProposteCliente(username);

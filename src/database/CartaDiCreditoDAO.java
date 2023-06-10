@@ -1,13 +1,16 @@
 package database;
 
 import entity.CartaDiCredito;
+import exception.DAOConnectionException;
+import exception.DAOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CartaDiCreditoDAO {
-    static void createCartaDiCredito(CartaDiCredito carta){
+    static void createCartaDiCredito(CartaDiCredito carta) throws DAOException, DAOConnectionException {
 
         try{
             Connection conn = DBManager.getConnection();
@@ -23,17 +26,17 @@ public class CartaDiCreditoDAO {
                 preparedStatement.executeUpdate();
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore scrittura carta di credito");
             } finally {
                 DBManager.closeConnection();
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
     }
 
-    public static CartaDiCredito readCartaDiCredito(String numeroCarta){
+    public static CartaDiCredito readCartaDiCredito(String numeroCarta) {
         CartaDiCredito carta = null;
         try{
             Connection conn = DBManager.getConnection();
@@ -42,18 +45,16 @@ public class CartaDiCreditoDAO {
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setString(1,numeroCarta);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                if(resultSet.next()){
+                if(resultSet.next()) {
                     carta = deserializeCurrentRecord(resultSet);
-                }else {
-                    //TODO  alzare eccezione se il prodotto non è presente nel db
                 }
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                //throw new DAOException("Errore lettura carta di credito");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            //throw new DAOConnectionException("Errore connesione carta di credito");
         }
         return carta;
     }
