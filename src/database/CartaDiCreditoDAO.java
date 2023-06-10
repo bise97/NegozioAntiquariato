@@ -37,11 +37,9 @@ public class CartaDiCreditoDAO {
         }
     }
 
-    public static CartaDiCredito readCartaDiCredito(String numeroCarta){
+    public static CartaDiCredito readCartaDiCredito(String numeroCarta) throws DAOException,DAOConnectionException{
         CartaDiCredito carta = PersistanceContext.getInstance().getFromPersistanceContext(CartaDiCredito.class,numeroCarta);
         if(carta != null) return carta;
-    public static CartaDiCredito readCartaDiCredito(String numeroCarta) {
-        CartaDiCredito carta = null;
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM CartaDiCredito WHERE numeroCarta = ?";
@@ -50,23 +48,25 @@ public class CartaDiCreditoDAO {
                 preparedStatement.setString(1,numeroCarta);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()) {
-                    carta = deserializeCurrentRecord(resultSet);
-                    PersistanceContext.getInstance().putInPersistanceContext(carta,carta.getNumeroCarta());
-                }else {
-                    //TODO  alzare eccezione se il prodotto non è presente nel db
+                    try {
+                        carta = deserializeCurrentRecord(resultSet);
+                        PersistanceContext.getInstance().putInPersistanceContext(carta,carta.getNumeroCarta());
+                    }catch (DAOConnectionException | DAOException e){
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
             catch (SQLException e){
-                //throw new DAOException("Errore lettura carta di credito");
+                throw new DAOException("Errore lettura carta di credito");
             }
         }
         catch(SQLException e){
-            //throw new DAOConnectionException("Errore connesione carta di credito");
+            throw new DAOConnectionException("Errore connesione carta di credito");
         }
         return carta;
     }
 
-    private static CartaDiCredito deserializeCurrentRecord(ResultSet rs) throws SQLException {
+    private static CartaDiCredito deserializeCurrentRecord(ResultSet rs) throws SQLException, DAOException, DAOConnectionException {
         String numeroCarta = rs.getString("numeroCarta");
         String username = ClienteDAO.readUsernameCarta(numeroCarta);
         return new CartaDiCredito(numeroCarta,rs.getString("nomeIntestatario"), rs.getString("cognomeIntestatario"),rs.getString("dataScadenza"),username);

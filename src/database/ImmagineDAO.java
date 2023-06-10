@@ -1,6 +1,9 @@
 package database;
 
 import entity.Immagine;
+import exception.DAOConnectionException;
+import exception.DAOException;
+
 import javax.imageio.ImageIO;
 import java.io.OutputStream;
 import java.sql.*;
@@ -28,7 +31,7 @@ public class ImmagineDAO {
         return img;
     }
 
-    public static void createImmagine(Immagine img){
+    public static void createImmagine(Immagine img) throws DAOException, DAOConnectionException {
         try{
             Connection conn = DBManager.getConnection();
             String query = "INSERT INTO Immagine("+BLOB_COLUMN+","+PRODOTTO_COLUMN+") VALUES (?,?)";
@@ -51,15 +54,16 @@ public class ImmagineDAO {
                 }
                 blob.free();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                //TODO gestire eccezione image.write() ?
+                throw new DAOException("Errore creazione Immagine");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connessione Database");
         }
     }
 
-    public static Immagine readImmagine(long idImmagine){
+    public static Immagine readImmagine(long idImmagine) throws DAOException,DAOConnectionException{
         Immagine img = PersistanceContext.getInstance().getFromPersistanceContext(Immagine.class,idImmagine);
         if(img != null) return img;
 
@@ -74,21 +78,18 @@ public class ImmagineDAO {
                     img = deserializeRecordImmagine(resultSet);
                     PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
                 }
-                else {
-                    //TODO  alzare eccezione se l'immagine non è presente nel db
-                }
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura immagine " + idImmagine);
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
         return img;
     }
 
-    public static void updateImmagine(Immagine img){
+    public static void updateImmagine(Immagine img) throws DAOException,DAOConnectionException{
         try{
             Connection conn = DBManager.getConnection();
             String query = "UPDATE Immagine SET " +
@@ -107,15 +108,16 @@ public class ImmagineDAO {
                 imageBlob.free();
             }
             catch (Exception e){
-                System.out.println(e.getMessage());
+                //TODO gestire eccezione image.write() ?
+                throw new DAOException("Errore update Immagine");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
     }
 
-    public static void deleteImmagine(long idImmagine){
+    public static void deleteImmagine(long idImmagine) throws DAOException,DAOConnectionException{
         try{
             Connection conn = DBManager.getConnection();
             String query = "DELETE FROM Immagine WHERE " + ID_COLUMN + " = ?";
@@ -125,16 +127,16 @@ public class ImmagineDAO {
                 PersistanceContext.getInstance().removeFromPersistanceContext(Immagine.class,idImmagine);
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore cancellazione Immagine " + idImmagine);
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
     }
 
     //TODO da testare deleteImmaginiOfProdotto
-    public static void deleteImmaginiOfProdotto(long codiceProdotto){
+    public static void deleteImmaginiOfProdotto(long codiceProdotto) throws DAOException,DAOConnectionException{
 
         deleteImmaginiOfProdottoFromPersistanceContext(codiceProdotto);
 
@@ -146,16 +148,16 @@ public class ImmagineDAO {
                 preparedStatement.executeUpdate();
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore cancellazione delle Immagini del Prodotto con Codice " + codiceProdotto);
             }
 
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
     }
 
-    public static void deleteImmaginiOfProdottoFromPersistanceContext(long codiceProdotto){
+    public static void deleteImmaginiOfProdottoFromPersistanceContext(long codiceProdotto) throws DAOException,DAOConnectionException{
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT "+ID_COLUMN+" FROM Immagine WHERE " + PRODOTTO_COLUMN + " = ?";
@@ -167,16 +169,17 @@ public class ImmagineDAO {
                 }
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                //TODO va bene la stampa?
+                throw new DAOException("Errore lettura immagini di prodotto con codice" + codiceProdotto);
             }
 
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connessione Database");
         }
     }
 
-    public static ArrayList<Immagine> readImmaginiProdotto(long codice){
+    public static ArrayList<Immagine> readImmaginiProdotto(long codice) throws DAOException,DAOConnectionException{
         ArrayList<Immagine> immagini = new ArrayList<>();
         try{
             Connection conn = DBManager.getConnection();
@@ -193,17 +196,17 @@ public class ImmagineDAO {
                     //TODO  alzare eccezione se l'immagine non è presente nel db
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura delle immagini del prodotto con codice " + codice);
             }
 
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connessione al Database");
         }
         return immagini;
     }
 
-    public static ArrayList<Immagine> readAll(){
+    public static ArrayList<Immagine> readAll() throws DAOException,DAOConnectionException{
         ArrayList<Immagine> immagini = null;
         try{
             Connection conn = DBManager.getConnection();
@@ -217,11 +220,11 @@ public class ImmagineDAO {
                     PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura di tutte le immagini");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
         return immagini;
     }

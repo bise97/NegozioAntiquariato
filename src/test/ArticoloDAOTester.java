@@ -23,9 +23,13 @@ public class ArticoloDAOTester {
         Prodotto prodotto = new Prodotto("lampada","lampada nera con luce calda",imgfiles);
         Scultura scultura = new Scultura(prodotto,10.5f,3.6f);
         Dipinto dipinto = new Dipinto(prodotto,5.89f,3.12f, TecnicaDArte.ACQUERELLO);
-        ProdottoDAO.createProdotto(prodotto);
-        ProdottoDAO.createProdotto(scultura);
-        ProdottoDAO.createProdotto(dipinto);
+        try {
+            ProdottoDAO.createProdotto(prodotto);
+            ProdottoDAO.createProdotto(scultura);
+            ProdottoDAO.createProdotto(dipinto);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         try{
             testCases.add(new Articolo(10.5f,10, prodotto.getCodice()));

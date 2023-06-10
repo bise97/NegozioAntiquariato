@@ -1,46 +1,55 @@
 package database;
 
 import entity.*;
+import exception.DAOConnectionException;
+import exception.DAOException;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class ProdottoDAO {
 
-    public static void createProdotto(Prodotto prodotto){
+    public static void createProdotto(Prodotto prodotto) throws DAOException,DAOConnectionException{
         String query = "INSERT INTO Prodotto (nome, descrizione, tipo) VALUES (?,?,?)";
 
-        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query,Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            Connection conn = DBManager.getConnection();
+            try{
+                PreparedStatement ps = conn.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, prodotto.getNome());
+                ps.setString(2, prodotto.getDescrizione());
 
-            ps.setString(1, prodotto.getNome());
-            ps.setString(2, prodotto.getDescrizione());
-
-            if(prodotto instanceof Dipinto){
-                ps.setString(3, "DIPINTO");
-            }else if(prodotto instanceof Scultura) {
-                    ps.setString(3, "SCULTURA");
-                }else {
-                    ps.setNull(3, Types.VARCHAR);
-            }
-
-            ps.executeUpdate();
-            try (ResultSet resultSet = ps.getGeneratedKeys()) {
-                if (resultSet.next()) {
-                    long codice = resultSet.getLong("codice");
-                    if (!resultSet.wasNull()) {
-                        prodotto.setCodice(codice);
-                        PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
-                        //DBManager.putInPersistanceContext(shipment, shipmentId);
-                    }
+                if(prodotto instanceof Dipinto){
+                    ps.setString(3, "DIPINTO");
+                }else if(prodotto instanceof Scultura) {
+                        ps.setString(3, "SCULTURA");
+                    }else {
+                        ps.setNull(3, Types.VARCHAR);
                 }
+
+                ps.executeUpdate();
+                ResultSet resultSet = ps.getGeneratedKeys();
+                    if (resultSet.next()) {
+                        long codice = resultSet.getLong("codice");
+                        if (!resultSet.wasNull()) {
+                            prodotto.setCodice(codice);
+                            PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
+                        }
+                    }
+            } catch (SQLException e){
+                throw new DAOException("Errore creazione prodotto");
             }
         } catch (SQLException e) {
-            //throw new DAOException("Impossible to create a new shipment!", e);
-            System.out.println("Impossibile creare il prodotto!");
+            throw new DAOConnectionException("Errore connesione Database");
         }
 
         for(Immagine img : prodotto.getImmagini()){
-            ImmagineDAO.createImmagine(img);
+            try {
+                ImmagineDAO.createImmagine(img);
+                //TODO da vedere
+            } catch (DAOException | DAOConnectionException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         if(prodotto instanceof Dipinto){
@@ -51,7 +60,7 @@ public class ProdottoDAO {
     }
 
 
-    public static Prodotto readProdotto(long codice){
+    public static Prodotto readProdotto(long codice) throws DAOException,DAOConnectionException{
         Prodotto prodotto = PersistanceContext.getInstance().getFromPersistanceContext(Prodotto.class,codice);
         if(prodotto != null) return prodotto;
 
@@ -62,25 +71,27 @@ public class ProdottoDAO {
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 preparedStatement.setLong(1,codice);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                if(resultSet.next()){
-                    prodotto = deserializeCurrentRecord(resultSet);
-                    PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
-                    //TODO testare cosa succede se inserisco un prodotto, un dipinto o una scultura in PersistanceObject
-                }else {
-                    //TODO  alzare eccezione se il prodotto non è presente nel db
+                if(resultSet.next()) {
+                    try {
+                        prodotto = deserializeCurrentRecord(resultSet);
+                        PersistanceContext.getInstance().putInPersistanceContext(prodotto, prodotto.getCodice());
+                    } catch (DAOException | DAOConnectionException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
+                    //TODO testare cosa succede se inserisco un prodotto, un dipinto o una scultura in PersistanceObject
             }
             catch (SQLException e){
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura prodotto");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione database");
         }
         return prodotto;
     }
 
-    public static ArrayList<Prodotto> readAll(){
+    public static ArrayList<Prodotto> readAll() throws  DAOException,DAOConnectionException{
         ArrayList<Prodotto> prodotti = new ArrayList<>();
         try {
             Connection conn = DBManager.getConnection();
@@ -89,39 +100,56 @@ public class ProdottoDAO {
             try (Statement statement = conn.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(query);
                 while(resultSet.next()) {
-                    Prodotto prodotto = deserializeCurrentRecord(resultSet);
-                    prodotti.add(prodotto);
-                    PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
+                    try {
+                        Prodotto prodotto = deserializeCurrentRecord(resultSet);
+                        prodotti.add(prodotto);
+                        PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
+                    } catch (DAOException | DAOConnectionException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                throw new DAOException("Errore lettura di tutti i prodotti");
             }
         }
         catch(SQLException e){
-            System.out.println(e.getMessage());
+            throw new DAOConnectionException("Errore connesione Database");
         }
         return prodotti;
     }
 
-    public static void updateProdotto(Prodotto prodotto){
+    public static void updateProdotto(Prodotto prodotto) throws DAOException,DAOConnectionException{
 
         String query = "UPDATE Prodotto SET nome=?, descrizione=? WHERE codice=?;";
 
-        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
+        try {
+            Connection conn = DBManager.getConnection();
 
-            ps.setString(1, prodotto.getNome());
-            ps.setString(2, prodotto.getDescrizione());
-            ps.setLong(3, prodotto.getCodice());
-            ps.executeUpdate();
-
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, prodotto.getNome());
+                ps.setString(2, prodotto.getDescrizione());
+                ps.setLong(3, prodotto.getCodice());
+                ps.executeUpdate();
+            }catch (SQLException e){
+                throw new DAOException("Errore update prodotto");
+            }
         } catch (SQLException e) {
-            //TODO throw new DAOException("Impossible to create a new shipment!", e);
-            System.out.println("Impossibile aggiornare il prodotto!");
+            throw new DAOConnectionException("Errore connesione Database");
         }
 
-        ImmagineDAO.deleteImmaginiOfProdotto(prodotto.getCodice());
+        try {
+            ImmagineDAO.deleteImmaginiOfProdotto(prodotto.getCodice());
+        } catch (DAOException | DAOConnectionException e) {
+            System.out.println(e.getMessage());
+        }
+
         for(Immagine img : prodotto.getImmagini()){
-            ImmagineDAO.createImmagine(img);
+            try {
+                ImmagineDAO.createImmagine(img);
+            } catch (DAOException | DAOConnectionException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         if(prodotto instanceof Dipinto){
@@ -131,44 +159,51 @@ public class ProdottoDAO {
         }
     }
 
-    private static void updateDipinto(Dipinto dipinto){
+    private static void updateDipinto(Dipinto dipinto) throws DAOException, DAOConnectionException{
         String query = "UPDATE Prodotto SET tecnicaDArte=?, larghezzaTela=?, altezzaTela=?, tipo=? WHERE codice=?;";
 
-        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
+        try {
+            Connection conn = DBManager.getConnection();
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setString(1, dipinto.getTecnica().toString());
+                ps.setFloat(2, dipinto.getLarghezzaTela());
+                ps.setFloat(3, dipinto.getAltezzaTela());
+                ps.setString(4, "DIPINTO");
+                ps.setLong(5, dipinto.getCodice());
 
-            ps.setString(1, dipinto.getTecnica().toString());
-            ps.setFloat(2, dipinto.getLarghezzaTela());
-            ps.setFloat(3, dipinto.getAltezzaTela());
-            ps.setString(4,"DIPINTO");
-            ps.setLong(5,dipinto.getCodice());
+                ps.executeUpdate();
 
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            //throw new DAOException("Impossible to create a new shipment!", e);
-            System.out.println("Impossibile aggiornare il dipinto!");
+            } catch (SQLException e) {
+                throw new DAOException("Errore update dipinto");
+            }
+        }catch (SQLException e){
+            throw new DAOConnectionException("Errore connesione database");
         }
 
     }
 
-    private static void updateScultura(Scultura scultura){
+    private static void updateScultura(Scultura scultura) throws DAOException, DAOConnectionException{
         String query = "UPDATE Prodotto SET pesoScultura=?, altezzaScultura=?, tipo=? WHERE codice=?";
+        try {
+            Connection conn = DBManager.getConnection();
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+                ps.setFloat(1, scultura.getPeso());
+                ps.setFloat(2, scultura.getAltezza());
+                ps.setString(3, "SCULTURA");
+                ps.setLong(4, scultura.getCodice());
+                ps.executeUpdate();
 
-        try (PreparedStatement ps = DBManager.getConnection().prepareStatement(query)) {
-
-            ps.setFloat(1, scultura.getPeso());
-            ps.setFloat(2, scultura.getAltezza());
-            ps.setString(3, "SCULTURA");
-            ps.setLong(4, scultura.getCodice());
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            //throw new DAOException("Impossible to create a new shipment!", e);
-            System.out.println("Impossibile aggiornare la scultura!");
+            } catch (SQLException e) {
+                throw new DAOException("Errore aggiornare scultura");
+            }
+        }catch (SQLException e){
+            throw new DAOConnectionException("Errore connesione Database");
         }
     }
 
-    private static Prodotto deserializeCurrentRecord(ResultSet rs) throws SQLException{
+    private static Prodotto deserializeCurrentRecord(ResultSet rs) throws SQLException, DAOException, DAOConnectionException {
         ArrayList<Immagine> immagini = ImmagineDAO.readImmaginiProdotto(rs.getLong("codice"));
         Prodotto prodotto = new Prodotto(rs.getLong("codice"), immagini, rs.getString("nome"), rs.getString("descrizione"));
         String tipo = rs.getString("tipo");

@@ -44,12 +44,9 @@ public class ArticoloDAO {
         }
     }
 
-    public static Articolo readArticolo(long codiceArticolo){
+    public static Articolo readArticolo(long codiceArticolo) throws DAOException,DAOConnectionException{
         Articolo articolo = PersistanceContext.getInstance().getFromPersistanceContext(Articolo.class,codiceArticolo);
         if(articolo != null) return articolo;
-
-    public static Articolo readArticolo(long codiceArticolo) throws DAOException, DAOConnectionException{
-        Articolo articolo = null;
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Articolo WHERE ProdottoCodice = ?";
@@ -59,9 +56,8 @@ public class ArticoloDAO {
                 if (resultSet.next()) {
                     articolo = deserializeRecordArticolo(resultSet);
                     PersistanceContext.getInstance().putInPersistanceContext(articolo,articolo.getCodiceProdotto());
-                } else {
-                    //TODO alzare eccezione se l'articolo non è presente nel db
                 }
+
             } catch (SQLException e) {
                 throw new DAOException("Errore lettura Articolo");
             }
