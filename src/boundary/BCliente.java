@@ -1,10 +1,6 @@
 package boundary;
 
 import control.GestioneNegozio;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class BCliente {
@@ -14,15 +10,23 @@ public class BCliente {
         String user;
         String pass;
         GestioneNegozio gN = GestioneNegozio.getInstance();
+        boolean repeatLogin = false;
 
         do {
-            System.out.println("LOGIN:");
+            System.out.println("LOGIN");
             user = askUser("username: ");
             pass = askUser("password: ");
+            if(!gN.login(user, pass)){
+                repeatLogin = true;
+                System.out.println("Username e password errati. Riprovare.");
+            }
+            else{
+                repeatLogin = false;
+            }
         }
-        while(!gN.login(user, pass));
+        while(repeatLogin);
 
-            System.out.println("LOGIN: OK ");
+            System.out.println("LOGIN OK ");
             BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(user);
             bClienteRegistrato.run();
     }

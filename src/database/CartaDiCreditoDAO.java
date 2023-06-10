@@ -24,6 +24,7 @@ public class CartaDiCreditoDAO {
 
                 //TODO createCartaDiCredito()
                 preparedStatement.executeUpdate();
+                PersistanceContext.getInstance().putInPersistanceContext(carta,carta.getNumeroCarta());
 
             } catch (Exception e) {
                 throw new DAOException("Errore scrittura carta di credito");
@@ -36,6 +37,9 @@ public class CartaDiCreditoDAO {
         }
     }
 
+    public static CartaDiCredito readCartaDiCredito(String numeroCarta){
+        CartaDiCredito carta = PersistanceContext.getInstance().getFromPersistanceContext(CartaDiCredito.class,numeroCarta);
+        if(carta != null) return carta;
     public static CartaDiCredito readCartaDiCredito(String numeroCarta) {
         CartaDiCredito carta = null;
         try{
@@ -47,6 +51,9 @@ public class CartaDiCreditoDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()) {
                     carta = deserializeCurrentRecord(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(carta,carta.getNumeroCarta());
+                }else {
+                    //TODO  alzare eccezione se il prodotto non è presente nel db
                 }
             }
             catch (SQLException e){

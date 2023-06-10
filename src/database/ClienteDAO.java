@@ -5,7 +5,8 @@ import exception.DAOConnectionException;
 import exception.DAOException;
 
 import java.sql.*;
-import java.util.ArrayList;
+
+import static database.PropostaDAO.readIdProposteOfCliente;
 
 public class ClienteDAO {
 
@@ -16,7 +17,7 @@ public class ClienteDAO {
         CartaDiCredito carta = CartaDiCreditoDAO.readCartaDiCredito(numeroCarta);
 
         Cliente cliente = new Cliente(username ,rs.getString("password"),rs.getString("telefono"), numeroCarta, carta.getNomeIntestatario(), carta.getCognomeIntestatario(), carta.getDataScadenza().toString());
-        cliente.setListaProposteCliente(readProposteCliente(username));
+        cliente.setListaProposteCliente(readIdProposteOfCliente(username));
 
         return cliente;
     }
@@ -38,6 +39,7 @@ public class ClienteDAO {
 
                 if(result.next()) {
                     cliente = deserializeCurrentRecord(result);
+                    PersistanceContext.getInstance().putInPersistanceContext(cliente,cliente.getUsername());
                 }
             }catch(SQLException e) {
                 System.out.println("Errore lettura ClienteRegistrato"); //Gestire eccezione
@@ -108,26 +110,4 @@ public class ClienteDAO {
         return username;
     }
 
-    public static ArrayList<Long> readProposteCliente(String username){
-        ArrayList<Long> listaProposteCliente = new ArrayList<>();
-        try{
-            Connection conn = DBManager.getConnection();
-            String query = "SELECT * FROM Proposta WHERE username = ?";
-
-            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
-                preparedStatement.setString(1,username);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while(resultSet.next()){
-                    listaProposteCliente.add(resultSet.getLong("id"));
-                }
-            }
-            catch (SQLException e){
-                System.out.println(e.getMessage());
-            }
-        }
-        catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        return listaProposteCliente;
-    }
 }

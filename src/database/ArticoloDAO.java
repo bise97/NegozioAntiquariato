@@ -34,6 +34,7 @@ public class ArticoloDAO {
                 preparedStatement.setFloat(2, articolo.getPrezzo());
                 preparedStatement.setInt(3, articolo.getQuantitaMagazzino());
                 preparedStatement.executeUpdate();
+                PersistanceContext.getInstance().putInPersistanceContext(articolo,articolo.getCodiceProdotto());
             } catch (SQLException e) {
                 throw new DAOException("Errore scrittura Articolo");
             }
@@ -42,6 +43,10 @@ public class ArticoloDAO {
             throw new DAOConnectionException("Errore connesione Database");
         }
     }
+
+    public static Articolo readArticolo(long codiceArticolo){
+        Articolo articolo = PersistanceContext.getInstance().getFromPersistanceContext(Articolo.class,codiceArticolo);
+        if(articolo != null) return articolo;
 
     public static Articolo readArticolo(long codiceArticolo) throws DAOException, DAOConnectionException{
         Articolo articolo = null;
@@ -53,6 +58,9 @@ public class ArticoloDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     articolo = deserializeRecordArticolo(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(articolo,articolo.getCodiceProdotto());
+                } else {
+                    //TODO alzare eccezione se l'articolo non è presente nel db
                 }
             } catch (SQLException e) {
                 throw new DAOException("Errore lettura Articolo");
@@ -95,6 +103,7 @@ public class ArticoloDAO {
             try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
                 preparedStatement.setLong(1, codiceArticolo);
                 preparedStatement.executeUpdate();
+                PersistanceContext.getInstance().removeFromPersistanceContext(Articolo.class,codiceArticolo);
             } catch (SQLException e) {
                 throw new DAOException("Errore cancellazione articolo");
             }
@@ -114,6 +123,7 @@ public class ArticoloDAO {
                 articoli = new ArrayList<>();
                 while (resultSet.next()) {
                     Articolo a = deserializeRecordArticolo(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(Articolo.class,a.getCodiceProdotto());
                     articoli.add(a);
                 }
             } catch (SQLException e) {

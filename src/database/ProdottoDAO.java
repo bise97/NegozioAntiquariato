@@ -29,6 +29,7 @@ public class ProdottoDAO {
                     long codice = resultSet.getLong("codice");
                     if (!resultSet.wasNull()) {
                         prodotto.setCodice(codice);
+                        PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
                         //DBManager.putInPersistanceContext(shipment, shipmentId);
                     }
                 }
@@ -51,7 +52,8 @@ public class ProdottoDAO {
 
 
     public static Prodotto readProdotto(long codice){
-        Prodotto prodotto = null;
+        Prodotto prodotto = PersistanceContext.getInstance().getFromPersistanceContext(Prodotto.class,codice);
+        if(prodotto != null) return prodotto;
 
         try{
             Connection conn = DBManager.getConnection();
@@ -62,6 +64,8 @@ public class ProdottoDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
                     prodotto = deserializeCurrentRecord(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
+                    //TODO testare cosa succede se inserisco un prodotto, un dipinto o una scultura in PersistanceObject
                 }else {
                     //TODO  alzare eccezione se il prodotto non è presente nel db
                 }
@@ -85,7 +89,9 @@ public class ProdottoDAO {
             try (Statement statement = conn.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(query);
                 while(resultSet.next()) {
-                    prodotti.add(deserializeCurrentRecord(resultSet));
+                    Prodotto prodotto = deserializeCurrentRecord(resultSet);
+                    prodotti.add(prodotto);
+                    PersistanceContext.getInstance().putInPersistanceContext(prodotto,prodotto.getCodice());
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());

@@ -18,7 +18,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:18)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -114,7 +114,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:18)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -210,7 +210,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:18)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -306,7 +306,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:18)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -402,7 +402,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:18)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -1950,7 +1950,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:20)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -3239,7 +3239,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:14)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -3354,7 +3354,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:13)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
@@ -3384,8 +3384,8 @@ CREATE TABLE Proposta(id LONG NOT NULL AUTO_INCREMENT PRIMARY KEY,prezzo FLOAT N
 	at org.h2.command.Command.executeUpdate(Command.java:252)
 	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:252)
 	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
-	at DBSetup.createTableProposta(DBSetup.java:42)
-	at DBSetup.createTables(DBSetup.java:99)
+	at database.DBSetup.createTableProposta(database.DBSetup.java:42)
+	at database.DBSetup.createTables(database.DBSetup.java:99)
 	at Main.main(Main.java:20)
 2023-06-09 21:23:26 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROPOSTA" not found; SQL statement:
@@ -3497,7 +3497,7 @@ org.h2.message.DbException: General error: "org.h2.mvstore.MVStoreException: The
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:683)
 	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
 	at database.DBManager.getConnection(DBManager.java:15)
-	at DBSetup.createTables(DBSetup.java:92)
+	at database.DBSetup.createTables(database.DBSetup.java:92)
 	at Main.main(Main.java:20)
 Caused by: org.h2.jdbc.JdbcSQLNonTransientException: General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/Documents/InyelliJ/NegozioAntiquariato/NegozioAntiquariato.mv.db [2.1.214/7]" [50000-214]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:554)
