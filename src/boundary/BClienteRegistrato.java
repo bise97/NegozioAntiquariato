@@ -109,13 +109,18 @@ public class BClienteRegistrato {
                     "\n1. Visualizza Articoli in Negozio " +
                     "\n2. Visualizza Carrello " +
                     "\n3. Inserisci una nuova Proposta di vendita " +
-                    "\n4. Esci ");
+                    "\n4. Visualizza le tue Proposte di vendita" +
+                    "\n5. Esci ");
 
             switch (option) {
                 case "1" -> System.out.println("Funzionalita non ancora disponibile!");
                 case "2" -> System.out.println("Funzionalita non ancora disponibile!");
                 case "3" -> inserisciProposta();
-                case "4" -> f = false;
+                case "4" -> visualizzaProposteCliente();
+                case "5" -> {
+                    f = false;
+                    username = null;
+                }
                 default -> System.out.println("Opzione non disponibile!");
             }
         }
@@ -162,5 +167,10 @@ public class BClienteRegistrato {
         Scanner scanner = new Scanner(System.in);
         System.out.println(print);
         return scanner.nextLine();
+    }
+
+    public void visualizzaProposteCliente(){
+        GestioneNegozio gN = GestioneNegozio.getInstance();
+        gN.visualizzaProposteCliente(username);
     }
 }

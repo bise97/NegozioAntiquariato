@@ -2,8 +2,6 @@ import boundary.BCliente;
 import boundary.BGestore;
 import database.ClienteDAO;
 import entity.Cliente;
-import boundary.utilsIO.ImmagineIO;
-import database.ProdottoDAO;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -20,6 +18,8 @@ public class Main {
 
         Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
         ClienteDAO.createCliente(cliente1);
+        Cliente cliente2 = new Cliente("gae","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
+        ClienteDAO.createCliente(cliente2);
 
         while(f){
 

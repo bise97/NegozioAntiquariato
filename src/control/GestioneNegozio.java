@@ -75,35 +75,46 @@ public class GestioneNegozio {
     }
 
     public Scultura inserisciScultura(BClienteRegistrato bR){
+        String nome;
+        String descrizione;
+        ArrayList<File> pathImmagini;
         float peso;
         float altezza;
 
-        Prodotto prodotto = inserisciProdotto(bR);
-        ArrayList<Object> lista = bR.inserisciScultura();
+        ArrayList<Object> listaP= bR.inserisciProdotto();
+        ArrayList<Object> listaS = bR.inserisciScultura();
 
-        peso = (float) lista.get(0);
-        altezza = (float) lista.get(1);
+        nome = (String) listaP.get(0);
+        descrizione = (String) listaP.get(1);
+        pathImmagini = (ArrayList<File>) listaP.get(2);
+        peso = (float) listaS.get(0);
+        altezza = (float) listaS.get(1);
 
-        Scultura scultura = new Scultura(prodotto, peso, altezza);
-        ProdottoDAO.updateProdotto(scultura);
+        Scultura scultura = new Scultura(nome, descrizione,pathImmagini, peso, altezza);
+        ProdottoDAO.createProdotto(scultura);
         return scultura;
     }
 
     public Dipinto inserisciDipinto(BClienteRegistrato bR){
-
+        String nome;
+        String descrizione;
+        ArrayList<File> pathImmagini;
         TecnicaDArte tecnica;
         float larghezzaTela;
         float altezzaTela;
 
-        Prodotto prodotto = inserisciProdotto(bR);
-        ArrayList<Object> lista = bR.inserisciDipinto();
+        ArrayList<Object> listaP= bR.inserisciProdotto();
+        ArrayList<Object> listaD = bR.inserisciDipinto();
 
-        tecnica = (TecnicaDArte) lista.get(0);
-        larghezzaTela = (float) lista.get(1);
-        altezzaTela = (float) lista.get(2);
+        nome = (String) listaP.get(0);
+        descrizione = (String) listaP.get(1);
+        pathImmagini = (ArrayList<File>) listaP.get(2);
+        tecnica = (TecnicaDArte) listaD.get(0);
+        larghezzaTela = (float) listaD.get(1);
+        altezzaTela = (float) listaD.get(2);
 
-        Dipinto dipinto = new Dipinto(prodotto,altezzaTela,larghezzaTela,tecnica);
-        ProdottoDAO.updateProdotto(dipinto);
+        Dipinto dipinto = new Dipinto(nome, descrizione,pathImmagini,altezzaTela,larghezzaTela,tecnica);
+        ProdottoDAO.createProdotto(dipinto);
         return dipinto;
     }
 
@@ -144,5 +155,14 @@ public class GestioneNegozio {
             prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
         }
         bGestore.visualizzaArticoli(articoli,prodotti);
+    }
+    public void visualizzaProposteCliente(String username){
+        ArrayList<Long> listaProposteCliente = ClienteDAO.readProposteCliente(username);
+
+        for (Long id : listaProposteCliente) {
+            Proposta p = PropostaDAO.readProposta(id);
+            System.out.println(p + " --> " + ProdottoDAO.readProdotto(p.getCodice()).toString());
+        }
+
     }
 }
