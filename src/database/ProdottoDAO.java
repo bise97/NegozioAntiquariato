@@ -52,6 +52,7 @@ public class ProdottoDAO {
 
     public static Prodotto readProdotto(long codice){
         Prodotto prodotto = null;
+
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Prodotto WHERE codice = ?";
