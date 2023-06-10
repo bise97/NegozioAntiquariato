@@ -1,5 +1,6 @@
 package database;
 
+import javax.swing.text.html.parser.Entity;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ public class DBManager {
     private final static String DB_USERNAME = "";
     private final static String DB_PASSWORD = "";
     private static Connection connection = null;
+
 
     public static Connection getConnection()  throws SQLException {
         if(connection == null || connection.isClosed()){

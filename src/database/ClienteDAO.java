@@ -18,7 +18,8 @@ public class ClienteDAO {
         return cliente;
     }
     public static Cliente readCliente(String username){
-        Cliente cliente = null;
+        Cliente cliente = PersistanceContext.getInstance().getFromPersistanceContext(Cliente.class,username);
+        if(cliente != null) return cliente;
         try {
             Connection conn = DBManager.getConnection();
 
@@ -63,10 +64,10 @@ public class ClienteDAO {
                 //TODO createCartaDiCredito()
                 preparedStatement.executeUpdate();
 
+                PersistanceContext.getInstance().putInPersistanceContext(cliente,cliente.getUsername());
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-            } finally {
-                DBManager.closeConnection();
             }
         }
         catch(SQLException e){

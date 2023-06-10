@@ -1,8 +1,6 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
 public class Cliente {
     private String username;
@@ -17,7 +15,6 @@ public class Cliente {
         this.numTelefono = numTelefono;
         this.cartaDiCredito = new CartaDiCredito(numeroCarta, nomeIntestatario, cognomeIntestatario, dataScadenza, username);
     }
-
 
     @Override
     public String toString() {
