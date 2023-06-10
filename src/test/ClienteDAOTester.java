@@ -15,13 +15,16 @@ public class ClienteDAOTester {
         System.out.println(cliente1);
         System.out.println(cliente2);
 
-        ClienteDAO.createCliente(cliente1);
-        ClienteDAO.createCliente(cliente2);
+        try {
+            ClienteDAO.createCliente(cliente1);
+            ClienteDAO.createCliente(cliente2);
 
-        System.out.println("Test read singola:");
-        System.out.println(ClienteDAO.readCliente(cliente1.getUsername()));
-        System.out.println(ClienteDAO.readCliente(cliente2.getUsername()));
-
+            System.out.println("Test read singola:");
+            System.out.println(ClienteDAO.readCliente(cliente1.getUsername()));
+            System.out.println(ClienteDAO.readCliente(cliente2.getUsername()));
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
     }
 }

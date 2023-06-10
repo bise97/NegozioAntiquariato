@@ -19,11 +19,6 @@ public class Main {
             return;
         }
 
-        Cliente cliente1 = new Cliente("bise","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
-        ClienteDAO.createCliente(cliente1);
-        Cliente cliente2 = new Cliente("gae","ciao","3333333333","366365354","Biagio","Salzillo","2025-01-12");
-        ClienteDAO.createCliente(cliente2);
-
         while(f){
 
             option = askUser(

@@ -9,6 +9,8 @@ import entity.Prodotto;
 import database.ClienteDAO;
 import database.PropostaDAO;
 import entity.*;
+import exception.DAOConnectionException;
+import exception.DAOException;
 import exception.OperationException;
 import java.util.ArrayList;
 import java.io.File;
@@ -27,11 +29,13 @@ public class GestioneNegozio {
         }
         return gestioneNegozio;
     }
-    private Articolo ricercaArticolo(long codiceArticolo) throws OperationException{
-        Articolo a = ArticoloDAO.readArticolo(codiceArticolo);
+    private Articolo ricercaArticolo(long codiceArticolo) throws OperationException, DAOException, DAOConnectionException {
+        Articolo a = null;
+        a = ArticoloDAO.readArticolo(codiceArticolo);
         if(a == null){
             throw new OperationException("Articolo non trovato.");
         }
+
         return a;
     }
 
@@ -40,17 +44,21 @@ public class GestioneNegozio {
         try{
             articolo = ricercaArticolo(codiceArticolo);
         }
-        catch(OperationException e){
+        catch(Exception e){
             System.out.println(e.getMessage());
             return;
         }
 
-        bGestore.aggiornaCampiArticolo(articolo);
-        Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
-        bGestore.aggiornaCampiProdotto(prodotto);
+        try{
+            bGestore.aggiornaCampiArticolo(articolo);
+            Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
+            bGestore.aggiornaCampiProdotto(prodotto);
 
-        ProdottoDAO.updateProdotto(prodotto);
-        ArticoloDAO.updateArticolo(articolo);
+            ProdottoDAO.updateProdotto(prodotto);
+            ArticoloDAO.updateArticolo(articolo);
+        } catch (DAOConnectionException | DAOException e) {
+            System.out.println(e.getMessage());;
+        }
     }
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
@@ -58,23 +66,28 @@ public class GestioneNegozio {
         Cliente cliente;
         ArrayList<Long> listaProposteCliente;
 
-        prodotto = switch (tipo) {
-            case SCULTURA -> inserisciScultura(bR);
-            case DIPINTO -> inserisciDipinto(bR);
-            default -> inserisciProdotto(bR);
-        };
+        try {
+            prodotto = switch (tipo) {
+                case SCULTURA -> inserisciScultura(bR);
+                case DIPINTO -> inserisciDipinto(bR);
+                default -> inserisciProdotto(bR);
+            };
 
-        Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
-        PropostaDAO.createProposta(proposta);
-        //TODO aggiungere controllo cache
+            Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
+            PropostaDAO.createProposta(proposta);
 
-        cliente = ClienteDAO.readCliente(username);
-        listaProposteCliente = cliente.getListaProposteCliente();
-        listaProposteCliente.add(proposta.getId());
-        System.out.println("Proposta aggiunta: " + proposta);
+            cliente = ClienteDAO.readCliente(username);
+            listaProposteCliente = cliente.getListaProposteCliente();
+            listaProposteCliente.add(proposta.getId());
+            System.out.println("Proposta aggiunta: " + proposta);
+            //TODO aggiungere controllo cache
+        }catch (DAOException | DAOConnectionException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
-    public Scultura inserisciScultura(BClienteRegistrato bR){
+    public Scultura inserisciScultura(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
         String nome;
         String descrizione;
         ArrayList<File> pathImmagini;
@@ -95,7 +108,7 @@ public class GestioneNegozio {
         return scultura;
     }
 
-    public Dipinto inserisciDipinto(BClienteRegistrato bR){
+    public Dipinto inserisciDipinto(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
         String nome;
         String descrizione;
         ArrayList<File> pathImmagini;
@@ -118,7 +131,7 @@ public class GestioneNegozio {
         return dipinto;
     }
 
-    public Prodotto inserisciProdotto(BClienteRegistrato bR){
+    public Prodotto inserisciProdotto(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
         String nome;
         String descrizione;
         ArrayList<File> pathImmagini;
@@ -138,30 +151,46 @@ public class GestioneNegozio {
 
         boolean f = false;
 
-        Cliente cliente = ClienteDAO.readCliente(username);
-        if(cliente != null) {
-            if (cliente.getPassword().equals(password)) {
-                f = true;
+        Cliente cliente = null;
+        try {
+            cliente = ClienteDAO.readCliente(username);
+            if(cliente != null) {
+                if (cliente.getPassword().equals(password)) {
+                    f = true;
+                }
             }
+        } catch (DAOException | DAOConnectionException e) {
+            System.out.println(e.getMessage());
         }
-
         return f;
     }
 
     public void visualizzaArticoli(BGestore bGestore){
-        ArrayList<Articolo> articoli = ArticoloDAO.readAll();
-        ArrayList<Prodotto> prodotti = new ArrayList<>();
-        for(Articolo articolo : articoli){
-            prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
+        try {
+            ArrayList<Articolo> articoli = ArticoloDAO.readAll();
+            ArrayList<Prodotto> prodotti = new ArrayList<>();
+            for (Articolo articolo : articoli) {
+                prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
+            }
+            bGestore.visualizzaArticoli(articoli, prodotti);
+        }catch (DAOException | DAOConnectionException e){
+            System.out.println(e.getMessage());
         }
-        bGestore.visualizzaArticoli(articoli,prodotti);
     }
     public void visualizzaProposteCliente(String username){
-        ArrayList<Long> listaProposteCliente = PropostaDAO.readIdProposteOfCliente(username);
+        try {
+            ArrayList<Long> listaProposteCliente = PropostaDAO.readIdProposteOfCliente(username);
 
-        for (Long id : listaProposteCliente) {
-            Proposta p = PropostaDAO.readProposta(id);
-            System.out.println(p + " --> " + ProdottoDAO.readProdotto(p.getCodice()).toString());
+            for (Long id : listaProposteCliente) {
+                try {
+                    Proposta p = PropostaDAO.readProposta(id);
+                    System.out.println(p + " --> " + ProdottoDAO.readProdotto(p.getCodice()).toString());
+                } catch (DAOException | DAOConnectionException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }catch (DAOException | DAOConnectionException e){
+            System.out.println(e.getMessage());
         }
 
     }

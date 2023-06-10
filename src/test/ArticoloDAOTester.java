@@ -3,6 +3,8 @@ package test;
 import database.ArticoloDAO;
 import database.ProdottoDAO;
 import entity.*;
+import exception.DAOConnectionException;
+import exception.DAOException;
 import exception.OperationException;
 
 import java.io.File;
@@ -21,9 +23,13 @@ public class ArticoloDAOTester {
         Prodotto prodotto = new Prodotto("lampada","lampada nera con luce calda",imgfiles);
         Scultura scultura = new Scultura(prodotto,10.5f,3.6f);
         Dipinto dipinto = new Dipinto(prodotto,5.89f,3.12f, TecnicaDArte.ACQUERELLO);
-        ProdottoDAO.createProdotto(prodotto);
-        ProdottoDAO.createProdotto(scultura);
-        ProdottoDAO.createProdotto(dipinto);
+        try {
+            ProdottoDAO.createProdotto(prodotto);
+            ProdottoDAO.createProdotto(scultura);
+            ProdottoDAO.createProdotto(dipinto);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
         try{
             testCases.add(new Articolo(10.5f,10, prodotto.getCodice()));
@@ -37,42 +43,64 @@ public class ArticoloDAOTester {
     }
 
     public void testCreate(ArrayList<Articolo> testCases){
+        try {
         System.out.println("----Test create----");
-        for(Articolo articolo : testCases){
-            ArticoloDAO.createArticolo(articolo);
+            for(Articolo articolo : testCases){
+
+                ArticoloDAO.createArticolo(articolo);
+            }
+        }catch (DAOException | DAOConnectionException e) {
+                System.out.println(e.getMessage());
         }
     }
 
     private void testReadAll(){
-        System.out.println("----Test readAll----");
-        ArrayList<Articolo> articoli = ArticoloDAO.readAll();
-        for(Articolo articolo : articoli){
-            System.out.println(articolo);
+        try {
+            System.out.println("----Test readAll----");
+            ArrayList<Articolo> articoli = ArticoloDAO.readAll();
+            for (Articolo articolo : articoli) {
+                System.out.println(articolo);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 
     private void testRead(ArrayList<Articolo> testCases){
-        System.out.println("----Test read----");
-        for(Articolo testCase : testCases){
-            Articolo a = ArticoloDAO.readArticolo(testCase.getCodiceProdotto());
-            System.out.println(a);
+        try{
+            System.out.println("----Test read----");
+            for(Articolo testCase : testCases){
+                Articolo a = ArticoloDAO.readArticolo(testCase.getCodiceProdotto());
+                System.out.println(a);
+            }
+        }catch (DAOException | DAOConnectionException e){
+            System.out.println(e.getMessage());
         }
+
     }
 
     private void testUpdate(ArrayList<Articolo> testCases){
-        System.out.println("----Test update----");
-        Random random = new Random();
-        for(Articolo testCase : testCases){
-            testCase.setPrezzo(random.nextFloat(0,20));
-            testCase.setQuantitaMagazzino(random.nextInt(0,20));
-            ArticoloDAO.updateArticolo(testCase);
+        try {
+            System.out.println("----Test update----");
+            Random random = new Random();
+            for (Articolo testCase : testCases) {
+                testCase.setPrezzo(random.nextFloat(0, 20));
+                testCase.setQuantitaMagazzino(random.nextInt(0, 20));
+                ArticoloDAO.updateArticolo(testCase);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
 
     private void testDelete(ArrayList<Articolo> testCases){
-        System.out.println("----Test delete----");
-        for(Articolo testCase : testCases){
-            ArticoloDAO.deleteArticolo(testCase.getCodiceProdotto());
+        try {
+            System.out.println("----Test delete----");
+            for (Articolo testCase : testCases) {
+                ArticoloDAO.deleteArticolo(testCase.getCodiceProdotto());
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
     }
     public void runTest(){
