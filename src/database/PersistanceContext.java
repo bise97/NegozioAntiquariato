@@ -8,7 +8,7 @@ public class PersistanceContext {
 
     private static PersistanceContext persistanceContext = null;
 
-    static class PrimaryKey{
+    private static final class PrimaryKey{
         private final Class clasz;
         private final int id;
 
@@ -23,6 +23,14 @@ public class PersistanceContext {
         public PrimaryKey(Class clasz, int persistanceId){
             this.clasz = clasz;
             this.id = persistanceId;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 71 * hash + Objects.hashCode(this.clasz);
+            hash = 71 * hash + Objects.hashCode(this.id);
+            return hash;
         }
 
         @Override
@@ -52,15 +60,20 @@ public class PersistanceContext {
     }
 
     public <T> T getFromPersistanceContext(Class<T> clasz, Object identifier){
-        System.out.println("get from persistance context");
         int persistanceId = calculatePersistanceId(identifier);
-        Object objFound = persistentHashMap.get(new PrimaryKey(clasz, persistanceId));
-        return clasz.cast(objFound);
+        PrimaryKey pk = new PrimaryKey( clasz, persistanceId);
+        return clasz.cast(persistentHashMap.get(pk));
     }
 
     public <T> void putInPersistanceContext(T obj, Object identifier) {
-        System.out.println("put in persistance context");
         int persistanceId = calculatePersistanceId(identifier);
-        persistentHashMap.put(new PrimaryKey(obj.getClass(),persistanceId),obj);
+        PrimaryKey pk = new PrimaryKey(obj.getClass(),persistanceId);
+        persistentHashMap.put(pk,obj);
+    }
+
+    public <T> void removeFromPersistanceContext(Class<T> clasz, Object identifier){
+        int persistanceId = calculatePersistanceId(identifier);
+        PrimaryKey pk = new PrimaryKey(clasz,persistanceId);
+        persistentHashMap.remove(pk);
     }
 }

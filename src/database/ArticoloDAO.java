@@ -32,6 +32,7 @@ public class ArticoloDAO {
                 preparedStatement.setFloat(2, articolo.getPrezzo());
                 preparedStatement.setInt(3, articolo.getQuantitaMagazzino());
                 preparedStatement.executeUpdate();
+                PersistanceContext.getInstance().putInPersistanceContext(articolo,articolo.getCodiceProdotto());
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
@@ -42,7 +43,9 @@ public class ArticoloDAO {
     }
 
     public static Articolo readArticolo(long codiceArticolo){
-        Articolo articolo = null;
+        Articolo articolo = PersistanceContext.getInstance().getFromPersistanceContext(Articolo.class,codiceArticolo);
+        if(articolo != null) return articolo;
+
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Articolo WHERE ProdottoCodice = ?";
@@ -51,6 +54,7 @@ public class ArticoloDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     articolo = deserializeRecordArticolo(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(articolo,articolo.getCodiceProdotto());
                 } else {
                     //TODO alzare eccezione se l'articolo non è presente nel db
                 }
@@ -96,6 +100,7 @@ public class ArticoloDAO {
             try (PreparedStatement preparedStatement = conn.prepareStatement(query)) {
                 preparedStatement.setLong(1, codiceArticolo);
                 preparedStatement.executeUpdate();
+                PersistanceContext.getInstance().removeFromPersistanceContext(Articolo.class,codiceArticolo);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
@@ -115,6 +120,7 @@ public class ArticoloDAO {
                 articoli = new ArrayList<>();
                 while (resultSet.next()) {
                     Articolo a = deserializeRecordArticolo(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(Articolo.class,a.getCodiceProdotto());
                     articoli.add(a);
                 }
             } catch (SQLException e) {

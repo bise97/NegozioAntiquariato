@@ -22,7 +22,7 @@ public class PropostaDAO {
                     long id = resultSet.getLong("id");
                     if (!resultSet.wasNull()) {
                         proposta.setId(id);
-                        //DBManager.putInPersistanceContext(shipment, shipmentId);
+                        PersistanceContext.getInstance().putInPersistanceContext(proposta,proposta.getId());
                     }
                 }
             }
@@ -33,7 +33,9 @@ public class PropostaDAO {
     }
 
     public static Proposta readProposta(long id){
-        Proposta proposta = null;
+        Proposta proposta = PersistanceContext.getInstance().getFromPersistanceContext(Proposta.class,id);
+        if(proposta != null) return proposta;
+
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Proposta WHERE id = ?";
@@ -43,6 +45,7 @@ public class PropostaDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if(resultSet.next()){
                     proposta = deserializeCurrentRecord(resultSet);
+                    PersistanceContext.getInstance().putInPersistanceContext(proposta,proposta.getId());
                 }else {
                     //TODO  alzare eccezione se il prodotto non è presente nel db
                 }
@@ -66,7 +69,9 @@ public class PropostaDAO {
             try (Statement statement = conn.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(query);
                 while(resultSet.next()) {
-                    proposte.add(deserializeCurrentRecord(resultSet));
+                    Proposta proposta = deserializeCurrentRecord(resultSet);
+                    proposte.add(proposta);
+                    PersistanceContext.getInstance().putInPersistanceContext(proposta,proposta.getId());
                 }
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -76,6 +81,29 @@ public class PropostaDAO {
             System.out.println(e.getMessage());
         }
         return proposte;
+    }
+
+    public static ArrayList<Long> readIdProposteOfCliente(String username){
+        ArrayList<Long> listaProposteCliente = new ArrayList<>();
+        try{
+            Connection conn = DBManager.getConnection();
+            String query = "SELECT * FROM Proposta WHERE username = ?";
+
+            try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
+                preparedStatement.setString(1,username);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while(resultSet.next()){
+                    listaProposteCliente.add(resultSet.getLong("id"));
+                }
+            }
+            catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return listaProposteCliente;
     }
 
     private static Proposta deserializeCurrentRecord(ResultSet rs) throws SQLException {
