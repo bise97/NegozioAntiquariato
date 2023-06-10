@@ -16,7 +16,7 @@ public class Main {
         ArticoloDAOTester articoloDAOTester = new ArticoloDAOTester();
         articoloDAOTester.testCreate(ArticoloDAOTester.createTestCase());
 
-        ImmagineIO.display(ProdottoDAO.readProdotto(3).getImmagini().get(0));
+
         BGestore bGestore = new BGestore();
         bGestore.run();
 

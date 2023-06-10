@@ -1,5 +1,7 @@
 package database;
 
+import java.util.Objects;
+
 public interface Persistent {
-    public long getPersistanceId();
+    public int getPersistanceId();
 }

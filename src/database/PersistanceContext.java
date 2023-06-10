@@ -1,22 +1,26 @@
 package database;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class PersistanceContext {
-    private final HashMap<PrimaryKey, Persistent> persistentHashMap;
+    private final HashMap<PrimaryKey, Object> persistentHashMap;
 
     private static PersistanceContext persistanceContext = null;
 
-    class PrimaryKey{
-        private Class<? extends Persistent> clasz;
-        private long id;
+    static class PrimaryKey{
+        private final Class clasz;
+        private final int id;
 
-        public PrimaryKey(Persistent obj){
-            this.clasz = obj.getClass();
-            this.id = obj.getPersistanceId();
+        public Class getClasz() {
+            return clasz;
         }
 
-        public PrimaryKey(Class<? extends Persistent> clasz, long persistanceId){
+        public int getId() {
+            return id;
+        }
+
+        public PrimaryKey(Class clasz, int persistanceId){
             this.clasz = clasz;
             this.id = persistanceId;
         }
@@ -25,7 +29,7 @@ public class PersistanceContext {
         public boolean equals(Object obj) {
             if(obj instanceof PrimaryKey){
                 PrimaryKey pkOther = (PrimaryKey) obj;
-                if(pkOther.clasz.equals(this.clasz) && pkOther.id == this.id) return true;
+                if(pkOther.getClasz().equals(this.clasz) && pkOther.getId() == this.id) return true;
                 else return false;
             }
             else return false;
@@ -36,18 +40,27 @@ public class PersistanceContext {
         persistentHashMap = new HashMap<>();
     }
 
-    public PersistanceContext getInstance() {
+    public static PersistanceContext getInstance() {
         if(persistanceContext == null){
             persistanceContext = new PersistanceContext();
         }
         return persistanceContext;
     }
 
-    public Persistent getFromPersistanceContext(Class<? extends Persistent> clasz, long persistanceId){
-        return persistentHashMap.get(new PrimaryKey(clasz,persistanceId));
+    public int calculatePersistanceId(Object identifier){
+        return Objects.hashCode(identifier);
     }
 
-    public void putInPersistanceContext(Persistent obj){
-        persistentHashMap.put(new PrimaryKey(obj),obj);
+    public <T> T getFromPersistanceContext(Class<T> clasz, Object identifier){
+        System.out.println("get from persistance context");
+        int persistanceId = calculatePersistanceId(identifier);
+        Object objFound = persistentHashMap.get(new PrimaryKey(clasz, persistanceId));
+        return clasz.cast(objFound);
+    }
+
+    public <T> void putInPersistanceContext(T obj, Object identifier) {
+        System.out.println("put in persistance context");
+        int persistanceId = calculatePersistanceId(identifier);
+        persistentHashMap.put(new PrimaryKey(obj.getClass(),persistanceId),obj);
     }
 }

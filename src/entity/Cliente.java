@@ -1,10 +1,8 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 
-public class Cliente {
+public class Cliente{
     private String username;
     private String password;
     private String numTelefono;
@@ -20,11 +18,10 @@ public class Cliente {
 
     @Override
     public String toString() {
-        String print = "Username: "+username+
+        return "Username: "+username+
                 "\nPassword: "+password+
                 "\nTelefono: "+numTelefono+
                 "\nCarta{\n"+cartaDiCredito.toString()+"}";
-        return print;
     }
 
     public CartaDiCredito getCartaDiCredito() {
