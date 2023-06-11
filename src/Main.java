@@ -1,8 +1,9 @@
 import boundary.BCliente;
 import boundary.BGestore;
-import database.ClienteDAO;
 import database.DBSetup;
-import entity.Cliente;
+import exception.DAOConnectionException;
+import exception.DAOException;
+
 import java.sql.SQLException;
 
 import static boundary.utilsIO.TerminalIO.askUser;
@@ -14,7 +15,7 @@ public class Main {
 
         try{
             DBSetup.initialize();
-        }catch(SQLException e){
+        }catch(SQLException | DAOException | DAOConnectionException e){
             System.out.println(e.getMessage());
             return;
         }

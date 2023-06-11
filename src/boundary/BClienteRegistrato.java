@@ -1,18 +1,9 @@
 package boundary;
 
 import control.GestioneNegozio;
-import entity.Dipinto;
-import entity.Immagine;
 import entity.TecnicaDArte;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
-
 import static boundary.utilsIO.TerminalIO.askUser;
 
 public class BClienteRegistrato {
@@ -46,10 +37,10 @@ public class BClienteRegistrato {
     public ArrayList<Object> inserisciScultura(){
         String peso;
         String altezza;
-        ArrayList<Object> lista = new ArrayList<Object>();
+        ArrayList<Object> lista = new ArrayList<>();
 
-        peso = askUser("\nInserisci il peso della scultura: ");
-        altezza = askUser("\nInserisci l'altezza: ");
+        peso = askUser("\nInserisci il peso della scultura in KG: ");
+        altezza = askUser("\nInserisci l'altezza in cm: ");
 
         lista.add(Float.parseFloat(peso));
         lista.add(Float.parseFloat(altezza));
@@ -61,11 +52,11 @@ public class BClienteRegistrato {
         TecnicaDArte tecnica;
         String larghezzaTela;
         String altezzaTela;
-        ArrayList<Object> lista = new ArrayList<Object>();
+        ArrayList<Object> lista = new ArrayList<>();
 
         tecnica = inserisciTecnicaDArte();
-        larghezzaTela = askUser("\nInserisci la larghezza del dipinto: ");
-        altezzaTela = askUser("\nInserisci l'altezza del dipinto: ");
+        larghezzaTela = askUser("\nInserisci la larghezza del dipinto in cm: ");
+        altezzaTela = askUser("\nInserisci l'altezza del dipinto in cm: ");
 
         lista.add(tecnica);
         lista.add(Float.parseFloat(larghezzaTela));
@@ -78,9 +69,9 @@ public class BClienteRegistrato {
         String descrizione;
         ArrayList<File> pathImmagini = new ArrayList<>();
         int num;
-        File file = null;
+        File file;
 
-        ArrayList<Object> lista = new ArrayList<Object>();
+        ArrayList<Object> lista = new ArrayList<>();
 
         nome = askUser("\nInserisci il nome: ");
         descrizione = askUser("\nInserisci la descrizione: ");
@@ -115,8 +106,7 @@ public class BClienteRegistrato {
                     "\n5. Esci ");
 
             switch (option) {
-                case "1" -> System.out.println("Funzionalita non ancora disponibile!");
-                case "2" -> System.out.println("Funzionalita non ancora disponibile!");
+                case "1", "2" -> System.out.println("Funzionalita non ancora disponibile!");
                 case "3" -> inserisciProposta();
                 case "4" -> visualizzaProposteCliente();
                 case "5" -> {
@@ -132,13 +122,13 @@ public class BClienteRegistrato {
         TecnicaDArte[] values = TecnicaDArte.values();
         int scelta = -1;
         String input;
-        String print;
+        StringBuilder print;
         do{
-            print = "Selezionare il numero della tecnica desiderata:";
+            print = new StringBuilder("Selezionare il numero della tecnica desiderata:");
             for(int i = 0; i < values.length; i++){
-                print += "\n"+(i+1)+". "+values[i].toString();
+                print.append("\n").append(i + 1).append(". ").append(values[i].toString());
             }
-            input = askUser(print);
+            input = askUser(print.toString());
             if(!input.equals("")){
                 scelta = Integer.parseInt(input) - 1;
                 if(scelta < 0 || scelta >= values.length) System.out.println("Valore inserito non corretto");
@@ -151,13 +141,13 @@ public class BClienteRegistrato {
     public String inserisciTipo(){
         int scelta = -1;
         String input;
-        String print;
+        StringBuilder print;
         do{
-            print = "Selezionare il numero del tipo di prodotto:";
+            print = new StringBuilder("Selezionare il numero del tipo di prodotto:");
             for(int i = 0; i < tipiProdotto.length; i++){
-                print += "\n"+(i+1)+". "+tipiProdotto[i].toString();
+                print.append("\n").append(i + 1).append(". ").append(tipiProdotto[i]);
             }
-            input = askUser(print);
+            input = askUser(print.toString());
             if(!input.equals("")){
                 scelta = Integer.parseInt(input) - 1;
                 if(scelta < 0 || scelta >= tipiProdotto.length) System.out.println("Valore inserito non corretto");

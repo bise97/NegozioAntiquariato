@@ -1,7 +1,8 @@
 package database;
 
-import database.DBManager;
 import entity.*;
+import exception.DAOConnectionException;
+import exception.DAOException;
 import exception.OperationException;
 
 import java.io.File;
@@ -103,19 +104,20 @@ public class DBSetup {
         createTableProposta(connection);
     }
 
-    public static void fillTables(){
+    public static void fillTables() throws DAOException, DAOConnectionException {
         ArrayList<Prodotto> prodotti = generateProdotti();
-        for(Prodotto p : prodotti){
+        for (Prodotto p : prodotti) {
             ProdottoDAO.createProdotto(p);
         }
         ArrayList<Articolo> articoli = generateArticoli(prodotti);
-        for(Articolo a : articoli){
+        for (Articolo a : articoli) {
             ArticoloDAO.createArticolo(a);
         }
         ArrayList<Cliente> clienti = generateClienti();
-        for(Cliente c : clienti){
+        for (Cliente c : clienti) {
             ClienteDAO.createCliente(c);
         }
+
     }
 
     public static ArrayList<Prodotto> generateProdotti(){
@@ -180,7 +182,7 @@ public class DBSetup {
         return clienti;
     }
 
-    public static void initialize() throws SQLException{
+    public static void initialize() throws SQLException, DAOException, DAOConnectionException {
         Connection connection = DBManager.getConnection();
         dropTables(connection);
         createTables(connection);
