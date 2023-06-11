@@ -1,8 +1,6 @@
 package boundary;
 
 import control.GestioneNegozio;
-import java.util.Scanner;
-
 import static boundary.utilsIO.TerminalIO.askUser;
 
 public class BCliente {
@@ -12,7 +10,7 @@ public class BCliente {
         String user;
         String pass;
         GestioneNegozio gN = GestioneNegozio.getInstance();
-        boolean repeatLogin = false;
+        boolean repeatLogin;
 
         do {
             System.out.println("LOGIN");

@@ -46,19 +46,4 @@ public class Articolo {
                 "}";
     }
 
-    //    public void setProdotto(Prodotto prodotto) {
-//        this.prodotto = prodotto;
-//    }
-
-//    public ArrayList<Object> get(ArrayList<Field> fields){
-//        ArrayList<Object> values = new ArrayList<>();
-//        try{
-//            for(Field f : fields){
-//                values.add(f.get(this));
-//            }
-//        }catch(IllegalAccessException e){
-//            System.out.println(e.getMessage());
-//        }
-//        return values;
-//    }
 }

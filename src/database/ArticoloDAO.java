@@ -4,10 +4,8 @@ import entity.Articolo;
 import exception.DAOConnectionException;
 import exception.DAOException;
 import exception.OperationException;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ArticoloDAO {
     private static final String PREZZO_COLUMN = "prezzo";
@@ -110,7 +108,7 @@ public class ArticoloDAO {
     }
 
     public static ArrayList<Articolo> readAll() throws DAOException,DAOConnectionException{
-        ArrayList<Articolo> articoli = null;
+        ArrayList<Articolo> articoli;
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Articolo";

@@ -1,8 +1,6 @@
 import boundary.BCliente;
 import boundary.BGestore;
-import database.ClienteDAO;
 import database.DBSetup;
-import entity.Cliente;
 import java.sql.SQLException;
 
 import static boundary.utilsIO.TerminalIO.askUser;

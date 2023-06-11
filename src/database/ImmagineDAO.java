@@ -207,7 +207,7 @@ public class ImmagineDAO {
     }
 
     public static ArrayList<Immagine> readAll() throws DAOException,DAOConnectionException{
-        ArrayList<Immagine> immagini = null;
+        ArrayList<Immagine> immagini;
         try{
             Connection conn = DBManager.getConnection();
             String query = "SELECT * FROM Immagine";
