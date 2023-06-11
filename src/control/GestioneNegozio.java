@@ -19,6 +19,7 @@ public class GestioneNegozio {
 
     private static final String SCULTURA = "SCULTURA";
     private static final String DIPINTO = "DIPINTO";
+    private static final String PRODOTTO = "PRODOTTO";
     private static GestioneNegozio gestioneNegozio = null;
     protected GestioneNegozio(){
         super();
@@ -61,16 +62,29 @@ public class GestioneNegozio {
     }
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
-        Prodotto prodotto;
+        Prodotto prodotto = null;
         Cliente cliente;
         ArrayList<Long> listaProposteCliente;
+        boolean outTipo = true;
 
         try {
-            prodotto = switch (tipo) {
-                case SCULTURA -> inserisciScultura(bR);
-                case DIPINTO -> inserisciDipinto(bR);
-                default -> inserisciProdotto(bR);
-            };
+            while (outTipo) {
+                switch (tipo) {
+                    case SCULTURA -> {
+                        prodotto = inserisciScultura(bR);
+                        outTipo = false;
+                    }
+                    case DIPINTO -> {
+                        prodotto = inserisciDipinto(bR);
+                        outTipo = false;
+                    }
+                    case PRODOTTO -> {
+                        prodotto = inserisciProdotto(bR);
+                        outTipo = false;
+                    }
+                    default -> tipo = bR.inserisciTipo();
+                };
+            }
 
             Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
             PropostaDAO.createProposta(proposta);
