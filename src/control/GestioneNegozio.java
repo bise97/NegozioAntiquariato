@@ -30,8 +30,7 @@ public class GestioneNegozio {
         return gestioneNegozio;
     }
     private Articolo ricercaArticolo(long codiceArticolo) throws OperationException, DAOException, DAOConnectionException {
-        Articolo a = null;
-        a = ArticoloDAO.readArticolo(codiceArticolo);
+        Articolo a = ArticoloDAO.readArticolo(codiceArticolo);
         if(a == null){
             throw new OperationException("Articolo non trovato.");
         }
@@ -57,7 +56,7 @@ public class GestioneNegozio {
             ProdottoDAO.updateProdotto(prodotto);
             ArticoloDAO.updateArticolo(articolo);
         } catch (DAOConnectionException | DAOException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
     }
 
@@ -87,7 +86,7 @@ public class GestioneNegozio {
 
     }
 
-    public Scultura inserisciScultura(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
+    private Scultura inserisciScultura(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
         String nome;
         String descrizione;
         ArrayList<File> pathImmagini;
@@ -108,7 +107,7 @@ public class GestioneNegozio {
         return scultura;
     }
 
-    public Dipinto inserisciDipinto(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
+    private Dipinto inserisciDipinto(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
         String nome;
         String descrizione;
         ArrayList<File> pathImmagini;
@@ -131,7 +130,7 @@ public class GestioneNegozio {
         return dipinto;
     }
 
-    public Prodotto inserisciProdotto(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
+    private Prodotto inserisciProdotto(BClienteRegistrato bR) throws DAOException, DAOConnectionException {
         String nome;
         String descrizione;
         ArrayList<File> pathImmagini;
@@ -151,7 +150,7 @@ public class GestioneNegozio {
 
         boolean f = false;
 
-        Cliente cliente = null;
+        Cliente cliente;
         try {
             cliente = ClienteDAO.readCliente(username);
             if(cliente != null) {
