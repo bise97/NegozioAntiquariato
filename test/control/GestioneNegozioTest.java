@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -20,17 +21,16 @@ class GestioneNegozioTest {
 
     @BeforeAll
     static void beforeAll() {
-        try{
-            DBSetup.initialize();
-        }
-        catch (SQLException e){
-            fail("Database non inizializzato");
-        }
-
     }
 
     @BeforeEach
     void setUp() {
+        try{
+            DBSetup.initialize();
+        }
+        catch (SQLException | DAOConnectionException | DAOException e){
+            fail("Database non inizializzato");
+        }
     }
 
     @AfterEach
@@ -41,11 +41,19 @@ class GestioneNegozioTest {
     void modificaArticolo() {
         long codiceArticolo = 1L;
         BGestore bGestore = new BGestore();
-        String prezzo = "0.5\n";
-        String quantitaMagazzino = "10\n";
-        String nome = "Cane\n";
-        String descrizione = "Sierra\n";
-        String vuoiModificareImmagini = "n\n";
+        String prezzo = "0.5";
+        String quantitaMagazzino = "10";
+        String nome = "Cane";
+        String descrizione = "Sierra";
+        String vuoiModificareImmagini = "n";
+
+        String[] fields = {prezzo,quantitaMagazzino,nome,descrizione,vuoiModificareImmagini};
+        String data = "";
+
+        for(String field : fields){
+            data += field;
+            data += System.lineSeparator();
+        }
 
 
         Articolo articolo = null;
@@ -57,6 +65,7 @@ class GestioneNegozioTest {
 
         assertNotEquals(articolo,null); //test della pre-condizione
 
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
         GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);
 
         articolo = null;
@@ -67,7 +76,7 @@ class GestioneNegozioTest {
         }
 
         assertNotEquals(articolo,null);
-        assertEquals(articolo.getPrezzo(),Integer.parseInt(prezzo));
+        assertEquals(articolo.getPrezzo(),Float.parseFloat(prezzo));
         assertEquals(articolo.getQuantitaMagazzino(),Integer.parseInt(quantitaMagazzino));
     }
 

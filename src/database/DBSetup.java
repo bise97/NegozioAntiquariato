@@ -125,7 +125,7 @@ public class DBSetup {
 
         ArrayList<File> imgfiles = new ArrayList<>();
         String[] imgPathsLampada = {"resources/lampada1.jpg","resources/lampada2.jpg","resources/lampada3.jpg","resources/lampada4.jpg"};
-        String[] imgPathsArmadio = {"resources/armadio1.jpg","resources/armadio2.jpg","resources/armadio3.jpg"};
+//        String[] imgPathsArmadio = {"resources/armadio1.jpg","resources/armadio2.jpg","resources/armadio3.jpg"};
         String[] imgPathsScultura = {"resources/scultura1.jpg","resources/scultura2.jpg"};
         String[] imgPathsDipinto = {"resources/dipinto1.jpg"};
 
@@ -134,23 +134,23 @@ public class DBSetup {
         }
         prodotti.add( new Prodotto("Lampada","Lampada nera con luce calda",imgfiles) );
 
-        imgfiles = new ArrayList<>();
-        for(String path : imgPathsArmadio){
-            imgfiles.add(new File(path));
-        }
-        prodotti.add( new Prodotto("Armadio","Armadio marrone",imgfiles) );
-
-        imgfiles = new ArrayList<>();
-        for(String path : imgPathsScultura){
-            imgfiles.add(new File(path));
-        }
-        prodotti.add( new Scultura("Busto","Busto in marmo bianco",imgfiles,10.5f,3.6f) );
+//        imgfiles = new ArrayList<>();
+//        for(String path : imgPathsArmadio){
+//            imgfiles.add(new File(path));
+//        }
+//        prodotti.add( new Prodotto("Armadio","Armadio marrone",imgfiles) );
 
         imgfiles = new ArrayList<>();
         for(String path : imgPathsDipinto){
             imgfiles.add(new File(path));
         }
         prodotti.add( new Dipinto("Medusa","Medusa di Caravaggio",imgfiles,5.89f,3.12f, TecnicaDArte.ACQUERELLO) );
+
+        imgfiles = new ArrayList<>();
+        for(String path : imgPathsScultura){
+            imgfiles.add(new File(path));
+        }
+        prodotti.add( new Scultura("Busto","Busto in marmo bianco",imgfiles,10.5f,3.6f) );
 
         return prodotti;
     }
