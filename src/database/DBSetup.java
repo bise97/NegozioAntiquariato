@@ -104,23 +104,20 @@ public class DBSetup {
         createTableProposta(connection);
     }
 
-    public static void fillTables(){
+    public static void fillTables() throws DAOException, DAOConnectionException {
         ArrayList<Prodotto> prodotti = generateProdotti();
-        try {
-            for (Prodotto p : prodotti) {
-                ProdottoDAO.createProdotto(p);
-            }
-            ArrayList<Articolo> articoli = generateArticoli(prodotti);
-            for (Articolo a : articoli) {
-                ArticoloDAO.createArticolo(a);
-            }
-            ArrayList<Cliente> clienti = generateClienti();
-            for (Cliente c : clienti) {
-                ClienteDAO.createCliente(c);
-            }
-        }catch (DAOException | DAOConnectionException e){
-            System.out.println(e.getMessage());
+        for (Prodotto p : prodotti) {
+            ProdottoDAO.createProdotto(p);
         }
+        ArrayList<Articolo> articoli = generateArticoli(prodotti);
+        for (Articolo a : articoli) {
+            ArticoloDAO.createArticolo(a);
+        }
+        ArrayList<Cliente> clienti = generateClienti();
+        for (Cliente c : clienti) {
+            ClienteDAO.createCliente(c);
+        }
+
     }
 
     public static ArrayList<Prodotto> generateProdotti(){
@@ -185,7 +182,7 @@ public class DBSetup {
         return clienti;
     }
 
-    public static void initialize() throws SQLException{
+    public static void initialize() throws SQLException, DAOException, DAOConnectionException {
         Connection connection = DBManager.getConnection();
         dropTables(connection);
         createTables(connection);
