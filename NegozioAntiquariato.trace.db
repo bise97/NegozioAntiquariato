@@ -4254,3 +4254,6 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/D
 2023-06-11 17:15:04 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROPOSTA" not found; SQL statement:
 INSERT INTO Proposta(prezzo, stato, username, codiceProdotto) VALUES (?, ?, ?, ?) [42102-214]
+2023-06-11 17:51:02 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROPOSTA" not found; SQL statement:
+DROP TABLE Proposta, Articolo, Immagine, Cliente, Prodotto, CartaDiCredito [42102-214]
