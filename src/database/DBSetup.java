@@ -71,6 +71,7 @@ public class DBSetup {
                 "id LONG NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "blob BLOB NOT NULL," +
                 "ProdottoCodice LONG NOT NULL," +
+                "path VARCHAR(255)," +
                 "FOREIGN KEY (ProdottoCodice) REFERENCES Prodotto(codice)" +
                 ");";
         Statement statement = connection.createStatement();

@@ -117,7 +117,7 @@ class GestioneNegozioTest {
         Proposta proposta = null;
         Prodotto prodotto = null;
         Integer lenghtImg = 0;
-        ArrayList<Immagine> immagini;
+        ArrayList<Immagine> immagini = new ArrayList<>();
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
 
@@ -150,6 +150,9 @@ class GestioneNegozioTest {
         assertEquals(prodotto.getNome(),nome);
         assertEquals(prodotto.getDescrizione(),descrizione);
         assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
+        for(Immagine img : immagini){
+            assertEquals(img.getPath(), pathImmagine);
+        }
     }
 
     @Test
@@ -168,7 +171,7 @@ class GestioneNegozioTest {
         Proposta proposta = null;
         Scultura scultura = null;
         Integer lenghtImg = 0;
-        ArrayList<Immagine> immagini;
+        ArrayList<Immagine> immagini = new ArrayList<>();
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine,peso,altezza};
 
@@ -202,6 +205,9 @@ class GestioneNegozioTest {
         assertEquals(scultura.getPeso(),Float.parseFloat(peso));
         assertEquals(scultura.getAltezza(),Float.parseFloat(altezza));
         assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
+        for(Immagine img : immagini){
+            assertEquals(img.getPath(), pathImmagine);
+        }
     }
 
     @Test
@@ -214,14 +220,14 @@ class GestioneNegozioTest {
         String nome = "Medusa";
         String descrizione = "Medusa di Caravaggio";
         String numeroImmagini = "1";
-        String pathImmagine = "resources/lampada1.jpg";
+        String pathImmagine = "resources\\lampada1.jpg";
         String tecnicaDArte = "4"; //ACQUERELLO
         String altezzaTela = "5.89";
         String larghezzaTela = "3.12";
         Proposta proposta = null;
         Dipinto dipinto = null;
         Integer lenghtImg = 0;
-        ArrayList<Immagine> immagini;
+        ArrayList<Immagine> immagini = new ArrayList<>();
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine,tecnicaDArte,larghezzaTela,altezzaTela};
 
@@ -256,6 +262,10 @@ class GestioneNegozioTest {
         assertEquals(dipinto.getAltezzaTela(),Float.parseFloat(altezzaTela));
         assertEquals(dipinto.getLarghezzaTela(),Float.parseFloat(larghezzaTela));
         assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
+        for(Immagine img : immagini){
+            assertEquals(img.getPath(), pathImmagine);
+        }
+
     }
     @Test
     void inserisciPropostaPrezzo() {

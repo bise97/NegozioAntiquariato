@@ -13,15 +13,18 @@ public class Immagine {
     private long id;
     private BufferedImage image;
     private long codiceProdotto;
+    private String path;
 
     public Immagine(File file) throws IOException{
             this.image = ImageIO.read(file);
+            this.path = file.getPath();
     }
 
-    public Immagine(long id, BufferedImage image, long codiceProdotto) {
+    public Immagine(long id, BufferedImage image, long codiceProdotto, String path) {
         this.id = id;
         this.image = image;
         this.codiceProdotto = codiceProdotto;
+        this.path = path;
     }
 
     @Override
@@ -56,11 +59,18 @@ public class Immagine {
         this.codiceProdotto = codiceProdotto;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Immagine)) return false;
-
-        //Inserire il confronto tra i path
+        if((!Objects.equals(((Immagine) obj).getPath(), path))) return false;
         return true;
     }
 }

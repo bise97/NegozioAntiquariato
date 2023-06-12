@@ -13,6 +13,7 @@ public class ImmagineDAO {
     private static final String ID_COLUMN = "id";
     private static final String BLOB_COLUMN = "blob";
     private static final String PRODOTTO_COLUMN = "ProdottoCodice";
+    private static final String PATH = "path";
 
     private static Immagine deserializeRecordImmagine(ResultSet rs){
         Immagine img = null;
@@ -21,7 +22,8 @@ public class ImmagineDAO {
 
             img = new Immagine(rs.getLong(ID_COLUMN),
                     ImageIO.read(blob.getBinaryStream()),
-                    rs.getLong(PRODOTTO_COLUMN));
+                    rs.getLong(PRODOTTO_COLUMN),
+                    rs.getString(PATH));
 
             blob.free();
         }
@@ -34,7 +36,7 @@ public class ImmagineDAO {
     public static void createImmagine(Immagine img) throws DAOException, DAOConnectionException {
         try{
             Connection conn = DBManager.getConnection();
-            String query = "INSERT INTO Immagine("+BLOB_COLUMN+","+PRODOTTO_COLUMN+") VALUES (?,?)";
+            String query = "INSERT INTO Immagine("+BLOB_COLUMN+","+PRODOTTO_COLUMN+ ","+ PATH +") VALUES (?,?,?)";
             try (PreparedStatement preparedStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 Blob blob = conn.createBlob();
                 OutputStream blobOutStream = blob.setBinaryStream(1);
@@ -42,6 +44,7 @@ public class ImmagineDAO {
                 blobOutStream.close();
                 preparedStatement.setBlob(1, blob);
                 preparedStatement.setLong(2, img.getCodiceProdotto());
+                preparedStatement.setString(3,img.getPath());
 
                 preparedStatement.executeUpdate();
                 ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -94,7 +97,7 @@ public class ImmagineDAO {
             Connection conn = DBManager.getConnection();
             String query = "UPDATE Immagine SET " +
                     BLOB_COLUMN + " = ?, " +
-                    PRODOTTO_COLUMN + " = ? WHERE " + ID_COLUMN + " = ?";
+                    PRODOTTO_COLUMN + " = ? WHERE " + ID_COLUMN + " = ?," + PATH + " =?" ;
             try(PreparedStatement preparedStatement = conn.prepareStatement(query)){
                 Blob imageBlob = conn.createBlob();
                 OutputStream blobOutStream = imageBlob.setBinaryStream(1);
@@ -103,6 +106,7 @@ public class ImmagineDAO {
                 preparedStatement.setBlob(1,imageBlob);
                 preparedStatement.setLong(2,img.getCodiceProdotto());
                 preparedStatement.setLong(3,img.getId());
+                preparedStatement.setString(4, img.getPath());
 
                 preparedStatement.executeUpdate();
                 imageBlob.free();
