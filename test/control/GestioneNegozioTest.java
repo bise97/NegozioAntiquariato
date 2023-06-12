@@ -267,6 +267,59 @@ class GestioneNegozioTest {
         }
 
     }
+
+    @Test
+    void inserisciPropostaPath() {
+        String username = "biagio";
+        Cliente cliente = null;
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "PRODOTTO";
+        float prezzoProposto = 28.2F;
+        String nome = "Lampada";
+        String descrizione = "Lampada nera con luce calda";
+        String numeroImmagini = "1";
+        String pathImmagine = "aaaaaaaa";
+        Proposta proposta = null;
+        Prodotto prodotto = null;
+        Integer lenghtImg = 0;
+        ArrayList<Immagine> immagini = new ArrayList<>();
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine,"resources\\lampada1.jpg"};
+
+        try{
+            cliente = ClienteDAO.readCliente(username);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura del cliente dal database");
+        }
+
+        assertNotEquals(cliente,null); //test della pre-condizione
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+            prodotto = ProdottoDAO.readProdotto(proposta.getCodice());
+            immagini = ImmagineDAO.readImmaginiProdotto(prodotto.getCodice());
+            lenghtImg = immagini.size();
+
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNotEquals(proposta,null);
+        assertNotEquals(prodotto, null);
+        assertFalse(prodotto instanceof Dipinto || prodotto instanceof Scultura);
+        assertEquals(proposta.getPrezzo(),prezzoProposto);
+        assertEquals(proposta.getUsername(),username);
+        assertEquals(prodotto.getNome(),nome);
+        assertEquals(prodotto.getDescrizione(),descrizione);
+        assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
+        for(Immagine img : immagini){
+            assertEquals(img.getPath(), "resources\\lampada1.jpg");
+        }
+
+    }
     @Test
     void inserisciPropostaPrezzo() {
         String username = "biagio";
