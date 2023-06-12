@@ -2,6 +2,7 @@ package control;
 
 import boundary.BGestore;
 import boundary.BClienteRegistrato;
+import boundary.utilsIO.TerminalIO;
 import database.ArticoloDAO;
 import database.ProdottoDAO;
 import entity.Articolo;
@@ -62,28 +63,38 @@ public class GestioneNegozio {
     }
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
-        Prodotto prodotto = null;
+        Prodotto prodotto;
         Cliente cliente;
         ArrayList<Long> listaProposteCliente;
-        boolean outTipo = true;
+
+        if (prezzoProposto < 0) {
+            System.out.println("Impossibile inserire la proposta, prezzo proposto negativo");
+            return;
+        }
+        try {
+            if (ClienteDAO.readCliente(username) == null){
+                System.out.println("Username non registrato!");
+                return;
+            }
+        }catch (DAOException | DAOConnectionException e){
+            System.out.println(e.getMessage());
+        }
 
         try {
-            while (outTipo) {
                 switch (tipo) {
                     case SCULTURA -> {
                         prodotto = inserisciScultura(bR);
-                        outTipo = false;
                     }
                     case DIPINTO -> {
                         prodotto = inserisciDipinto(bR);
-                        outTipo = false;
                     }
                     case PRODOTTO -> {
                         prodotto = inserisciProdotto(bR);
-                        outTipo = false;
                     }
-                    default -> tipo = bR.inserisciTipo();
-                };
+                    default -> {
+                        System.out.println("Impossibile inserire la proposta, tipo non consentito");
+                        return;
+                    }
             }
 
             Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());

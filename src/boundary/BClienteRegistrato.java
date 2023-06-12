@@ -4,7 +4,8 @@ import control.GestioneNegozio;
 import entity.TecnicaDArte;
 import java.io.File;
 import java.util.ArrayList;
-import static boundary.utilsIO.TerminalIO.askUser;
+
+import static boundary.utilsIO.TerminalIO.*;
 
 public class BClienteRegistrato {
 
@@ -26,41 +27,41 @@ public class BClienteRegistrato {
 
     public void inserisciProposta(){
         String tipo;
-        String prezzoProposto;
+        float prezzoProposto;
         GestioneNegozio gN = GestioneNegozio.getInstance();
 
         tipo = inserisciTipo();
-        prezzoProposto = askUser("\nInserisci il prezzo proposto di " + tipo + " :");
+        prezzoProposto = askUserFloat("Inserisci il prezzo proposto di " + tipo + " :");
 
-        gN.inserisciProposta(this.username,tipo, Float.parseFloat(prezzoProposto),this);
+        gN.inserisciProposta(this.username,tipo, prezzoProposto,this);
     }
     public ArrayList<Object> inserisciScultura(){
-        String peso;
-        String altezza;
+        float peso;
+        float altezza;
         ArrayList<Object> lista = new ArrayList<>();
 
-        peso = askUser("\nInserisci il peso della scultura in KG: ");
-        altezza = askUser("\nInserisci l'altezza in cm: ");
+        peso = askUserFloat("Inserisci il peso della scultura in KG: ");
+        altezza = askUserFloat("Inserisci l'altezza in cm: ");
 
-        lista.add(Float.parseFloat(peso));
-        lista.add(Float.parseFloat(altezza));
+        lista.add(peso);
+        lista.add(altezza);
 
         return lista;
     }
 
     public ArrayList<Object> inserisciDipinto(){
         TecnicaDArte tecnica;
-        String larghezzaTela;
-        String altezzaTela;
+        float larghezzaTela;
+        float altezzaTela;
         ArrayList<Object> lista = new ArrayList<>();
 
         tecnica = inserisciTecnicaDArte();
-        larghezzaTela = askUser("\nInserisci la larghezza del dipinto in cm: ");
-        altezzaTela = askUser("\nInserisci l'altezza del dipinto in cm: ");
+        larghezzaTela = askUserFloat("Inserisci la larghezza del dipinto in cm: ");
+        altezzaTela = askUserFloat("Inserisci l'altezza del dipinto in cm: ");
 
         lista.add(tecnica);
-        lista.add(Float.parseFloat(larghezzaTela));
-        lista.add(Float.parseFloat(altezzaTela));
+        lista.add(larghezzaTela);
+        lista.add(altezzaTela);
 
         return lista;
     }
@@ -73,14 +74,14 @@ public class BClienteRegistrato {
 
         ArrayList<Object> lista = new ArrayList<>();
 
-        nome = askUser("\nInserisci il nome: ");
-        descrizione = askUser("\nInserisci la descrizione: ");
-        num = Integer.parseInt(askUser("\nNumero di immagini: "));
+        nome = askUserString255("Inserisci il nome: ");
+        descrizione = askUserString255("Inserisci la descrizione: ");
+        num = askUserInt("Numero di immagini: ");
         while(num>4){
-            num = Integer.parseInt(askUser("\nInserisci un numero di immagini non superiore a 4: "));
+            num = Integer.parseInt(askUser("Inserisci un numero di immagini non superiore a 4: "));
         }
         for (int i=0; i<num;i++){
-            file = new File(askUser("\nInserisci il path dell' Immagine " + (i+1) + " : "));
+            file = new File(askUser("Inserisci il path dell' Immagine " + (i+1) + " : "));
             pathImmagini.add(file);
         }
 
@@ -130,8 +131,12 @@ public class BClienteRegistrato {
             }
             input = askUser(print.toString());
             if(!input.equals("")){
-                scelta = Integer.parseInt(input) - 1;
-                if(scelta < 0 || scelta >= values.length) System.out.println("Valore inserito non corretto");
+                try {
+                    scelta = Integer.parseInt(input) - 1;
+                    if (scelta < 0 || scelta >= values.length) System.out.println("Valore inserito non corretto");
+                }catch (NumberFormatException e){
+                    System.out.println("Valore inserito non corretto");
+                }
             }
         }while(scelta < 0 || scelta >= values.length);
         return values[scelta];
@@ -149,8 +154,12 @@ public class BClienteRegistrato {
             }
             input = askUser(print.toString());
             if(!input.equals("")){
-                scelta = Integer.parseInt(input) - 1;
-                if(scelta < 0 || scelta >= tipiProdotto.length) System.out.println("Valore inserito non corretto");
+                try {
+                    scelta = Integer.parseInt(input) - 1;
+                    if(scelta < 0 || scelta >= tipiProdotto.length) System.out.println("Valore inserito non corretto");
+                }catch (NumberFormatException e){
+                    System.out.println("Valore inserito non corretto");
+                }
             }
         }while(scelta < 0 || scelta >= tipiProdotto.length);
         return tipiProdotto[scelta];

@@ -11,7 +11,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -74,7 +78,7 @@ class GestioneNegozioTest {
     }
 
     @Test
-    void inserisciProposta() {
+    void inserisciPropostaProdotto() {
         String username = "biagio";
         Cliente cliente = null;
         BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
@@ -86,7 +90,8 @@ class GestioneNegozioTest {
         String pathImmagine = "resources/lampada1.jpg";
         Proposta proposta = null;
         Prodotto prodotto = null;
-        Integer lenghtImg = null;
+        Integer lenghtImg = 0;
+        ArrayList<Immagine> immagini;
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
 
@@ -104,7 +109,9 @@ class GestioneNegozioTest {
         try{
             proposta = PropostaDAO.readProposta(1L);
             prodotto = ProdottoDAO.readProdotto(proposta.getCodice());
-            lenghtImg = ImmagineDAO.readImmaginiProdotto(prodotto.getCodice()).size();
+            immagini = ImmagineDAO.readImmaginiProdotto(prodotto.getCodice());
+            lenghtImg = immagini.size();
+
         }catch (DAOException | DAOConnectionException e){
             fail("Errore nella lettura delle proposte dal database");
         }
@@ -119,6 +126,206 @@ class GestioneNegozioTest {
         assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
     }
 
+    @Test
+    void inserisciPropostaScultura() {
+        String username = "biagio";
+        Cliente cliente = null;
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "SCULTURA";
+        float prezzoProposto = 52.75F;
+        String nome = "Busto";
+        String descrizione = "Busto in marmo bianco";
+        String numeroImmagini = "1";
+        String pathImmagine = "resources/lampada1.jpg";
+        String peso = "10.5";
+        String altezza = "3.6";
+        Proposta proposta = null;
+        Scultura scultura = null;
+        Integer lenghtImg = 0;
+        ArrayList<Immagine> immagini;
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine,peso,altezza};
+
+        try{
+            cliente = ClienteDAO.readCliente(username);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura del cliente dal database");
+        }
+
+        assertNotEquals(cliente,null); //test della pre-condizione
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+            scultura = (Scultura) ProdottoDAO.readProdotto(proposta.getCodice());
+            immagini = ImmagineDAO.readImmaginiProdotto(scultura.getCodice());
+            lenghtImg = immagini.size();
+
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNotEquals(proposta,null);
+        assertNotEquals(scultura, null);
+        assertEquals(proposta.getPrezzo(),prezzoProposto);
+        assertEquals(proposta.getUsername(),username);
+        assertEquals(scultura.getNome(),nome);
+        assertEquals(scultura.getDescrizione(),descrizione);
+        assertEquals(scultura.getPeso(),Float.parseFloat(peso));
+        assertEquals(scultura.getAltezza(),Float.parseFloat(altezza));
+        assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
+    }
+
+    @Test
+    void inserisciPropostaDipinto() {
+        String username = "biagio";
+        Cliente cliente = null;
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "DIPINTO";
+        float prezzoProposto = 52.25F;
+        String nome = "Medusa";
+        String descrizione = "Medusa di Caravaggio";
+        String numeroImmagini = "1";
+        String pathImmagine = "resources/lampada1.jpg";
+        String tecnicaDArte = "4"; //ACQUERELLO
+        String altezzaTela = "5.89";
+        String larghezzaTela = "3.12";
+        Proposta proposta = null;
+        Dipinto dipinto = null;
+        Integer lenghtImg = 0;
+        ArrayList<Immagine> immagini;
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine,tecnicaDArte,larghezzaTela,altezzaTela};
+
+        try{
+            cliente = ClienteDAO.readCliente(username);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura del cliente dal database");
+        }
+
+        assertNotEquals(cliente,null); //test della pre-condizione
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+            dipinto = (Dipinto) ProdottoDAO.readProdotto(proposta.getCodice());
+            immagini = ImmagineDAO.readImmaginiProdotto(dipinto.getCodice());
+            lenghtImg = immagini.size();
+
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNotEquals(proposta,null);
+        assertNotEquals(dipinto, null);
+        assertEquals(proposta.getPrezzo(),prezzoProposto);
+        assertEquals(proposta.getUsername(),username);
+        assertEquals(dipinto.getNome(),nome);
+        assertEquals(dipinto.getDescrizione(),descrizione);
+        assertEquals(dipinto.getTecnica().toString(),"ACQUERELLO");
+        assertEquals(dipinto.getAltezzaTela(),Float.parseFloat(altezzaTela));
+        assertEquals(dipinto.getLarghezzaTela(),Float.parseFloat(larghezzaTela));
+        assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
+    }
+    @Test
+    void inserisciPropostaPrezzo() {
+        String username = "biagio";
+        Cliente cliente = null;
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "PRODOTTO";
+        float prezzoProposto = -1;
+        String nome = "Lampada";
+        String descrizione = "Lampada nera con luce calda";
+        String numeroImmagini = "1";
+        String pathImmagine = "resources/lampada1.jpg";
+        Proposta proposta = null;
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
+
+        try{
+            cliente = ClienteDAO.readCliente(username);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura del cliente dal database");
+        }
+
+        assertNotEquals(cliente,null); //test della pre-condizione
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNull(proposta);
+    }
+
+    @Test
+    void inserisciPropostaUsername() {
+        String username = "john";
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "PRODOTTO";
+        float prezzoProposto = 28.2F;
+        String nome = "Lampada";
+        String descrizione = "Lampada nera con luce calda";
+        String numeroImmagini = "1";
+        String pathImmagine = "resources/lampada1.jpg";
+        Proposta proposta = null;
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNull(proposta);
+    }
+
+    @Test
+    void inserisciPropostaTipo() {
+        String username = "biagio";
+        Cliente cliente = null;
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "aaaaaaa";
+        float prezzoProposto = 28.2F;
+        String nome = "Lampada";
+        String descrizione = "Lampada nera con luce calda";
+        String numeroImmagini = "1";
+        String pathImmagine = "resources/lampada1.jpg";
+        Proposta proposta = null;
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
+
+        try{
+            cliente = ClienteDAO.readCliente(username);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura del cliente dal database");
+        }
+
+        assertNotEquals(cliente,null); //test della pre-condizione
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNull(proposta);
+    }
 
     private void prepareInput(String[] fields){
         String data = "";

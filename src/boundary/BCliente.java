@@ -2,6 +2,7 @@ package boundary;
 
 import control.GestioneNegozio;
 import static boundary.utilsIO.TerminalIO.askUser;
+import static boundary.utilsIO.TerminalIO.askUserString255;
 
 public class BCliente {
 
@@ -14,8 +15,8 @@ public class BCliente {
 
         do {
             System.out.println("LOGIN");
-            user = askUser("username: ");
-            pass = askUser("password: ");
+            user = askUserString255("username: ");
+            pass = askUserString255("password: ");
             if(!gN.login(user, pass)){
                 repeatLogin = true;
                 System.out.println("Username e password errati. Riprovare.");
