@@ -2,6 +2,7 @@ package control;
 
 import boundary.BClienteRegistrato;
 import boundary.BGestore;
+import boundary.utilsIO.TerminalIO;
 import database.*;
 import entity.*;
 import exception.DAOConnectionException;
@@ -508,11 +509,7 @@ class GestioneNegozioTest {
             data += field;
             data += System.lineSeparator();
         }
-        try {
-            System.in.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         System.setIn(new ByteArrayInputStream(data.getBytes()));
+        TerminalIO.resetScanner();
     }
 }
