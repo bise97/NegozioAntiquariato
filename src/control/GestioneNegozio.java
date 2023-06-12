@@ -36,30 +36,17 @@ public class GestioneNegozio {
         if(a == null){
             throw new OperationException("Articolo non trovato.");
         }
-
         return a;
     }
 
-    public void modificaArticolo(long codiceArticolo, BGestore bGestore){
-        Articolo articolo;
-        try{
-            articolo = ricercaArticolo(codiceArticolo);
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-            return;
-        }
+    public void modificaArticolo(long codiceArticolo, BGestore bGestore) throws DAOException, DAOConnectionException, OperationException {
+        Articolo articolo = ricercaArticolo(codiceArticolo);
 
-        try{
-            bGestore.aggiornaCampiArticolo(articolo);
-            Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
-            bGestore.aggiornaCampiProdotto(prodotto);
-
-            ProdottoDAO.updateProdotto(prodotto);
-            ArticoloDAO.updateArticolo(articolo);
-        } catch (DAOConnectionException | DAOException e) {
-            System.out.println(e.getMessage());
-        }
+        bGestore.aggiornaCampiArticolo(articolo);
+        Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
+        bGestore.aggiornaCampiProdotto(prodotto);
+        ProdottoDAO.updateProdotto(prodotto);
+        ArticoloDAO.updateArticolo(articolo);
     }
 
     public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR) throws OperationException{
@@ -68,7 +55,7 @@ public class GestioneNegozio {
         ArrayList<Long> listaProposteCliente;
 
         if (prezzoProposto < 0) {
-            throw new OperationException("Impossibile inserire la proposta, prezzo proposto negativo");
+            throw new OperationException("Impossibile inserire la proposta, prezzo proposto non consentito.");
         }
         try {
 
@@ -186,17 +173,13 @@ public class GestioneNegozio {
         return f;
     }
 
-    public void visualizzaArticoli(BGestore bGestore){
-        try {
-            ArrayList<Articolo> articoli = ArticoloDAO.readAll();
-            ArrayList<Prodotto> prodotti = new ArrayList<>();
-            for (Articolo articolo : articoli) {
-                prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
-            }
-            bGestore.visualizzaArticoli(articoli, prodotti);
-        }catch (DAOException | DAOConnectionException e){
-            System.out.println(e.getMessage());
+    public void visualizzaArticoli(BGestore bGestore) throws DAOException, DAOConnectionException {
+        ArrayList<Articolo> articoli = ArticoloDAO.readAll();
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        for (Articolo articolo : articoli) {
+            prodotti.add(ProdottoDAO.readProdotto(articolo.getCodiceProdotto()));
         }
+        bGestore.visualizzaArticoli(articoli, prodotti);
     }
     public ArrayList<Proposta> visualizzaProposteCliente(String username){
         ArrayList<Proposta> proposte = new ArrayList<>();

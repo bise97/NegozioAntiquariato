@@ -74,7 +74,13 @@ class GestioneNegozioTest {
         }
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);
+
+        try {
+            GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);
+        } catch (DAOException | DAOConnectionException | OperationException e) {
+            fail(e.getMessage());
+        }
+
 
         try{
             Articolo articolo = ArticoloDAO.readArticolo(codiceArticolo);
@@ -87,12 +93,10 @@ class GestioneNegozioTest {
             assertEquals(prodotto.getNome(),nome);
             assertEquals(prodotto.getDescrizione(),descrizione);
             try{
-//                assertEquals(prodotto.getImmagini().get(0),new Immagine(new File(pathImmagine)));
-                assertEquals(new Immagine(new File(pathImmagine)),new Immagine(new File(pathImmagine)));
+                assertEquals(prodotto.getImmagini().get(0),new Immagine(new File(pathImmagine)));
             }catch (IOException e){
                 fail("Impossibile aprire l'immagine");
             }
-
             assertTrue(prodotto instanceof Dipinto);
             assertEquals(((Dipinto) prodotto).getTecnica(),TecnicaDArte.values()[Integer.parseInt(tecnicaDArte)-1]);
             assertEquals(((Dipinto) prodotto).getLarghezzaTela(),Float.parseFloat(larghezzaTela));

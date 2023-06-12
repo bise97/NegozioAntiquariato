@@ -29,18 +29,38 @@ public class TerminalIO {
         return result;
     }
 
-    public static String askUserString255(String print){
+    public static long askUserLong(String print){
         String input;
         boolean notFloat = true;
+        long result = -1;
 
         do{
             input = askUser(print);
+            try {
+                result = Long.parseLong(input);
+                if(result > 0) notFloat = false;
+                else System.out.println("Valore inserito non corretto");
+            }catch (NumberFormatException e){
+                System.out.println("Valore inserito non corretto");
+            }
+        } while(notFloat);
+
+        return result;
+    }
+
+    public static String askUserString255(String print){
+        String input;
+        boolean longerThan255 = true;
+
+        do{
+            input = askUser(print);
+
             if(input.length() > 255){
                 System.out.println("Stringa lunga più di 255 caratteri!");
             }else{
-                notFloat = false;
+                longerThan255 = false;
             }
-        } while(notFloat);
+        } while(longerThan255);
 
         return input;
     }
