@@ -16,8 +16,7 @@ public class TerminalIO {
         float result = -1;
 
         do{
-            System.out.println(print);
-            input = scanner.nextLine();
+            input = askUser(print);
             try {
                 result = Float.parseFloat(input);
                 if(result > 0) notFloat = false;
@@ -35,8 +34,7 @@ public class TerminalIO {
         boolean notFloat = true;
 
         do{
-            System.out.println(print);
-            input = scanner.nextLine();
+            input = askUser(print);
             if(input.length() > 255){
                 System.out.println("Stringa lunga più di 255 caratteri!");
             }else{
@@ -52,8 +50,7 @@ public class TerminalIO {
         int result = -1;
 
         do{
-            System.out.println(print);
-            input = scanner.nextLine();
+            input = askUser(print);
             try {
                 result = Integer.parseInt(input);
                 if(result >= 0) notFloat = false;
