@@ -113,7 +113,7 @@ class GestioneNegozioTest {
         String nome = "Lampada";
         String descrizione = "Lampada nera con luce calda";
         String numeroImmagini = "1";
-        String pathImmagine = "resources/lampada1.jpg";
+        String pathImmagine = "resources\\lampada1.jpg";
         Proposta proposta = null;
         Prodotto prodotto = null;
         Integer lenghtImg = 0;
@@ -165,7 +165,7 @@ class GestioneNegozioTest {
         String nome = "Busto";
         String descrizione = "Busto in marmo bianco";
         String numeroImmagini = "1";
-        String pathImmagine = "resources/lampada1.jpg";
+        String pathImmagine = "resources\\lampada1.jpg";
         String peso = "10.5";
         String altezza = "3.6";
         Proposta proposta = null;
@@ -277,7 +277,7 @@ class GestioneNegozioTest {
         String nome = "Lampada";
         String descrizione = "Lampada nera con luce calda";
         String numeroImmagini = "1";
-        String pathImmagine = "resources/lampada1.jpg";
+        String pathImmagine = "resources\\lampada1.jpg";
         Proposta proposta = null;
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
@@ -311,7 +311,7 @@ class GestioneNegozioTest {
         String nome = "Lampada";
         String descrizione = "Lampada nera con luce calda";
         String numeroImmagini = "1";
-        String pathImmagine = "resources/lampada1.jpg";
+        String pathImmagine = "resources\\lampada1.jpg";
         Proposta proposta = null;
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
@@ -338,7 +338,7 @@ class GestioneNegozioTest {
         String nome = "Lampada";
         String descrizione = "Lampada nera con luce calda";
         String numeroImmagini = "1";
-        String pathImmagine = "resources/lampada1.jpg";
+        String pathImmagine = "resources\\lampada1.jpg";
         Proposta proposta = null;
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
