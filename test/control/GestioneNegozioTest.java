@@ -40,6 +40,7 @@ class GestioneNegozioTest {
         catch (SQLException | DAOConnectionException | DAOException e){
             fail("Database non inizializzato");
         }
+        PersistanceContext.getInstance().resetPersistanceContext();
     }
 
     @AfterEach

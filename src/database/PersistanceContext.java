@@ -55,6 +55,10 @@ public class PersistanceContext {
         return persistanceContext;
     }
 
+    public void resetPersistanceContext(){
+        persistanceContext = null;
+    }
+
     public int calculatePersistanceId(Object identifier){
         return Objects.hashCode(identifier);
     }
