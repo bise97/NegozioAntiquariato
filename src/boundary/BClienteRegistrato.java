@@ -146,13 +146,11 @@ public class BClienteRegistrato {
                 print.append("\n").append(i + 1).append(". ").append(values[i].toString());
             }
             input = askUser(print.toString());
-            if(!input.equals("")){
-                try {
-                    scelta = Integer.parseInt(input) - 1;
-                    if (scelta < 0 || scelta >= values.length) System.out.println("Valore inserito non corretto");
-                }catch (NumberFormatException e){
-                    System.out.println("Valore inserito non corretto");
-                }
+            try {
+                scelta = Integer.parseInt(input) - 1;
+                if (scelta < 0 || scelta >= values.length) System.out.println("Valore inserito non corretto");
+            }catch (NumberFormatException e){
+                System.out.println("Valore inserito non corretto");
             }
         }while(scelta < 0 || scelta >= values.length);
         return values[scelta];
@@ -169,13 +167,11 @@ public class BClienteRegistrato {
                 print.append("\n").append(i + 1).append(". ").append(tipiProdotto[i]);
             }
             input = askUser(print.toString());
-            if(!input.equals("")){
-                try {
-                    scelta = Integer.parseInt(input) - 1;
-                    if(scelta < 0 || scelta >= tipiProdotto.length) System.out.println("Valore inserito non corretto");
-                }catch (NumberFormatException e){
-                    System.out.println("Valore inserito non corretto");
-                }
+            try {
+                scelta = Integer.parseInt(input) - 1;
+                if(scelta < 0 || scelta >= tipiProdotto.length) System.out.println("Valore inserito non corretto");
+            }catch (NumberFormatException e){
+                System.out.println("Valore inserito non corretto");
             }
         }while(scelta < 0 || scelta >= tipiProdotto.length);
         return tipiProdotto[scelta];
