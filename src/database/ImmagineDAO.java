@@ -57,7 +57,6 @@ public class ImmagineDAO {
                 }
                 blob.free();
             } catch (Exception e) {
-                //TODO gestire eccezione image.write() ?
                 throw new DAOException("Errore creazione Immagine");
             }
         }
@@ -112,7 +111,6 @@ public class ImmagineDAO {
                 imageBlob.free();
             }
             catch (Exception e){
-                //TODO gestire eccezione image.write() ?
                 throw new DAOException("Errore update Immagine");
             }
         }
@@ -139,7 +137,6 @@ public class ImmagineDAO {
         }
     }
 
-    //TODO da testare deleteImmaginiOfProdotto
     public static void deleteImmaginiOfProdotto(long codiceProdotto) throws DAOException,DAOConnectionException{
 
         deleteImmaginiOfProdottoFromPersistanceContext(codiceProdotto);
@@ -173,8 +170,7 @@ public class ImmagineDAO {
                 }
             }
             catch (SQLException e){
-                //TODO va bene la stampa?
-                throw new DAOException("Errore lettura immagini di prodotto con codice" + codiceProdotto);
+                throw new DAOException("Errore cancellazione delle immagini del prodotto " + codiceProdotto + "dal persistance context");
             }
 
         }
@@ -197,7 +193,6 @@ public class ImmagineDAO {
                     immagini.add(img);
                     PersistanceContext.getInstance().putInPersistanceContext(img,img.getId());
                 }
-                    //TODO  alzare eccezione se l'immagine non è presente nel db
             }
             catch (SQLException e){
                 throw new DAOException("Errore lettura delle immagini del prodotto con codice " + codice);
@@ -232,5 +227,4 @@ public class ImmagineDAO {
         }
         return immagini;
     }
-    //TODO se modifico un oggetto attraverso la reference restituita da readArticolo si modifica anche l'istanza corripettiva in PErsistanceContext?
 }

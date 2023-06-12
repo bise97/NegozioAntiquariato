@@ -2,7 +2,6 @@ package control;
 
 import boundary.BGestore;
 import boundary.BClienteRegistrato;
-import boundary.utilsIO.TerminalIO;
 import database.ArticoloDAO;
 import database.ProdottoDAO;
 import entity.Articolo;
@@ -68,18 +67,10 @@ public class GestioneNegozio {
 
         try {
                 switch (tipo) {
-                    case SCULTURA -> {
-                        prodotto = inserisciScultura(bR);
-                    }
-                    case DIPINTO -> {
-                        prodotto = inserisciDipinto(bR);
-                    }
-                    case PRODOTTO -> {
-                        prodotto = inserisciProdotto(bR);
-                    }
-                    default -> {
-                        throw new OperationException("Impossibile inserire la proposta, tipo non consentito");
-                    }
+                    case SCULTURA -> prodotto = inserisciScultura(bR);
+                    case DIPINTO -> prodotto = inserisciDipinto(bR);
+                    case PRODOTTO -> prodotto = inserisciProdotto(bR);
+                    default -> throw new OperationException("Impossibile inserire la proposta, tipo non consentito");
             }
 
             Proposta proposta = new Proposta(prezzoProposto, username, prodotto.getCodice());
@@ -88,7 +79,6 @@ public class GestioneNegozio {
             cliente = ClienteDAO.readCliente(username);
             listaProposteCliente = cliente.getListaProposteCliente();
             listaProposteCliente.add(proposta.getId());
-            //TODO aggiungere controllo cache
         }catch (DAOException | DAOConnectionException e){
             System.out.println(e.getMessage());
         }

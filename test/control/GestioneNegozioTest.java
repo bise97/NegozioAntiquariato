@@ -2,7 +2,6 @@ package control;
 
 import boundary.BClienteRegistrato;
 import boundary.BGestore;
-import boundary.utilsIO.ImmagineIO;
 import database.*;
 import entity.*;
 import exception.DAOConnectionException;
@@ -12,14 +11,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +25,7 @@ class GestioneNegozioTest {
 
     @BeforeAll
     static void beforeAll() {
+
     }
 
     @BeforeEach
@@ -508,6 +507,11 @@ class GestioneNegozioTest {
         for(String field : fields){
             data += field;
             data += System.lineSeparator();
+        }
+        try {
+            System.in.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         System.setIn(new ByteArrayInputStream(data.getBytes()));
     }
