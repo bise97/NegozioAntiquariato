@@ -213,17 +213,18 @@ public class BGestore {
 
         public void aggiornaCampiDipinto(Dipinto dipinto){
                 aggiornaTecnicaDArte(dipinto);
-                String print = "Vuoi modificare l'altezza della tela?" +
-                        "\nValore attuale: "+dipinto.getAltezzaTela()+
-                        "\nNuovo valore (Premere Invio se non si vuole modificare il campo):";
-                String input = askUser(print);
-                if(!input.equals("")) dipinto.setAltezzaTela(Float.parseFloat(input));
 
-                print = "Vuoi modificare la larghezza della tela?" +
+                String print = "Vuoi modificare la larghezza della tela?" +
                         "\nValore attuale: "+dipinto.getLarghezzaTela()+
                         "\nNuovo valore (Premere Invio se non si vuole modificare il campo):";
-                input = askUser(print);
+                String input = askUser(print);
                 if(!input.equals("")) dipinto.setLarghezzaTela(Float.parseFloat(input));
+
+                 print = "Vuoi modificare l'altezza della tela?" +
+                        "\nValore attuale: "+dipinto.getAltezzaTela()+
+                        "\nNuovo valore (Premere Invio se non si vuole modificare il campo):";
+                input = askUser(print);
+                if(!input.equals("")) dipinto.setAltezzaTela(Float.parseFloat(input));
         }
         public void aggiornaCampiScultura(Scultura scultura){
                 String print = "Vuoi modificare il peso della scultura?" +

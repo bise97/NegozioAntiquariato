@@ -2,8 +2,12 @@ package entity;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.Raster;
+import java.io.*;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Immagine {
     private long id;
@@ -50,5 +54,13 @@ public class Immagine {
 
     public void setCodiceProdotto(long codiceProdotto) {
         this.codiceProdotto = codiceProdotto;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Immagine)) return false;
+
+        //Inserire il confronto tra i path
+        return true;
     }
 }
