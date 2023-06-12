@@ -7,6 +7,7 @@ import database.*;
 import entity.*;
 import exception.DAOConnectionException;
 import exception.DAOException;
+import exception.OperationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -130,7 +131,11 @@ class GestioneNegozioTest {
         assertNotEquals(cliente,null); //test della pre-condizione
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        try {
+            GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        } catch (OperationException e) {
+            fail("Errore di creazione della proposta!");
+        }
 
         try{
             proposta = PropostaDAO.readProposta(1L);
@@ -184,7 +189,11 @@ class GestioneNegozioTest {
         assertNotEquals(cliente,null); //test della pre-condizione
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        try {
+            GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        } catch (OperationException e) {
+            fail("Errore di creazione della proposta!");
+        }
 
         try{
             proposta = PropostaDAO.readProposta(1L);
@@ -240,7 +249,11 @@ class GestioneNegozioTest {
         assertNotEquals(cliente,null); //test della pre-condizione
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        try {
+            GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        } catch (OperationException e) {
+            fail("Errore di creazione della proposta!");
+        }
 
         try{
             proposta = PropostaDAO.readProposta(1L);
@@ -295,7 +308,11 @@ class GestioneNegozioTest {
         assertNotEquals(cliente,null); //test della pre-condizione
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        try {
+            GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+        } catch (OperationException e) {
+            fail("Errore di creazione della proposta!");
+        }
 
         try{
             proposta = PropostaDAO.readProposta(1L);
@@ -331,7 +348,6 @@ class GestioneNegozioTest {
         String descrizione = "Lampada nera con luce calda";
         String numeroImmagini = "1";
         String pathImmagine = "resources\\lampada1.jpg";
-        Proposta proposta = null;
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
 
@@ -344,15 +360,7 @@ class GestioneNegozioTest {
         assertNotEquals(cliente,null); //test della pre-condizione
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
-
-        try{
-            proposta = PropostaDAO.readProposta(1L);
-        }catch (DAOException | DAOConnectionException e){
-            fail("Errore nella lettura delle proposte dal database");
-        }
-
-        assertNull(proposta);
+        assertThrows(OperationException.class, () ->{GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);}, "Errore nel prezzo Proposto");
     }
 
     @Test
@@ -370,15 +378,7 @@ class GestioneNegozioTest {
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
-
-        try{
-            proposta = PropostaDAO.readProposta(1L);
-        }catch (DAOException | DAOConnectionException e){
-            fail("Errore nella lettura delle proposte dal database");
-        }
-
-        assertNull(proposta);
+        assertThrows(OperationException.class, () ->{GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);}, "Errore username");
     }
 
     @Test
@@ -392,7 +392,6 @@ class GestioneNegozioTest {
         String descrizione = "Lampada nera con luce calda";
         String numeroImmagini = "1";
         String pathImmagine = "resources\\lampada1.jpg";
-        Proposta proposta = null;
 
         String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
 
@@ -405,15 +404,7 @@ class GestioneNegozioTest {
         assertNotEquals(cliente,null); //test della pre-condizione
 
         prepareInput(fields);
-        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
-
-        try{
-            proposta = PropostaDAO.readProposta(1L);
-        }catch (DAOException | DAOConnectionException e){
-            fail("Errore nella lettura delle proposte dal database");
-        }
-
-        assertNull(proposta);
+        assertThrows(OperationException.class, () ->{GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);}, "Errore nel prezzo Proposto");
     }
 
     private void prepareInput(String[] fields){

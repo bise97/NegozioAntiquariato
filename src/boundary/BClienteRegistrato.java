@@ -1,7 +1,10 @@
 package boundary;
 
 import control.GestioneNegozio;
+import entity.Proposta;
 import entity.TecnicaDArte;
+import exception.OperationException;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -33,7 +36,12 @@ public class BClienteRegistrato {
         tipo = inserisciTipo();
         prezzoProposto = askUserFloat("Inserisci il prezzo proposto di " + tipo + " :");
 
-        gN.inserisciProposta(this.username,tipo, prezzoProposto,this);
+        try {
+            gN.inserisciProposta(this.username,tipo, prezzoProposto,this);
+            System.out.println("Proposta aggiunta!");
+        } catch (OperationException e) {
+            System.out.println(e.getMessage());
+        }
     }
     public ArrayList<Object> inserisciScultura(){
         float peso;
@@ -174,7 +182,11 @@ public class BClienteRegistrato {
     }
 
     public void visualizzaProposteCliente(){
+        ArrayList<Proposta> proposte = new ArrayList<>();
         GestioneNegozio gN = GestioneNegozio.getInstance();
-        gN.visualizzaProposteCliente(username);
+        proposte = gN.visualizzaProposteCliente(username);
+        for(Proposta p: proposte){
+            System.out.println(p);
+        }
     }
 }

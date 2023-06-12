@@ -62,19 +62,18 @@ public class GestioneNegozio {
         }
     }
 
-    public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR){
+    public void inserisciProposta(String username, String tipo, float prezzoProposto, BClienteRegistrato bR) throws OperationException{
         Prodotto prodotto;
         Cliente cliente;
         ArrayList<Long> listaProposteCliente;
 
         if (prezzoProposto < 0) {
-            System.out.println("Impossibile inserire la proposta, prezzo proposto negativo");
-            return;
+            throw new OperationException("Impossibile inserire la proposta, prezzo proposto negativo");
         }
         try {
+
             if (ClienteDAO.readCliente(username) == null){
-                System.out.println("Username non registrato!");
-                return;
+                throw new OperationException("Username non registrato!");
             }
         }catch (DAOException | DAOConnectionException e){
             System.out.println(e.getMessage());
@@ -92,8 +91,7 @@ public class GestioneNegozio {
                         prodotto = inserisciProdotto(bR);
                     }
                     default -> {
-                        System.out.println("Impossibile inserire la proposta, tipo non consentito");
-                        return;
+                        throw new OperationException("Impossibile inserire la proposta, tipo non consentito");
                     }
             }
 
@@ -103,7 +101,6 @@ public class GestioneNegozio {
             cliente = ClienteDAO.readCliente(username);
             listaProposteCliente = cliente.getListaProposteCliente();
             listaProposteCliente.add(proposta.getId());
-            System.out.println("Proposta aggiunta: " + proposta);
             //TODO aggiungere controllo cache
         }catch (DAOException | DAOConnectionException e){
             System.out.println(e.getMessage());
@@ -201,14 +198,15 @@ public class GestioneNegozio {
             System.out.println(e.getMessage());
         }
     }
-    public void visualizzaProposteCliente(String username){
+    public ArrayList<Proposta> visualizzaProposteCliente(String username){
+        ArrayList<Proposta> proposte = new ArrayList<>();
         try {
             ArrayList<Long> listaProposteCliente = PropostaDAO.readIdProposteOfCliente(username);
 
             for (Long id : listaProposteCliente) {
                 try {
                     Proposta p = PropostaDAO.readProposta(id);
-                    System.out.println(p + " --> " + ProdottoDAO.readProdotto(p.getCodice()).toString());
+                    proposte.add(p);
                 } catch (DAOException | DAOConnectionException e) {
                     System.out.println(e.getMessage());
                 }
@@ -216,6 +214,6 @@ public class GestioneNegozio {
         }catch (DAOException | DAOConnectionException e){
             System.out.println(e.getMessage());
         }
-
+        return proposte;
     }
 }
