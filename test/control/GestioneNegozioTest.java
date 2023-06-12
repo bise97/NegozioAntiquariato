@@ -1,9 +1,9 @@
 package control;
 
+import boundary.BClienteRegistrato;
 import boundary.BGestore;
-import database.ArticoloDAO;
-import database.DBSetup;
-import entity.Articolo;
+import database.*;
+import entity.*;
 import exception.DAOConnectionException;
 import exception.DAOException;
 import org.junit.jupiter.api.AfterEach;
@@ -40,6 +40,7 @@ class GestioneNegozioTest {
     @Test
     void modificaArticolo() {
         long codiceArticolo = 1L;
+        Articolo articolo = null;
         BGestore bGestore = new BGestore();
         String prezzo = "0.5";
         String quantitaMagazzino = "10";
@@ -48,15 +49,7 @@ class GestioneNegozioTest {
         String vuoiModificareImmagini = "n";
 
         String[] fields = {prezzo,quantitaMagazzino,nome,descrizione,vuoiModificareImmagini};
-        String data = "";
 
-        for(String field : fields){
-            data += field;
-            data += System.lineSeparator();
-        }
-
-
-        Articolo articolo = null;
         try{
             articolo = ArticoloDAO.readArticolo(codiceArticolo);
         }catch (DAOException | DAOConnectionException e){
@@ -65,7 +58,7 @@ class GestioneNegozioTest {
 
         assertNotEquals(articolo,null); //test della pre-condizione
 
-        System.setIn(new ByteArrayInputStream(data.getBytes()));
+        prepareInput(fields);
         GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);
 
         articolo = null;
@@ -82,17 +75,57 @@ class GestioneNegozioTest {
 
     @Test
     void inserisciProposta() {
+        String username = "biagio";
+        Cliente cliente = null;
+        BClienteRegistrato bClienteRegistrato = new BClienteRegistrato(username);
+        String tipo = "PRODOTTO";
+        float prezzoProposto = 28.2F;
+        String nome = "Lampada";
+        String descrizione = "Lampada nera con luce calda";
+        String numeroImmagini = "1";
+        String pathImmagine = "resources/lampada1.jpg";
+        Proposta proposta = null;
+        Prodotto prodotto = null;
+        Integer lenghtImg = null;
+
+        String[] fields = {nome,descrizione,numeroImmagini,pathImmagine};
+
+        try{
+            cliente = ClienteDAO.readCliente(username);
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura del cliente dal database");
+        }
+
+        assertNotEquals(cliente,null); //test della pre-condizione
+
+        prepareInput(fields);
+        GestioneNegozio.getInstance().inserisciProposta(username,tipo,prezzoProposto,bClienteRegistrato);
+
+        try{
+            proposta = PropostaDAO.readProposta(1L);
+            prodotto = ProdottoDAO.readProdotto(proposta.getCodice());
+            lenghtImg = ImmagineDAO.readImmaginiProdotto(prodotto.getCodice()).size();
+        }catch (DAOException | DAOConnectionException e){
+            fail("Errore nella lettura delle proposte dal database");
+        }
+
+        assertNotEquals(proposta,null);
+        assertNotEquals(prodotto, null);
+        assertFalse(prodotto instanceof Dipinto || prodotto instanceof Scultura);
+        assertEquals(proposta.getPrezzo(),prezzoProposto);
+        assertEquals(proposta.getUsername(),username);
+        assertEquals(prodotto.getNome(),nome);
+        assertEquals(prodotto.getDescrizione(),descrizione);
+        assertEquals(lenghtImg,Integer.parseInt(numeroImmagini));
     }
 
-    @Test
-    void inserisciScultura() {
-    }
 
-    @Test
-    void inserisciDipinto() {
-    }
-
-    @Test
-    void inserisciProdotto() {
+    private void prepareInput(String[] fields){
+        String data = "";
+        for(String field : fields){
+            data += field;
+            data += System.lineSeparator();
+        }
+        System.setIn(new ByteArrayInputStream(data.getBytes()));
     }
 }
