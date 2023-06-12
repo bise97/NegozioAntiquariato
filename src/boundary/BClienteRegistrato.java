@@ -71,6 +71,7 @@ public class BClienteRegistrato {
         ArrayList<File> pathImmagini = new ArrayList<>();
         int num;
         File file;
+        boolean repeatFile = true;
 
         ArrayList<Object> lista = new ArrayList<>();
 
@@ -78,11 +79,18 @@ public class BClienteRegistrato {
         descrizione = askUserString255("Inserisci la descrizione: ");
         num = askUserInt("Numero di immagini: ");
         while(num>4){
-            num = Integer.parseInt(askUser("Inserisci un numero di immagini non superiore a 4: "));
+            num = askUserInt("Inserisci un numero di immagini non superiore a 4: ");
         }
         for (int i=0; i<num;i++){
-            file = new File(askUser("Inserisci il path dell' Immagine " + (i+1) + " : "));
-            pathImmagini.add(file);
+            do {
+                    file = new File(askUserString255("Inserisci il path dell' Immagine " + (i + 1) + " : "));
+                    if(file.exists()) {
+                        pathImmagini.add(file);
+                        repeatFile = false;
+                    }else{
+                        System.out.println("Immagine non trovata!");
+                    }
+            }while (repeatFile);
         }
 
         lista.add(nome);
