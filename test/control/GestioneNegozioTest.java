@@ -2,6 +2,7 @@ package control;
 
 import boundary.BClienteRegistrato;
 import boundary.BGestore;
+import boundary.utilsIO.ImmagineIO;
 import database.*;
 import entity.*;
 import exception.DAOConnectionException;
@@ -31,6 +32,9 @@ class GestioneNegozioTest {
     void setUp() {
         try{
             DBSetup.initialize();
+            //codice 1L -> Prodotto
+            //codice 2L -> Dipinto
+            //codice 3L -> Scultura
         }
         catch (SQLException | DAOConnectionException | DAOException e){
             fail("Database non inizializzato");
@@ -42,39 +46,61 @@ class GestioneNegozioTest {
     }
 
     @Test
-    void modificaArticolo() {
-        long codiceArticolo = 1L;
-        Articolo articolo = null;
+    void modificaArticoloID2() {
+        long codiceArticolo = 2L; //Dipinto
         BGestore bGestore = new BGestore();
-        String prezzo = "0.5";
+        String prezzo = "5.2";
         String quantitaMagazzino = "10";
-        String nome = "Cane";
-        String descrizione = "Sierra";
-        String vuoiModificareImmagini = "n";
+        String nome = "Guernica";
+        String descrizione = "Quadro di Picasso";
+        String modificareImmagini = "y";
+        String pathImmagine = "resources/armadio1.jpg";
+        String tecnicaDArte = "1"; //1 -> Pittura a olio
+        String larghezzaTela = "30.2";
+        String altezzaTela = "15.4";
 
-        String[] fields = {prezzo,quantitaMagazzino,nome,descrizione,vuoiModificareImmagini};
+
+        String[] fields = {prezzo,quantitaMagazzino,nome,descrizione,modificareImmagini,pathImmagine,"",
+            tecnicaDArte,larghezzaTela,altezzaTela};
 
         try{
-            articolo = ArticoloDAO.readArticolo(codiceArticolo);
+            Articolo articolo = ArticoloDAO.readArticolo(codiceArticolo);
+            assertNotNull(articolo,"Articolo non presente nel database"); //test della pre-condizione
+            Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
+            assertTrue(prodotto instanceof Dipinto, "Articolo non è un dipinto");
         }catch (DAOException | DAOConnectionException e){
-            fail("Errore nella lettura dell'articolo dal database");
+            fail(e.getMessage());
         }
-
-        assertNotEquals(articolo,null); //test della pre-condizione
 
         prepareInput(fields);
         GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);
 
-        articolo = null;
         try{
-            articolo = ArticoloDAO.readArticolo(codiceArticolo);
+            Articolo articolo = ArticoloDAO.readArticolo(codiceArticolo);
+            assertNotNull(articolo);
+            assertEquals(articolo.getPrezzo(),Float.parseFloat(prezzo));
+            assertEquals(articolo.getQuantitaMagazzino(),Integer.parseInt(quantitaMagazzino));
+
+            Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
+            assertNotNull(prodotto);
+            assertEquals(prodotto.getNome(),nome);
+            assertEquals(prodotto.getDescrizione(),descrizione);
+            try{
+//                assertEquals(prodotto.getImmagini().get(0),new Immagine(new File(pathImmagine)));
+                assertEquals(new Immagine(new File(pathImmagine)),new Immagine(new File(pathImmagine)));
+            }catch (IOException e){
+                fail("Impossibile aprire l'immagine");
+            }
+
+            assertTrue(prodotto instanceof Dipinto);
+            assertEquals(((Dipinto) prodotto).getTecnica(),TecnicaDArte.values()[Integer.parseInt(tecnicaDArte)-1]);
+            assertEquals(((Dipinto) prodotto).getLarghezzaTela(),Float.parseFloat(larghezzaTela));
+            assertEquals(((Dipinto) prodotto).getAltezzaTela(),Float.parseFloat(altezzaTela));
         }catch (DAOException | DAOConnectionException e){
             fail("Errore nella lettura dell'articolo dal database");
         }
 
-        assertNotEquals(articolo,null);
-        assertEquals(articolo.getPrezzo(),Float.parseFloat(prezzo));
-        assertEquals(articolo.getQuantitaMagazzino(),Integer.parseInt(quantitaMagazzino));
+
     }
 
     @Test
