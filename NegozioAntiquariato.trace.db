@@ -4673,3 +4673,9 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/biagi/D
 	at org.h2.mvstore.FileStore.open(FileStore.java:128)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:452)
 	... 86 more
+2023-06-12 22:52:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "NOME CHARACTER VARYING(255)": "'5555555555555555555555555555555555555555555555555555555555555555555555555555555... (512)"; SQL statement:
+UPDATE Prodotto SET nome=?, descrizione=? WHERE codice=? [22001-214]
+2023-06-12 22:59:31 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "NOME CHARACTER VARYING(255)": "'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa... (300)"; SQL statement:
+UPDATE Prodotto SET nome=?, descrizione=? WHERE codice=? [22001-214]

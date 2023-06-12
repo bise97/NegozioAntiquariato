@@ -109,6 +109,97 @@ class GestioneNegozioTest {
     }
 
     @Test
+    void modificaArticoloID8() {
+        long codiceArticolo = -10L; //Codice non corretto
+        BGestore bGestore = new BGestore();
+        String prezzo = "5.2";
+        String quantitaMagazzino = "10";
+        String nome = "Armadio";
+        String descrizione = "In legno di quercia";
+        String modificareImmagini = "y";
+        String pathImmagine = "resources/armadio1.jpg";
+
+        String[] fields = {prezzo,quantitaMagazzino,nome,descrizione,modificareImmagini,pathImmagine,""};
+        prepareInput(fields);
+
+        assertThrows(OperationException.class,()->{GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);});
+
+    }
+
+    @Test
+    void modificaArticoloID11() {
+        long codiceArticolo = 1L; //Codice non corretto
+        BGestore bGestore = new BGestore();
+        String prezzo = "5.2";
+        String quantitaMagazzino = "10";
+        String nome = "Armadio";
+        String descrizione = "In legno di quercia";
+        String modificareImmagini = "y";
+        String pathImmagine = "resources/armadio1.jpg";
+
+        String nomeLungo = "";
+        for(int i = 0; i < 300; i++){
+            nomeLungo += "a";
+        }
+
+        String[] fields = {prezzo,quantitaMagazzino,nomeLungo,nome,descrizione,modificareImmagini,pathImmagine,""};
+        prepareInput(fields);
+
+        assertDoesNotThrow(()->{GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);});
+
+        try {
+            Articolo articolo = ArticoloDAO.readArticolo(codiceArticolo);
+            assertNotNull(articolo);
+            assertEquals(articolo.getPrezzo(), Float.parseFloat(prezzo));
+            assertEquals(articolo.getQuantitaMagazzino(), Integer.parseInt(quantitaMagazzino));
+
+            Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
+            assertNotNull(prodotto);
+            assertEquals(prodotto.getNome(), nome);
+            assertEquals(prodotto.getDescrizione(), descrizione);
+        }catch (DAOException | DAOConnectionException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void modificaArticoloID12() {
+        long codiceArticolo = 1L; //Codice non corretto
+        BGestore bGestore = new BGestore();
+        String prezzo = "5.2";
+        String quantitaMagazzino = "10";
+        String nome = "Armadio";
+        String descrizione = "In legno di quercia";
+        String modificareImmagini = "y";
+        String pathImmagine = "resources/armadio1.jpg";
+
+        String descrizioneLunga = "";
+        for(int i = 0; i < 300; i++){
+            descrizioneLunga += "a";
+        }
+
+        String[] fields = {prezzo,quantitaMagazzino,nome,descrizioneLunga,descrizione,modificareImmagini,pathImmagine,""};
+        prepareInput(fields);
+
+        assertDoesNotThrow(()->{GestioneNegozio.getInstance().modificaArticolo(codiceArticolo, bGestore);});
+
+        try {
+            Articolo articolo = ArticoloDAO.readArticolo(codiceArticolo);
+            assertNotNull(articolo);
+            assertEquals(articolo.getPrezzo(), Float.parseFloat(prezzo));
+            assertEquals(articolo.getQuantitaMagazzino(), Integer.parseInt(quantitaMagazzino));
+
+            Prodotto prodotto = ProdottoDAO.readProdotto(articolo.getCodiceProdotto());
+            assertNotNull(prodotto);
+            assertEquals(prodotto.getNome(), nome);
+            assertEquals(prodotto.getDescrizione(), descrizione);
+        }catch (DAOException | DAOConnectionException e) {
+            fail(e.getMessage());
+        }
+    }
+
+
+    @Test
     void inserisciPropostaProdotto() {
         String username = "biagio";
         Cliente cliente = null;
@@ -412,6 +503,7 @@ class GestioneNegozioTest {
     }
 
     private void prepareInput(String[] fields){
+        //Redirezione del System.in
         String data = "";
         for(String field : fields){
             data += field;

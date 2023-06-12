@@ -49,7 +49,6 @@ public class BGestore {
                 }
 
                 codiceArticolo = askUserLong("Inserire il codice dell'articolo da modificare:");
-
                 try {
                         gestioneNegozio.modificaArticolo(codiceArticolo,this);
                 } catch (DAOException | DAOConnectionException | OperationException e) {
