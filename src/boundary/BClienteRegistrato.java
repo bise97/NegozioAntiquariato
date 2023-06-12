@@ -84,7 +84,7 @@ public class BClienteRegistrato {
         for (int i=0; i<num;i++){
             do {
                     file = new File(askUserString255("Inserisci il path dell' Immagine " + (i + 1) + " : "));
-                    if(file.exists()) {
+                    if(file.canRead()) {
                         pathImmagini.add(file);
                         repeatFile = false;
                     }else{
